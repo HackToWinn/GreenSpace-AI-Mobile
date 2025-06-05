@@ -1,110 +1,267 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import React from 'react';
+import { Dimensions, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { BarChart, LineChart, PieChart } from 'react-native-gifted-charts';
+import MapView, { Marker } from 'react-native-maps';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Collapsible } from '@/components/Collapsible';
-import { ExternalLink } from '@/components/ExternalLink';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { IconSymbol } from '@/components/ui/IconSymbol';
+const { width, height } = Dimensions.get('window');
+const HEADER_HEIGHT = 60;
 
-export default function TabTwoScreen() {
+export default function ExploreTab() {
+  // Sample data untuk charts
+  const lineData = [
+    { value: 50, dataPointText: '50' },
+    { value: 80, dataPointText: '80' },
+    { value: 90, dataPointText: '90' },
+    { value: 70, dataPointText: '70' },
+    { value: 60, dataPointText: '60' },
+    { value: 85, dataPointText: '85' },
+  ];
+
+  const barData = [
+    { value: 250, label: 'Jan', frontColor: '#177AD5' },
+    { value: 500, label: 'Feb', frontColor: '#177AD5' },
+    { value: 745, label: 'Mar', frontColor: '#177AD5' },
+    { value: 320, label: 'Apr', frontColor: '#177AD5' },
+    { value: 600, label: 'May', frontColor: '#177AD5' },
+    { value: 256, label: 'Jun', frontColor: '#177AD5' },
+  ];
+
+  const pieData = [
+    { value: 47, color: '#009FFF', gradientCenterColor: '#006DFF', focused: true },
+    { value: 40, color: '#93FCF8', gradientCenterColor: '#3BE9DE' },
+    { value: 16, color: '#BDB2FA', gradientCenterColor: '#8F80F3' },
+    { value: 3, color: '#FFA5BA', gradientCenterColor: '#FF7F97' },
+  ];
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={
-        <IconSymbol
-          size={310}
-          color="#808080"
-          name="chevron.left.forwardslash.chevron.right"
-          style={styles.headerImage}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Explore</ThemedText>
-      </ThemedView>
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
-      <Collapsible title="File-based routing">
-        <ThemedText>
-          This app has two screens:{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
-        </ThemedText>
-        <ThemedText>
-          The layout file in <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText>{' '}
-          sets up the tab navigator.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Android, iOS, and web support">
-        <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-          <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
-        </ThemedText>
-      </Collapsible>
-      <Collapsible title="Images">
-        <ThemedText>
-          For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for
-          different screen densities
-        </ThemedText>
-        <Image source={require('@/assets/images/react-logo.png')} style={{ alignSelf: 'center' }} />
-        <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Custom fonts">
-        <ThemedText>
-          Open <ThemedText type="defaultSemiBold">app/_layout.tsx</ThemedText> to see how to load{' '}
-          <ThemedText style={{ fontFamily: 'SpaceMono' }}>
-            custom fonts such as this one.
-          </ThemedText>
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/versions/latest/sdk/font">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Light and dark mode components">
-        <ThemedText>
-          This template has light and dark mode support. The{' '}
-          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect
-          what the user&apos;s current color scheme is, and so you can adjust UI colors accordingly.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Animations">
-        <ThemedText>
-          This template includes an example of an animated component. The{' '}
-          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses
-          the powerful <ThemedText type="defaultSemiBold">react-native-reanimated</ThemedText>{' '}
-          library to create a waving hand animation.
-        </ThemedText>
-        {Platform.select({
-          ios: (
-            <ThemedText>
-              The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText>{' '}
-              component provides a parallax effect for the header image.
-            </ThemedText>
-          ),
-        })}
-      </Collapsible>
-    </ParallaxScrollView>
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
+      <View style={styles.container}>
+        {/* Fixed Header */}
+        <View style={styles.header}>
+          <Text style={styles.headerText}>Explore</Text>
+        </View>
+
+        {/* Scrollable Content */}
+        <ScrollView contentContainerStyle={styles.scrollContent}>
+          <View style={styles.mapContainer}>
+            <MapView
+              style={styles.map}
+              initialRegion={{
+                latitude: -6.200000, // Jakarta
+                longitude: 106.816666,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421,
+              }}
+            >
+              <Marker
+                coordinate={{ latitude: -6.200000, longitude: 106.816666 }}
+                title="Jakarta"
+                description="Ini ibu kota Indonesia"
+              />
+            </MapView>
+          </View>
+
+          {/* Charts Section */}
+          <View style={styles.chartsContainer}>
+            {/* Line Chart */}
+            <View style={styles.chartItem}>
+              <Text style={styles.chartTitle}>Trend Kunjungan Bulanan</Text>
+              <View style={styles.chartWrapper}>
+                <LineChart
+                  data={lineData}
+                  width={width - 64}
+                  height={200}
+                  spacing={50}
+                  thickness={3}
+                  color="#177AD5"
+                  dataPointsColor="#177AD5"
+                  dataPointsRadius={5}
+                  textShiftY={-10}
+                  textShiftX={-5}
+                  textFontSize={12}
+                  hideRules
+                  yAxisColor="lightgray"
+                  xAxisColor="lightgray"
+                  showVerticalLines
+                  verticalLinesColor="rgba(14,164,164,0.5)"
+                  xAxisLabelTextStyle={{ color: 'gray', fontSize: 10 }}
+                  yAxisTextStyle={{ color: 'gray', fontSize: 10 }}
+                />
+              </View>
+            </View>
+
+            {/* Bar Chart */}
+            <View style={styles.chartItem}>
+              <Text style={styles.chartTitle}>Statistik Pengunjung per Bulan</Text>
+              <View style={styles.chartWrapper}>
+                <BarChart
+                  data={barData}
+                  width={width - 64}
+                  height={200}
+                  barWidth={30}
+                  spacing={20}
+                  roundedTop
+                  roundedBottom
+                  hideRules
+                  xAxisThickness={1}
+                  yAxisThickness={1}
+                  yAxisColor="lightgray"
+                  xAxisColor="lightgray"
+                  noOfSections={3}
+                  maxValue={800}
+                  yAxisLabelTexts={['0', '200', '400', '600', '800']}
+                  labelWidth={40}
+                  xAxisLabelTextStyle={{ color: 'gray', fontSize: 10 }}
+                  yAxisTextStyle={{ color: 'gray', fontSize: 10 }}
+                />
+              </View>
+            </View>
+
+            {/* Pie Chart */}
+            <View style={styles.chartItem}>
+              <Text style={styles.chartTitle}>Distribusi Kategori Wisata</Text>
+              <View style={styles.pieChartWrapper}>
+                <PieChart
+                  data={pieData}
+                  donut
+                  showGradient
+                  sectionAutoFocus
+                  radius={90}
+                  innerRadius={60}
+                  innerCircleColor={'#232B5D'}
+                  centerLabelComponent={() => {
+                    return (
+                      <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                        <Text style={{ fontSize: 22, color: 'white', fontWeight: 'bold' }}>
+                          47%
+                        </Text>
+                        <Text style={{ fontSize: 14, color: 'white' }}>Excellent</Text>
+                      </View>
+                    );
+                  }}
+                />
+                
+                {/* Legend */}
+                <View style={styles.legend}>
+                  <View style={styles.legendItem}>
+                    <View style={[styles.legendColor, { backgroundColor: '#009FFF' }]} />
+                    <Text style={styles.legendText}>Pantai (47%)</Text>
+                  </View>
+                  <View style={styles.legendItem}>
+                    <View style={[styles.legendColor, { backgroundColor: '#93FCF8' }]} />
+                    <Text style={styles.legendText}>Gunung (40%)</Text>
+                  </View>
+                  <View style={styles.legendItem}>
+                    <View style={[styles.legendColor, { backgroundColor: '#BDB2FA' }]} />
+                    <Text style={styles.legendText}>Museum (16%)</Text>
+                  </View>
+                  <View style={styles.legendItem}>
+                    <View style={[styles.legendColor, { backgroundColor: '#FFA5BA' }]} />
+                    <Text style={styles.legendText}>Lainnya (3%)</Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+        </ScrollView>
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#fff',
   },
-  titleContainer: {
+  container: {
+    flex: 1,
+    paddingTop: HEADER_HEIGHT,
+  },
+  header: {
+    position: 'absolute',
+    top: 0,
+    width: '100%',
+    height: HEADER_HEIGHT,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 10,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#e0e0e0',
+  },
+  headerText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  scrollContent: {
+    padding: 16,
+    paddingBottom: 50,
+  },
+  mapContainer: {
+    width: width - 32,
+    height: height * 0.4,
+    borderRadius: 10,
+    overflow: 'hidden',
+    marginBottom: 20,
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  chartsContainer: {
+    flex: 1,
+  },
+  chartItem: {
+    marginBottom: 30,
+    backgroundColor: '#f9f9f9',
+    borderRadius: 12,
+    padding: 16,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  chartTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 15,
+    color: '#333',
+    textAlign: 'center',
+  },
+  chartWrapper: {
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    padding: 10,
+  },
+  pieChartWrapper: {
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    padding: 20,
+  },
+  legend: {
+    marginTop: 20,
+    alignItems: 'flex-start',
+  },
+  legendItem: {
     flexDirection: 'row',
-    gap: 8,
+    alignItems: 'center',
+    marginVertical: 4,
+  },
+  legendColor: {
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    marginRight: 8,
+  },
+  legendText: {
+    fontSize: 12,
+    color: '#333',
   },
 });
