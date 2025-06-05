@@ -4,7 +4,7 @@ import { Link } from 'expo-router';
 const NotFoundScreen = () => {
   return (
     <View>
-      <Text style={styles.title}>This screen doesn't exist.</Text>
+      <Text style={styles.title}>This screen doesn&apos;t exist.</Text>
       <Link href={'/'}>
         <Text style={styles.linkText}>Go to home screen!</Text>
       </Link>
