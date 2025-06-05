@@ -3,8 +3,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 const SignIn = () => {
   return (
-    <SafeAreaView>
-      <Text className='JakartaSans-Bold text-lg text-black'>Welcome to GreenSpace</Text>
+    <SafeAreaView className='flex justify-center items-center'>
+      <Text className='font-bold text-2xl'>Welcome to Green</Text>
     </SafeAreaView>
   )
 }
