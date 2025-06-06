@@ -1,19 +1,26 @@
-import { TouchableOpacityProps } from "react-native";
+import { Ionicons } from '@expo/vector-icons';
+import { TouchableOpacityProps } from 'react-native';
 
 export type TabBarItemProps = {
-    iconName: string;
-    IconComponent?: React.ComponentType<any>;
-    size?: number;
-    color?: string;
-    focused?: boolean;
-    label?: string;
+	iconName: string;
+	IconComponent?: React.ComponentType<any>;
+	size?: number;
+	color?: string;
+	focused?: boolean;
+	label?: string;
 };
 
 export declare interface ButtonProps extends TouchableOpacityProps {
-    title: string;
-    bgVariant?: "primary" | "secondary" | "outline" | "success" | "danger";
-    textVariant?: "primary" | "secondary" | "success" | "danger" | "default";
-    IconLeft?: React.ComponentType<any>;
-    IconRight?: React.ComponentType<any>;
-    className?: string;
+	title: string;
+	bgVariant?: 'primary' | 'secondary' | 'outline' | 'success' | 'danger' | 'default';
+	textVariant?: 'primary' | 'secondary' | 'success' | 'danger' | 'default';
+	IconLeft?: React.ComponentType<any>;
+	IconRight?: React.ComponentType<any>;
+	className?: string;
+}
+
+export interface DashboardCardProps {
+	title: string;
+	value: string | number;
+	iconName: keyof typeof Ionicons.glyphMap;
 }
