@@ -20,23 +20,23 @@ module.exports = {
         Regular: ['JakartaSans-Regular', 'sans-serif'],
         SemiBold: ['JakartaSans-SemiBold', 'sans-serif'],
         SemiBoldItalic: ['JakartaSans-SemiBoldItalic', 'sans-serif'],
+      },
+      colors: {
+        primary: {
+          50: '#FBFDFC',
+          100: '#E6F4EC',
+          200: '#C3E5D1',
+          300: '#9FD6B5',
+          400: '#74C490',
+          500: '#4CAF50',
+          600: '#3E9E45',
+          700: '#2E7A37',
+          800: '#225D2A',
+          900: '#193F1E',
+          950: '#0F2612',
+        },
       }
     },
-    colors: {
-      primary: {
-        50: '#FBFDFC',
-        100: '#E6F4EC',
-        200: '#C3E5D1',
-        300: '#9FD6B5',
-        400: '#74C490',
-        500: '#4CAF50',
-        600: '#3E9E45',
-        700: '#2E7A37',
-        800: '#225D2A',
-        900: '#193F1E',
-        950: '#0F2612',
-      },
-    }
   },
   plugins: [],
-}
+};
