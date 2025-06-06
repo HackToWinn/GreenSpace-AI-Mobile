@@ -3,7 +3,6 @@ import { useRef, useState } from 'react';
 import { Animated, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { LineChart } from 'react-native-gifted-charts';
 import MapView, { Marker } from 'react-native-maps';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Statistics() {
   const [showDetail, setShowDetail] = useState(false);
@@ -434,15 +433,10 @@ export default function Statistics() {
 
   return (
     <Layout>
-      {/* Fixed Header */}
-      <SafeAreaView
-        className="absolute top-0 left-0 right-0 z-50 bg-white shadow-md"
-        edges={['top']}
-      >
-      </SafeAreaView>
+      <Text>Statistics</Text>
 
       {/* Konten scrollable */}
-      <ScrollView contentContainerStyle={{ paddingTop: 40, paddingHorizontal: 16 }} className='h-full' scrollEventThrottle={16} decelerationRate="normal">
+      <ScrollView contentContainerStyle={{ paddingTop: 40}} className='h-full' scrollEventThrottle={16} decelerationRate="normal">
         {/* Map Card */}
         <View className="rounded-xl overflow-hidden border border-gray-200 mb-6" style={{ height: 300 }}>
           <MapView
@@ -478,7 +472,7 @@ export default function Statistics() {
             )}
             <View className="flex-row items-center">
               {showDetail && (
-                <View className="bg-red-100 px-3 py-1 rounded-full">
+                <View className="bg-red-100 px-3 py-1 me-1 ml-1 rounded-full">
                   <Text className="text-red-600 text-sm font-medium">
                     {getCurrentYearData().find(item => item.label === selectedDay)?.value || 0} Accidents
                   </Text>
