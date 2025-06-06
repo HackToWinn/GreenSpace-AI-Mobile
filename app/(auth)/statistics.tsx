@@ -438,9 +438,6 @@ export default function Statistics() {
         className="absolute top-0 left-0 right-0 z-50 bg-white shadow-md"
         edges={['top']}
       >
-        <View className="items-center py-4">
-          <Text className="font-bold text-2xl">Statistik Bencana Daerah</Text>
-        </View>
       </SafeAreaView>
 
       {/* Konten scrollable */}
