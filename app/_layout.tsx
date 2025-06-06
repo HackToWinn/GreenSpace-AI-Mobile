@@ -1,6 +1,6 @@
-import '@/global.css'
-import { Stack } from "expo-router";
+import '@/global.css';
 import { useFonts } from 'expo-font';
+import { Stack } from "expo-router";
 import * as SplashScreen from 'expo-splash-screen';
 import { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
@@ -25,8 +25,6 @@ export default function RootLayout() {
     'JakartaSans-Italic': require('@/assets/fonts/PlusJakartaSans-Italic.ttf'),
     'JakartaSans-Light': require('@/assets/fonts/PlusJakartaSans-Light.ttf'),
     'JakartaSans-LightItalic': require('@/assets/fonts/PlusJakartaSans-LightItalic.ttf'),
-    'JakartaSans-Medium': require('@/assets/fonts/PlusJakartaSans-Medium.ttf'),
-    'JakartaSans-MediumItalic': require('@/assets/fonts/PlusJakartaSans-MediumItalic.ttf'),
     'JakartaSans-Regular': require('@/assets/fonts/PlusJakartaSans-Regular.ttf'),
     'JakartaSans-SemiBold': require('@/assets/fonts/PlusJakartaSans-SemiBold.ttf'),
     'JakartaSans-SemiBoldItalic': require('@/assets/fonts/PlusJakartaSans-SemiBoldItalic.ttf'),
