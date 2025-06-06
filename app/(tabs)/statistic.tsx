@@ -441,10 +441,11 @@ export default function Statistics() {
       </SafeAreaView>
 
       {/* Konten scrollable */}
-      <ScrollView contentContainerStyle={{ paddingTop: 100, paddingHorizontal: 16, paddingBottom: 40 }}>
+      <ScrollView contentContainerStyle={{ paddingTop: 40, paddingHorizontal: 16 }} className='h-full' scrollEventThrottle={16} decelerationRate="normal">
         {/* Map Card */}
         <View className="rounded-xl overflow-hidden border border-gray-200 mb-6" style={{ height: 300 }}>
           <MapView
+            accessibilityLanguage="id"
             style={{ flex: 1 }}
             initialRegion={{
               latitude: -6.2,
@@ -608,9 +609,6 @@ export default function Statistics() {
             </Animated.View>
           </View>
         </View>
-
-        {/* Spacer untuk konsistensi layout */}
-        <View style={{ height: 20 }} />
       </ScrollView>
     </SafeAreaView>
   );
