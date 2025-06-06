@@ -1,10 +1,10 @@
 import { Stack } from 'expo-router'
-import { View, Text } from 'react-native'
 
 const Layout = () => {
   return (
     <Stack>
       <Stack.Screen name='sign-in' options={{ headerShown: false }} />
+      <Stack.Screen name='plug-wallet' options={{ headerShown: false }} />
     </Stack>
   )
 }
