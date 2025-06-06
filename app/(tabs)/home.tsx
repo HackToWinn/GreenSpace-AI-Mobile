@@ -51,7 +51,7 @@ export default function home() {
             ))}
           </View>
           <View className='py-6 w-full'>
-            <CustomButton title='Report an Issue' bgVariant='primary' IconLeft={() => <Ionicons name='clipboard-outline' size={24} color='black' className='mr-2' />} onPress={() => { }} />
+            <CustomButton title='Report an Issue' bgVariant='primary' textVariant='secondary' IconLeft={() => <Ionicons name='clipboard-outline' size={24} color='white' className='mr-2' />} onPress={() => { }} />
           </View>
         </View>
       </SafeAreaView>
