@@ -1,3 +1,4 @@
+import Layout from '@/components/Layout';
 import { useRef, useState } from 'react';
 import { Animated, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { LineChart } from 'react-native-gifted-charts';
@@ -432,7 +433,7 @@ export default function Statistics() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <Layout>
       {/* Fixed Header */}
       <SafeAreaView
         className="absolute top-0 left-0 right-0 z-50 bg-white shadow-md"
@@ -610,6 +611,6 @@ export default function Statistics() {
           </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </Layout>
   );
 }
