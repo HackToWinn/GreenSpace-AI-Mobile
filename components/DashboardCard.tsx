@@ -4,7 +4,14 @@ import { DashboardCardProps } from '@/lib/types';
 
 export default function DashboardCard({ title, value, iconName }: DashboardCardProps) {
   return (
-    <View className="p-4 w-[48%] h-[140px] bg-white rounded-2xl shadow-md shadow-neutral-400 flex flex-col justify-between">
+    <View 
+      className="p-4 bg-white rounded-2xl shadow-md shadow-neutral-400 flex flex-col justify-between mb-4"
+      style={{ 
+        flexBasis: '48%',
+        height: 140,
+        flexGrow: 0,
+        flexShrink: 0
+      }}>
       <Ionicons name={iconName} size={32} color="black" />
       <View>
         <Text className="text-xl font-Bold">{title}</Text>
