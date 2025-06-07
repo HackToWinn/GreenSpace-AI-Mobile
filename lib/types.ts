@@ -24,3 +24,9 @@ export interface DashboardCardProps {
 	value: string | number;
 	iconName: keyof typeof Ionicons.glyphMap;
 }
+
+export interface LocationState {
+  latitude: number;
+  longitude: number;
+  address?: string;
+}
