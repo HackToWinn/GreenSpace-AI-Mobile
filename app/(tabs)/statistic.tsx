@@ -65,7 +65,7 @@ export default function Statistics() {
     label: string;
     value: number;
   };
-  
+
   const detailData: {
     [year: string]: {
       [month: string]: ChartData[];
@@ -433,12 +433,12 @@ export default function Statistics() {
 
   return (
     <Layout>
-      <Text>Statistics</Text>
-
       {/* Konten scrollable */}
-      <ScrollView contentContainerStyle={{ paddingTop: 40}} className='h-full' scrollEventThrottle={16} decelerationRate="normal">
+      <ScrollView contentContainerStyle={{ paddingTop: 4 }} className='h-full' scrollEventThrottle={16} decelerationRate="normal" showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}>
+        <Text className='font-Bold text-4xl mb-4'>Statistic</Text>
         {/* Map Card */}
-        <View className="rounded-xl overflow-hidden border border-gray-200 mb-6" style={{ height: 300 }}>
+        <View className="rounded-xl overflow-hidden border border-gray-200 mb-6" style={{ height: 180 }}>
           <MapView
             accessibilityLanguage="id"
             style={{ flex: 1 }}
@@ -460,12 +460,12 @@ export default function Statistics() {
         {/* Line Chart Container */}
         <View className="mb-6 border p-4 rounded-xl overflow-hidden" style={{ backgroundColor: '#F3F4F6' }}>
           <View className="flex-row justify-between items-center mb-4">
-            <Text className="text-lg font-bold text-gray-800">
+            <Text className="text-lg font-Bold text-gray-800">
               {showDetail ? getChartTitle() : `Statistics: ${selectedYear}`}
             </Text>
             {!showDetail && (
               <View className="bg-red-100 px-3 py-1 rounded-full">
-                <Text className="text-red-600 text-sm font-medium">
+                <Text className="text-red-600 text-sm font-Medium">
                   {getCurrentYearData().find(item => item.label === selectedDay)?.value || 0} Accidents
                 </Text>
               </View>
@@ -473,7 +473,7 @@ export default function Statistics() {
             <View className="flex-row items-center">
               {showDetail && (
                 <View className="bg-red-100 px-3 py-1 me-1 ml-1 rounded-full">
-                  <Text className="text-red-600 text-sm font-medium">
+                  <Text className="text-red-600 text-sm font-Medium">
                     {getCurrentYearData().find(item => item.label === selectedDay)?.value || 0} Accidents
                   </Text>
                 </View>
@@ -482,7 +482,7 @@ export default function Statistics() {
                 className={`px-4 py-2 rounded-lg ${showDetail ? 'bg-red-500' : 'bg-blue-500'}`}
                 onPress={toggleDetail}
               >
-                <Text className="text-white font-medium">
+                <Text className="text-white font-Medium">
                   {showDetail ? 'Kembali' : 'Detail'}
                 </Text>
               </TouchableOpacity>
@@ -491,7 +491,7 @@ export default function Statistics() {
 
           {/* Year Selector - Show in both overview and detail mode */}
           <View className="mb-4">
-            <Text className="text-sm font-medium text-gray-600 mb-2">Choose Year:</Text>
+            <Text className="text-sm font-Medium text-gray-600 mb-2">Choose Year:</Text>
             <ScrollView
               horizontal
               showsHorizontalScrollIndicator={false}
@@ -504,7 +504,7 @@ export default function Statistics() {
                     }`}
                   onPress={() => handleYearChange(year as Year)}
                 >
-                  <Text className={`font-medium ${selectedYear === year ? 'text-white' : 'text-gray-700'
+                  <Text className={`font-Medium ${selectedYear === year ? 'text-white' : 'text-gray-700'
                     }`}>
                     {year}
                   </Text>
@@ -528,7 +528,7 @@ export default function Statistics() {
                 ],
               }}
             >
-              <Text className="text-sm font-medium text-gray-600 mb-2">Choose Month:</Text>
+              <Text className="text-sm font-Medium text-gray-600 mb-2">Choose Month:</Text>
               <View className="mb-4">
                 <ScrollView
                   horizontal
@@ -545,7 +545,7 @@ export default function Statistics() {
                         }`}
                       onPress={() => handleDayChange(item.label as Day)}
                     >
-                      <Text className={`font-medium ${selectedDay === item.label ? 'text-white' : 'text-gray-700'
+                      <Text className={`font-Medium ${selectedDay === item.label ? 'text-white' : 'text-gray-700'
                         }`}>
                         {monthNames[item.label]}
                       </Text>
