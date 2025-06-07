@@ -82,9 +82,11 @@ export default function Home() {
           {dashboardCards.map((item, index) => (
             <DashboardCard
               key={index}
+              onPress={item.onPress}
               title={item.title}
               value={item.value}
               iconName={item.iconName}
+              CTAIcon={item.CTAIcon}
             />
           ))}
         </View>

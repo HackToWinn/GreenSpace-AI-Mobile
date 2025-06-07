@@ -20,9 +20,11 @@ export declare interface ButtonProps extends TouchableOpacityProps {
 }
 
 export interface DashboardCardProps {
+	onPress?: () => void;
 	title: string;
 	value: string | number;
 	iconName: keyof typeof Ionicons.glyphMap;
+	CTAIcon?: boolean;
 }
 
 export interface LocationState {
