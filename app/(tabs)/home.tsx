@@ -20,9 +20,9 @@ export default function home() {
             <Ionicons name='location-outline' size={24} color={'#3E9E45'} />
             <Text className='font-Bold text-xl text-primary-600'>Balikpapan, Kalimantan Timur</Text>
           </View>
-          {/* <View className='h-[200px] rounded-lg overflow-hidden'>
+          <View className='h-[180px] rounded-xl overflow-hidden'>
             <MapView
-              className='flex-1'
+              style={{ flex: 1 }}
               initialRegion={{
                 latitude: -1.2654,
                 longitude: 116.8312,
@@ -36,9 +36,6 @@ export default function home() {
                 description="Most reported area"
               />
             </MapView>
-          </View> */}
-          <View className='w-full h-[180px] bg-white rounded-2xl flex items-center justify-center'>
-            <Text>Map disini</Text>
           </View>
           <View className="flex-2 flex-row flex-wrap justify-between gap-4 w-full">
             {dashboardCards.map((item, index) => (
