@@ -458,7 +458,7 @@ export default function Statistics() {
         </View>
 
         {/* Line Chart Container */}
-        <View className="mb-6 border p-4 rounded-xl overflow-hidden" style={{ backgroundColor: '#F3F4F6' }}>
+        <View className="mb-6 p-4 rounded-2xl shadow-md shadow-neutral-400 overflow-hidden" style={{ backgroundColor: 'white' }}>
           <View className="flex-row justify-between items-center mb-4">
             <Text className="text-lg font-Bold text-gray-800">
               {showDetail ? getChartTitle() : `Statistics: ${selectedYear}`}
