@@ -5,6 +5,8 @@ import * as MediaLibrary from 'expo-media-library';
 import { useRef, useState } from 'react';
 import { ActivityIndicator, Alert, Image, Modal, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import * as FileSystem from 'expo-file-system';
+import axios from 'axios';
 
 interface CameraModalProps {
   visible: boolean;
@@ -48,18 +50,58 @@ export default function CameraModal({ visible, onClose }: CameraModalProps) {
   };
 
   const savePicture = async () => {
+    const { status } = await MediaLibrary.requestPermissionsAsync();
+
+    if (status !== 'granted') {
+      Alert.alert('Permission required', 'Media library permission is required to save photos.');
+      return;
+    }
+
     if (capturedImage) {
       try {
-        if (capturedImage) {
-          const asset = await MediaLibrary.createAssetAsync(capturedImage);
-          const metadata = await MediaLibrary.getAssetInfoAsync(asset.id);
-          console.log({...metadata, location})
+        const asset = await MediaLibrary.createAssetAsync(capturedImage);
+        const metadata = await MediaLibrary.getAssetInfoAsync(asset.id);
+        console.log({ ...metadata, location });
+
+        // Store File
+        const fileUri = metadata.localUri || metadata.uri;
+        // const fileInfo = await FileSystem.getInfoAsync(fileUri);
+
+        const extension = fileUri.split('.').pop()?.toLowerCase();
+        let mimeType = 'image/jpeg';
+
+        if (extension === 'png') {
+          mimeType = 'image/png';
+        } else if (extension === 'webp') {
+          mimeType = 'image/webp';
+        } else if (extension === 'jpg' || extension === 'jpeg') {
+          mimeType = 'image/jpeg';
         }
 
-        //Logic AI & Store File
+        const formData = new FormData;
+        formData.append('image', {
+          uri: fileUri,
+          name: `photo.${extension}`,
+          type: mimeType,
+        } as any);
 
-        // setCapturedImage(null);
-        // onClose();
+        const response = await axios.post(
+          'http://localhost:3001/api/v1/report/image-upload',
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        );
+
+        console.log('IPFS Upload Success: ', response.data);
+        Alert.alert('Success', 'Image saved successfully');
+
+        // TODO: Analyze image using AI function here
+
+        setCapturedImage(null);
+        onClose();
       } catch (error) {
         Alert.alert('Error', 'Failed to save photo');
         console.error('Error saving photo:', error);
