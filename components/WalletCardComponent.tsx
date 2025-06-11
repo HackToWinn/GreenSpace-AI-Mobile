@@ -73,20 +73,36 @@ const WalletCardComponent = () => {
         {savedWalletAddress ? (
           <View>
             <Text className="text-4xl font-Bold text-gray-900 mb-6">{icpBalance} ICP</Text>
+            <CustomButton
+              title={'Change Wallet Address'}
+              bgVariant={'outline'}
+              textVariant={'primary'}
+              onPress={() => setModalVisible(true)}
+              IconLeft={() => <Ionicons name='wallet-outline' size={22} color={'#4CAF50'} className='mr-2' />}
+              className='mb-4' />
+            <CustomButton
+              title={'Disconnect Wallet'}
+              bgVariant={'danger'}
+              textVariant={'secondary'}
+              onPress={() => {}}
+              IconLeft={() => <Ionicons name='log-out-outline' size={22} color={'#FFFFFF'} className='mr-2' />}
+            />
           </View>
         ) : (
-          <Text className="text-2xl text-center font-Bold text-gray-900 mb-6">
-            You&apos;re Not Connected to Plug Wallet
-          </Text>
+          <View>
+            <Text className="text-2xl text-center font-Bold text-gray-900 mb-6">
+              You&apos;re Not Connected to Plug ICP Wallet
+            </Text>
+            <CustomButton
+              title={'Add Wallet Address'}
+              bgVariant={'primary'}
+              textVariant={'secondary'}
+              onPress={() => setModalVisible(true)}
+              IconLeft={() => <Ionicons name='wallet-outline' size={22} color={'white'} className='mr-2' />}
+              className='mb-4' />
+          </View>
         )}
 
-        <CustomButton 
-          title={savedWalletAddress ? 'Change Wallet Address' : 'Add Wallet Address'} 
-          bgVariant={savedWalletAddress ? 'outline' : 'primary'} 
-          textVariant={savedWalletAddress ? 'primary' : 'secondary'} 
-          onPress={() => setModalVisible(true)} 
-          IconLeft={() => <Ionicons name='wallet-outline' size={22} color={savedWalletAddress ? '#4CAF50' : 'white'} className='mr-2' />} 
-          className='mb-4' />
       </View>
 
       <Modal
@@ -100,7 +116,7 @@ const WalletCardComponent = () => {
             {/* Header */}
             <View className="flex-row justify-between items-center mb-6">
               <Text className="text-xl font-Bold text-gray-800">Add Wallet Address</Text>
-              <TouchableOpacity 
+              <TouchableOpacity
                 onPress={() => setModalVisible(false)}
                 className="p-2"
               >
@@ -110,8 +126,14 @@ const WalletCardComponent = () => {
 
             {/* Info */}
             <View className="bg-emerald-50 border border-emerald-200 rounded-lg p-3 mb-4">
+              <Text className="text-sm font-Regular text-emerald-800 mb-2">
+                How to get your ICP Principal ID:
+              </Text>
               <Text className="text-sm font-Regular text-emerald-800">
-                Enter your Plug Principal ID. You can find this in your Plug App.
+                1. Open the Plug extension or mobile app{'\n'}
+                2. Click on deposit{'\n'}
+                3. Copy your ICP Principal ID{'\n'}
+                4. Paste it here
               </Text>
             </View>
 
@@ -138,21 +160,20 @@ const WalletCardComponent = () => {
 
             {/* Buttons */}
             <View className="flex flex-row gap-x-3">
-              <TouchableOpacity 
+              <TouchableOpacity
                 onPress={() => setModalVisible(false)}
                 className="flex-1 bg-gray-200 py-3 rounded-lg"
                 disabled={loading}
               >
                 <Text className="text-center font-SemiBold text-gray-700">Cancel</Text>
               </TouchableOpacity>
-              
-              <TouchableOpacity 
+
+              <TouchableOpacity
                 onPress={handleSaveWallet}
-                className={`flex-1 py-3 rounded-lg ${
-                  loading || !walletAddress || !validatePrincipalID(walletAddress) 
-                    ? 'bg-primary-500' 
+                className={`flex-1 py-3 rounded-lg ${loading || !walletAddress || !validatePrincipalID(walletAddress)
+                    ? 'bg-primary-500'
                     : 'bg-primary-700'
-                }`}
+                  }`}
                 disabled={loading || !walletAddress || !validatePrincipalID(walletAddress)}
               >
                 <Text className="text-center font-SemiBold text-white">
