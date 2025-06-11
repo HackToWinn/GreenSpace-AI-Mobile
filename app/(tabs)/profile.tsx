@@ -1,8 +1,8 @@
-import CustomButton from '@/components/CustomButton';
 import Layout from '@/components/Layout';
-import { FontAwesome, Ionicons, MaterialIcons, SimpleLineIcons } from '@expo/vector-icons';
+import WalletCardComponent from '@/components/WalletCardComponent';
+import { FontAwesome, MaterialIcons, SimpleLineIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { Pressable, Text, TouchableOpacity, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 
 export default function Profile() {
   const router = useRouter();
@@ -17,23 +17,7 @@ export default function Profile() {
           <Text className="text-sm font-Regular text-black">Total Reports</Text>
         </View>
 
-        {/* <View className="w-full bg-white p-6 rounded-xl shadow-md shadow-neutral-400 mb-6">
-          <View className="flex-row justify-between items-center mb-1">
-            <Text className="text-lg font-SemiBold text-gray-700">ICP Balance</Text>
-            <Text className="text-xs font-Regular text-gray-500 bg-gray-200 px-2 py-1 rounded-full">Wallet Type: Stoic</Text>
-          </View>
-          <Text className="text-4xl font-Bold text-gray-900 mb-6">150 ICP</Text>
-          <CustomButton title="Copy Address" bgVariant='outline' textVariant='primary' IconLeft={() => <Ionicons name='copy-outline' size={22} color='#4CAF50' className='mr-2' />} className='mb-4' />
-          <CustomButton title="Disconnect Wallet" bgVariant='danger' textVariant='secondary' IconLeft={() => <Ionicons name='log-out-outline' size={22} color='#FFFFFF' className='mr-2' />} className='mb-4' />
-        </View> */}
-        <View className="w-full bg-white p-6 rounded-xl shadow-md shadow-neutral-400 mb-6">
-          <View className="flex-row justify-between items-center mb-6">
-            <Text className="text-lg font-SemiBold text-gray-700">ICP Balance</Text>
-            <Text className="text-xs font-Regular text-gray-500 bg-gray-200 px-2 py-1 rounded-full">Wallet Type: Undefined</Text>
-          </View>
-          <Text className="text-2xl text-center font-Bold text-gray-900 mb-6">You&apos;re Not Connected to Plug Wallet</Text>
-          <CustomButton title="Add Wallet Address" bgVariant='primary' textVariant='secondary' IconLeft={() => <Ionicons name='wallet-outline' size={22} color='white' className='mr-2' />} className='mb-4' />
-        </View>
+        <WalletCardComponent />
 
         <View className="w-full">
           <Pressable onPress={() => router.push('/setting')} className="flex-row justify-between items-center py-4 border-b border-gray-200">
