@@ -1,14 +1,40 @@
 import { Ionicons } from '@expo/vector-icons';
 import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import { dashboardCards } from '@/constants';
+import { dashboardCards as staticDashboardCards } from '@/constants';
 import DashboardCard from '@/components/DashboardCard';
 import CustomButton from '@/components/CustomButton';
 import { router } from 'expo-router';
 import Layout from '@/components/Layout';
 import { useCurrentLocation } from '@/hooks/useCurrentLocation';
+import { useEffect, useState } from 'react';
+import { getTotalReportsThisWeek } from '@/lib/api';
 export default function Home() {
   const { location, loading, errorMsg, refreshLocation, getMapRegion } = useCurrentLocation();
+  const [dashboardCards, setDashboardCards] = useState(staticDashboardCards);
+  const [isLoading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchReportsThisWeek = async () => {
+      setLoading(true);
+      const total = await getTotalReportsThisWeek();
+
+      setDashboardCards(prevCards =>
+        prevCards.map(card =>
+          card.title === 'Reports This Week'
+            ? {
+              ...card,
+              value: total !== null ? total : "?",
+            }
+            : card
+        )
+      );
+
+      setLoading(false);
+    };
+
+    fetchReportsThisWeek();
+  }, []);
 
   return (
     <Layout>
@@ -87,6 +113,7 @@ export default function Home() {
               value={item.value}
               iconName={item.iconName}
               CTAIcon={item.CTAIcon}
+              isLoading={item.title === 'Reports This Week' && isLoading}
             />
           ))}
         </View>

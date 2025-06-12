@@ -25,6 +25,7 @@ export interface DashboardCardProps {
 	value: string | number;
 	iconName: keyof typeof Ionicons.glyphMap;
 	CTAIcon?: boolean;
+	isLoading?: boolean;
 }
 
 export interface LocationState {

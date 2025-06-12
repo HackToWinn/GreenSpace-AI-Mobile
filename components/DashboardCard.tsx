@@ -1,8 +1,8 @@
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { DashboardCardProps } from '@/lib/types';
 
-export default function DashboardCard({ title, value, iconName, onPress, CTAIcon }: DashboardCardProps) {
+export default function DashboardCard({ title, value, iconName, onPress, CTAIcon, isLoading }: DashboardCardProps) {
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -17,7 +17,11 @@ export default function DashboardCard({ title, value, iconName, onPress, CTAIcon
       <View>
         <Text className="text-xl font-Bold">{title}</Text>
         <View className='w-full flex flex-row justify-between items-center'>
-          <Text className="text-md text-primary-700/80 font-Medium">{value}</Text>
+          {isLoading ? (
+            <ActivityIndicator size="small" color="#4CAF50" />
+          ) : (
+            <Text className="text-md text-primary-700/80 font-Medium">{value}</Text>
+          )}
           {CTAIcon === true && <Ionicons name="chevron-forward-outline" size={16} color="#4CAF50" />}
         </View>
       </View>
