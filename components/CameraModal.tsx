@@ -5,13 +5,8 @@ import * as MediaLibrary from 'expo-media-library';
 import { useRef, useState } from 'react';
 import { ActivityIndicator, Alert, Image, Modal, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import * as FileSystem from 'expo-file-system';
-import axios from 'axios';
-
-interface CameraModalProps {
-  visible: boolean;
-  onClose: () => void;
-}
+import { CameraModalProps } from '@/lib/types';
+import { storePictureToIPFS } from '@/lib/api';
 
 export default function CameraModal({ visible, onClose }: CameraModalProps) {
   const [facing, setFacing] = useState<CameraType>('back');
@@ -59,43 +54,8 @@ export default function CameraModal({ visible, onClose }: CameraModalProps) {
 
     if (capturedImage) {
       try {
-        const asset = await MediaLibrary.createAssetAsync(capturedImage);
-        const metadata = await MediaLibrary.getAssetInfoAsync(asset.id);
-        console.log({ ...metadata, location });
-
-        // Store File
-        const fileUri = metadata.localUri || metadata.uri;
-        // const fileInfo = await FileSystem.getInfoAsync(fileUri);
-
-        const extension = fileUri.split('.').pop()?.toLowerCase();
-        let mimeType = 'image/jpeg';
-
-        if (extension === 'png') {
-          mimeType = 'image/png';
-        } else if (extension === 'webp') {
-          mimeType = 'image/webp';
-        } else if (extension === 'jpg' || extension === 'jpeg') {
-          mimeType = 'image/jpeg';
-        }
-
-        const formData = new FormData;
-        formData.append('image', {
-          uri: fileUri,
-          name: `photo.${extension}`,
-          type: mimeType,
-        } as any);
-
-        const response = await axios.post(
-          'http://localhost:3001/api/v1/report/image-upload',
-          formData,
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          }
-        );
-
-        console.log('IPFS Upload Success: ', response.data);
+        const ipfsResponse = await storePictureToIPFS(capturedImage, location);
+        console.log('IPFS Upload Success: ', ipfsResponse);
         Alert.alert('Success', 'Image saved successfully');
 
         // TODO: Analyze image using AI function here

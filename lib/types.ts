@@ -33,3 +33,8 @@ export interface LocationState {
   longitude: number;
   address?: string;
 }
+
+export interface CameraModalProps {
+  visible: boolean;
+  onClose: () => void;
+}
