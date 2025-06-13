@@ -25,10 +25,16 @@ export interface DashboardCardProps {
 	value: string | number;
 	iconName: keyof typeof Ionicons.glyphMap;
 	CTAIcon?: boolean;
+	isLoading?: boolean;
 }
 
 export interface LocationState {
   latitude: number;
   longitude: number;
   address?: string;
+}
+
+export interface CameraModalProps {
+  visible: boolean;
+  onClose: () => void;
 }
