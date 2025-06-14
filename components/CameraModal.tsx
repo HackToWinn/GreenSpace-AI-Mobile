@@ -1,3 +1,4 @@
+import { useBackend } from '@/hooks/useBackend';
 import { useCurrentLocation } from '@/hooks/useCurrentLocation';
 import { Ionicons } from '@expo/vector-icons';
 import { CameraType, CameraView, useCameraPermissions } from 'expo-camera';
@@ -5,8 +6,11 @@ import * as MediaLibrary from 'expo-media-library';
 import { useRef, useState } from 'react';
 import { ActivityIndicator, Alert, Image, Modal, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { CameraModalProps } from '@/lib/types';
-import { storePictureToIPFS } from '@/lib/api';
+
+interface CameraModalProps {
+  visible: boolean;
+  onClose: () => void;
+}
 
 export default function CameraModal({ visible, onClose }: CameraModalProps) {
   const [facing, setFacing] = useState<CameraType>('back');
@@ -16,6 +20,7 @@ export default function CameraModal({ visible, onClose }: CameraModalProps) {
   const [mediaPermission, requestMediaPermission] = MediaLibrary.usePermissions();
   const cameraRef = useRef<CameraView>(null);
   const { location } = useCurrentLocation();
+  const { createReport } = useBackend();
   const handleClose = () => {
     setCapturedImage(null);
     onClose();
@@ -54,16 +59,43 @@ export default function CameraModal({ visible, onClose }: CameraModalProps) {
 
     if (capturedImage) {
       try {
-        const ipfsResponse = await storePictureToIPFS(capturedImage, location);
-        console.log('IPFS Upload Success: ', ipfsResponse);
-        Alert.alert('Success', 'Image saved successfully');
+        const asset = await MediaLibrary.createAssetAsync(capturedImage);
+        const metadata = await MediaLibrary.getAssetInfoAsync(asset.id);
 
-        // TODO: Analyze image using AI function here
+        const fileUri = metadata.localUri || metadata.uri;
+
+        const extension = fileUri.split('.').pop()?.toLowerCase();
+        let mimeType = 'image/jpeg';
+
+        if (extension === 'png') {
+          mimeType = 'image/png';
+        } else if (extension === 'webp') {
+          mimeType = 'image/webp';
+        } else if (extension === 'jpg' || extension === 'jpeg') {
+          mimeType = 'image/jpeg';
+        }
+
+        const formData = new FormData();
+        formData.append('image', {
+          uri: fileUri,
+          name: `photo.${extension}`,
+          type: mimeType
+        } as any);
+        formData.append('location', JSON.stringify(location?.address));
+        
+        
+        const response = await createReport({
+          body: formData
+        });
+        if (!response) {
+          Alert.alert('Error', 'Failed to save photo to the server.');
+          return;
+        }
+        Alert.alert('Success', 'Photo saved successfully!');
 
         setCapturedImage(null);
         onClose();
       } catch (error) {
-        Alert.alert('Error', 'Failed to save photo');
         console.error('Error saving photo:', error);
       }
     }

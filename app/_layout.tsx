@@ -1,6 +1,7 @@
 import '@/global.css';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useFonts } from 'expo-font';
-import { Stack } from "expo-router";
+import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
@@ -9,7 +10,7 @@ SplashScreen.preventAutoHideAsync();
 
 SplashScreen.setOptions({
   duration: 1000,
-  fade: true,
+  fade: true
 });
 
 export default function RootLayout() {
@@ -27,13 +28,13 @@ export default function RootLayout() {
     'JakartaSans-LightItalic': require('@/assets/fonts/PlusJakartaSans-LightItalic.ttf'),
     'JakartaSans-Regular': require('@/assets/fonts/PlusJakartaSans-Regular.ttf'),
     'JakartaSans-SemiBold': require('@/assets/fonts/PlusJakartaSans-SemiBold.ttf'),
-    'JakartaSans-SemiBoldItalic': require('@/assets/fonts/PlusJakartaSans-SemiBoldItalic.ttf'),
+    'JakartaSans-SemiBoldItalic': require('@/assets/fonts/PlusJakartaSans-SemiBoldItalic.ttf')
   });
 
   useEffect(() => {
     async function prepare() {
       try {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        await new Promise(resolve => setTimeout(resolve, 1000));
       } catch (e) {
         console.warn(e);
       } finally {
@@ -52,16 +53,19 @@ export default function RootLayout() {
   if (!appIsReady || !fontsLoaded) {
     return null;
   }
+  const queryClient = new QueryClient();
 
   return (
-    <View onLayout={onLayoutRootView} style={{ flex: 1 }}>
-      <Stack>
-        <Stack.Screen name='index' options={{ headerShown: false }} />
-        <Stack.Screen name='(auth)' options={{ headerShown: false }} />
-        <Stack.Screen name='(root)' options={{ headerShown: false }} />
-        <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
-        <Stack.Screen name='+not-found' options={{ headerShown: false }} />
-      </Stack>
-    </View>
+    <QueryClientProvider client={queryClient}>
+      <View onLayout={onLayoutRootView} style={{ flex: 1 }}>
+        <Stack>
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+          <Stack.Screen name="(root)" options={{ headerShown: false }} />
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="+not-found" options={{ headerShown: false }} />
+        </Stack>
+      </View>
+    </QueryClientProvider>
   );
 }

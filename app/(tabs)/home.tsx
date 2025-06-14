@@ -1,4 +1,12 @@
+import CustomButton from '@/components/CustomButton';
+import DashboardCard from '@/components/DashboardCard';
+import Layout from '@/components/Layout';
+import { dashboardCards } from '@/constants';
+import { useBackend } from '@/hooks/useBackend';
+import { useCurrentLocation } from '@/hooks/useCurrentLocation';
 import { Ionicons } from '@expo/vector-icons';
+import { useQuery } from '@tanstack/react-query';
+import { router } from 'expo-router';
 import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { dashboardCards as staticDashboardCards } from '@/constants';
@@ -38,38 +46,28 @@ export default function Home() {
 
   return (
     <Layout>
-      <View className='flex flex-col items-start gap-y-4'>
-        <Text className='font-Bold text-4xl'>Dashboard</Text>
-        <View className='flex flex-row items-start gap-x-2'>
-          <Ionicons name='location-outline' size={24} color={'#3E9E45'} className='mt-1' />
-          <View className='flex flex-col pr-8'>
-            <View className='w-full flex flex-row items-center justify-between'>
-              <Text className='font-SemiBold text-md text-primary-600'>Your Location</Text>
-              <TouchableOpacity
-                onPress={refreshLocation}
-                className="p-1"
-                disabled={loading}
-              >
-                <Ionicons
-                  name={loading ? 'refresh' : 'refresh-outline'}
-                  size={18}
-                  color="#3E9E45"
-                />
+      <View className="flex flex-col items-start gap-y-4">
+        <Text className="font-Bold text-4xl">Dashboard</Text>
+        <View className="flex flex-row items-start gap-x-2">
+          <Ionicons name="location-outline" size={24} color={'#3E9E45'} className="mt-1" />
+          <View className="flex flex-col pr-8">
+            <View className="w-full flex flex-row items-center justify-between">
+              <Text className="font-SemiBold text-md text-primary-600">Your Location</Text>
+              <TouchableOpacity onPress={refreshLocation} className="p-1" disabled={loading}>
+                <Ionicons name={loading ? 'refresh' : 'refresh-outline'} size={18} color="#3E9E45" />
               </TouchableOpacity>
             </View>
             {loading ? (
-              <View className='flex flex-row items-center gap-x-2'>
+              <View className="flex flex-row items-center gap-x-2">
                 <ActivityIndicator size="small" color="#3E9E45" />
-                <Text className='font-Medium text-sm text-gray-500'>Getting location...</Text>
+                <Text className="font-Medium text-sm text-gray-500">Getting location...</Text>
               </View>
             ) : (
-              <Text className='font-Bold text-md' numberOfLines={1} ellipsizeMode='tail'>
+              <Text className="font-Bold text-md" numberOfLines={1} ellipsizeMode="tail">
                 {location?.address || 'Location not available'}
               </Text>
             )}
-            {errorMsg && (
-              <Text className='font-Medium text-xs text-red-500'>{errorMsg}</Text>
-            )}
+            {errorMsg && <Text className="font-Medium text-xs text-red-500">{errorMsg}</Text>}
           </View>
         </View>
         <View className="rounded-2xl overflow-hidden border border-gray-200 mb-2" style={{ height: 160, width: '100%' }}>
@@ -79,22 +77,14 @@ export default function Home() {
               <Text className="mt-2 text-gray-600">Loading map...</Text>
             </View>
           ) : location ? (
-            <MapView
-              accessibilityLanguage="id"
-              style={{ flex: 1 }}
-              initialRegion={getMapRegion()}
-              region={getMapRegion()}
-              showsUserLocation={true}
-              showsMyLocationButton={true}
-              followsUserLocation={false}
-            >
+            <MapView accessibilityLanguage="id" style={{ flex: 1 }} initialRegion={getMapRegion()} region={getMapRegion()} showsUserLocation={true} showsMyLocationButton={true} followsUserLocation={false}>
               <Marker
                 coordinate={{
                   latitude: location.latitude,
                   longitude: location.longitude
                 }}
                 title="Your Current Location"
-                description={location.address || "Current position"}
+                description={location.address || 'Current position'}
               />
             </MapView>
           ) : (
@@ -117,8 +107,8 @@ export default function Home() {
             />
           ))}
         </View>
-        <View className='w-full'>
-          <CustomButton title='Report an Issue' bgVariant='primary' textVariant='secondary' IconLeft={() => <Ionicons name='clipboard-outline' size={24} color='white' className='mr-2' />} onPress={() => router.replace('/(tabs)/camera')} />
+        <View className="w-full">
+          <CustomButton title="Report an Issue" bgVariant="primary" textVariant="secondary" IconLeft={() => <Ionicons name="clipboard-outline" size={24} color="white" className="mr-2" />} onPress={() => router.replace('/(tabs)/camera')} />
         </View>
       </View>
     </Layout>
