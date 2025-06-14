@@ -1,54 +1,18 @@
-name: React Native CI & Build APK
+name: Build
 
 on:
   push:
-    branches: [main, master]
-  pull_request:
+    branches:
+      - main
 
 jobs:
-  build-apk:
-    name: Build APK with EAS
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install Yarn (optional)
-        run: npm install -g yarn
-
-      - name: Install Expo CLI & EAS CLI
-        run: npm install -g expo-cli eas-cli
-
-      - name: Install dependencies
-        run: |
-          if [ -f yarn.lock ]; then yarn install --frozen-lockfile; else npm ci; fi
-
-      - name: Run Linter (optional)
-        run: |
-          if [ -f yarn.lock ]; then yarn lint; else npm run lint; fi
-
-      - name: Run Unit Tests (optional)
-        run: |
-          if [ -f yarn.lock ]; then yarn test; else npm test; fi
-
-      - name: Login to Expo
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-        run: eas whoami || eas login --token $EXPO_TOKEN
-
-      - name: Build APK with EAS Build
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-        run: eas build --platform android --non-interactive --output=./builds
-
-      - name: Upload APK as Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: app-apk
-          path: ./builds/**/*.apk
+  build_android:
+    name: Build Android App
+    type: build
+    params:
+      platform: android
+  build_ios:
+    name: Build iOS App
+    type: build
+    params:
+      platform: ios

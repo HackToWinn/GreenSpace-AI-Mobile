@@ -1,22 +1,14 @@
 import CustomButton from '@/components/CustomButton';
 import DashboardCard from '@/components/DashboardCard';
 import Layout from '@/components/Layout';
-import { dashboardCards } from '@/constants';
-import { useBackend } from '@/hooks/useBackend';
+import { dashboardCards as staticDashboardCards } from '@/constants';
 import { useCurrentLocation } from '@/hooks/useCurrentLocation';
+import { getTotalReportsThisWeek } from '@/lib/api';
 import { Ionicons } from '@expo/vector-icons';
-import { useQuery } from '@tanstack/react-query';
 import { router } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import { dashboardCards as staticDashboardCards } from '@/constants';
-import DashboardCard from '@/components/DashboardCard';
-import CustomButton from '@/components/CustomButton';
-import { router } from 'expo-router';
-import Layout from '@/components/Layout';
-import { useCurrentLocation } from '@/hooks/useCurrentLocation';
-import { useEffect, useState } from 'react';
-import { getTotalReportsThisWeek } from '@/lib/api';
 export default function Home() {
   const { location, loading, errorMsg, refreshLocation, getMapRegion } = useCurrentLocation();
   const [dashboardCards, setDashboardCards] = useState(staticDashboardCards);
@@ -31,9 +23,9 @@ export default function Home() {
         prevCards.map(card =>
           card.title === 'Reports This Week'
             ? {
-              ...card,
-              value: total !== null ? total : "?",
-            }
+                ...card,
+                value: total !== null ? total : '?'
+              }
             : card
         )
       );
@@ -96,15 +88,7 @@ export default function Home() {
         </View>
         <View className="flex flex-row flex-wrap justify-between w-full">
           {dashboardCards.map((item, index) => (
-            <DashboardCard
-              key={index}
-              onPress={item.onPress}
-              title={item.title}
-              value={item.value}
-              iconName={item.iconName}
-              CTAIcon={item.CTAIcon}
-              isLoading={item.title === 'Reports This Week' && isLoading}
-            />
+            <DashboardCard key={index} onPress={item.onPress} title={item.title} value={item.value} iconName={item.iconName} CTAIcon={item.CTAIcon} isLoading={item.title === 'Reports This Week' && isLoading} />
           ))}
         </View>
         <View className="w-full">
