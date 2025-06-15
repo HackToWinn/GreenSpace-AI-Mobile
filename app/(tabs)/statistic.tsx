@@ -12,6 +12,7 @@ import MapView, { Marker } from 'react-native-maps';
 
 export default function Statistics() {
   const [showDetail, setShowDetail] = useState(false);
+  const [filterTrend, setFilterTrend] = useState('daily');
   const [selectedDay, setSelectedDay] = useState('Jan');
   const [selectedYear, setSelectedYear] = useState('2024');
   const fadeAnim = useRef(new Animated.Value(1)).current;
@@ -70,6 +71,94 @@ export default function Statistics() {
   type ChartData = {
     label: string;
     value: number;
+  };
+
+  type TrendData = {
+    value: number;
+  };
+
+  type CategoryData = {
+    title: string;
+    value: number;
+    chartData: {
+      value: number;
+    }[];
+    changes: string;
+  };
+
+  const categoryData: CategoryData[] = [
+    {
+      title: 'Air Pollution',
+      value: 30,
+      chartData: [
+        { value: 5 },
+        { value: 3 },
+        { value: 4 },
+        { value: 6 },
+        { value: 12 },
+      ],
+      changes: '+5',
+    },
+    {
+      title: 'Water Pollution',
+      value: 15,
+      chartData: [
+        { value: 2 },
+        { value: 3 },
+        { value: 4 },
+        { value: 5 },
+        { value: 1 },
+      ],
+      changes: '-2',
+    },
+    {
+      title: 'Deforestation',
+      value: 25,
+      chartData: [
+        { value: 6 },
+        { value: 5 },
+        { value: 7 },
+        { value: 4 },
+        { value: 3 },
+      ],
+      changes: '+3',
+    },
+    {
+      title: 'Waste Management',
+      value: 20,
+      chartData: [
+        { value: 4 },
+        { value: 5 },
+        { value: 6 },
+        { value: 3 },
+        { value: 2 },
+      ],
+      changes: '+1',
+    },
+  ];
+
+  const trendsData: { [range: string]: TrendData[] } = {
+    daily: [
+      { value: 5 },
+      { value: 3 },
+      { value: 2 },
+      { value: 1 },
+      { value: 1 },
+    ],
+    weekly: [
+      { value: 4 },
+      { value: 3 },
+      { value: 2 },
+      { value: 1 },
+      { value: 4 },
+    ],
+    monthly: [
+      { value: 8 },
+      { value: 6 },
+      { value: 4 },
+      { value: 1 },
+      { value: 5 },
+    ],
   };
 
   const detailData: {
@@ -447,65 +536,250 @@ export default function Statistics() {
     );
   };
 
+  const handleFilterChange = (filter: string) => {
+    setFilterTrend(filter);
+    Animated.timing(chartFadeAnim, {
+      toValue: 0,
+      duration: 150,
+      useNativeDriver: true,
+    }).start(() => {
+      setTimeout(() => {
+        Animated.timing(chartFadeAnim, {
+          toValue: 1,
+          duration: 300,
+          useNativeDriver: true,
+        }).start();
+      }, 100);
+    });
+  };
+
+  const getTrendChartData = () => {
+    return trendsData[filterTrend] || [];
+  };
+
+  const getTrendChartColor = () => {
+    const data = trendsData[filterTrend];
+    if (data && data.length >= 2) {
+      const lastValue = data[data.length - 1].value;
+      const previousValue = data[data.length - 2].value;
+
+      if (lastValue > previousValue) {
+        return '#10B981'; // Green for increase
+      } else if (lastValue < previousValue || lastValue === previousValue) {
+        return '#EF4444'; // Red for decrease
+      }
+    }
+
+    return '#F59E0B'; // Yellow/amber
+  };
+
   const getChartTitle = () => {
     return `${selectedYear} - ${monthNames[selectedDay]}`;
   };
 
   return (
-    <Layout>
+    <Layout className="pt-4 h-full">
       {/* Konten scrollable */}
       <ScrollView
         contentContainerStyle={{ paddingTop: 4 }}
-        className="h-full"
         scrollEventThrottle={16}
+        className="h-full"
         decelerationRate="normal"
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
       >
-        <Text className="font-Bold text-4xl mb-4">Statistic</Text>
-        {/* Map Card */}
-        <View
-          className="rounded-xl overflow-hidden border border-gray-200 mb-6"
-          style={{ height: 180 }}
-        >
-          <MapView
-            accessibilityLanguage="id"
-            style={{ flex: 1 }}
-            initialRegion={{
-              latitude: -6.2,
-              longitude: 106.816666,
-              latitudeDelta: 0.05,
-              longitudeDelta: 0.05,
-            }}
-          >
-            <Marker
-              coordinate={{ latitude: -6.2, longitude: 106.816666 }}
-              title="Area Rawan Bencana"
-              description="Wilayah dengan tingkat risiko bencana tinggi"
-            />
-          </MapView>
-        </View>
-
-        {/* Line Chart Container */}
-        <View className="mb-6 rounded-2xl shadow-sm shadow-neutral-400 overflow-hidden">
-          <View className="p-4">
-            <View className="flex-row justify-between items-center mb-4">
-              <Text className="text-lg font-Bold text-gray-800">
-                {showDetail ? getChartTitle() : `Statistics: ${selectedYear}`}
+        <View id="trends">
+          <View>
+            <View className="px-8">
+              <Text className="text-neutral-800 font-bold text-2xl mb-2">
+                Report Trends
               </Text>
-              {!showDetail && (
-                <View className="bg-red-100 px-3 py-1 rounded-full">
-                  <Text className="text-red-600 text-sm font-Medium">
-                    {getCurrentYearData().find(
-                      (item) => item.label === selectedDay
-                    )?.value || 0}{' '}
-                    Accidents
+
+              <View className="flex-row items-center mb-4">
+                <View className="bg-green-100 px-2 py-1 rounded-lg flex-row items-center">
+                  <Text className="text-green-600 font-semibold text-sm mr-1">
+                    ⬆
+                  </Text>
+                  <Text className="text-green-600 font-semibold text-sm">
+                    5% Today
                   </Text>
                 </View>
-              )}
-              <View className="flex-row items-center">
-                {showDetail && (
-                  <View className="bg-red-100 px-3 py-1 me-1 ml-1 rounded-full">
+              </View>
+
+              {/* Tabs */}
+              <View className="flex-row justify-around">
+                <TouchableOpacity
+                  className={`px-6 py-2 rounded-full ${
+                    filterTrend === 'daily' ? 'bg-neutral-100' : ''
+                  }`}
+                  onPress={() => handleFilterChange('daily')}
+                >
+                  <Text
+                    className={`font-semibold ${
+                      filterTrend === 'daily' ? 'text-black' : 'text-gray-500'
+                    }`}
+                  >
+                    Daily
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  className={`px-6 py-2 rounded-full ${
+                    filterTrend === 'weekly' ? 'bg-neutral-100' : ''
+                  }`}
+                  onPress={() => handleFilterChange('weekly')}
+                >
+                  <Text
+                    className={`font-semibold ${
+                      filterTrend === 'weekly' ? 'text-black' : 'text-gray-500'
+                    }`}
+                  >
+                    Weekly
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  className={`px-6 py-2 rounded-full ${
+                    filterTrend === 'monthly' ? 'bg-neutral-100' : ''
+                  }`}
+                  onPress={() => handleFilterChange('monthly')}
+                >
+                  <Text
+                    className={`font-semibold ${
+                      filterTrend === 'monthly' ? 'text-black' : 'text-gray-500'
+                    }`}
+                  >
+                    Monthly
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            {/* Dummy Line Graph */}
+            <View
+              style={{
+                height: 300,
+                overflow: 'hidden',
+                borderRadius: 8,
+                marginLeft: -32,
+              }}
+            >
+              <Animated.View
+                style={{
+                  flex: 1,
+                }}
+              >
+                <LineChart
+                  data={getTrendChartData()}
+                  thickness={3}
+                  color={getTrendChartColor()}
+                  hideDataPoints={true}
+                  dataPointsRadius={4}
+                  yAxisColor="transparent"
+                  xAxisColor="transparent"
+                  curved
+                  animationDuration={800}
+                  height={220}
+                  initialSpacing={20}
+                  spacing={100}
+                  rulesColor="#E5E7EB"
+                  isAnimated={true}
+                  curveType={CurveType.QUADRATIC}
+                  hideRules
+                  hideYAxisText
+                  animateOnDataChange={true}
+                />
+              </Animated.View>
+            </View>
+
+            {/* Trends Overview */}
+            <View className="px-8">
+              <Text className="font-bold text-xl mb-1">Trends</Text>
+              <Text className="text-gray-500 mb-3">Trends Overview</Text>
+
+              <View className="flex-row flex-wrap justify-between">
+                {categoryData.map((item, index) => (
+                  <View
+                    key={index}
+                    className={`w-[48%] rounded-xl p-4 mb-3  bg-green-100/50`}
+                  >
+                    <Text className="font-semibold text-base">
+                      {item.title}
+                    </Text>
+                    <Text className="text-gray-600 mb-1">{item.value}</Text>
+                    <View
+                      style={{
+                        overflow: 'hidden',
+                        marginLeft: -30,
+                      }}
+                    >
+                      <LineChart
+                        data={item.chartData}
+                        thickness={2}
+                        color="#10B981"
+                        hideDataPoints={true}
+                        yAxisColor="transparent"
+                        xAxisColor="transparent"
+                        curved
+                        animationDuration={800}
+                        height={60}
+                        initialSpacing={20}
+                        spacing={30}
+                        rulesColor="#E5E7EB"
+                        isAnimated={true}
+                        curveType={CurveType.QUADRATIC}
+                        hideRules
+                        hideYAxisText
+                        animateOnDataChange={true}
+                      />
+                    </View>
+                    <Text
+                      className={
+                        item.changes.includes('+')
+                          ? 'text-green-500'
+                          : 'text-red-500'
+                      }
+                    >
+                      {item.changes}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+            </View>
+          </View>
+        </View>
+        <View id="statistic" className="mt-10 px-8">
+          <Text className="font-Bold text-4xl mb-4">Statistic</Text>
+          {/* Map Card */}
+          <View
+            className="rounded-xl overflow-hidden border border-gray-200 mb-6"
+            style={{ height: 180 }}
+          >
+            <MapView
+              accessibilityLanguage="id"
+              style={{ flex: 1 }}
+              initialRegion={{
+                latitude: -6.2,
+                longitude: 106.816666,
+                latitudeDelta: 0.05,
+                longitudeDelta: 0.05,
+              }}
+            >
+              <Marker
+                coordinate={{ latitude: -6.2, longitude: 106.816666 }}
+                title="Area Rawan Bencana"
+                description="Wilayah dengan tingkat risiko bencana tinggi"
+              />
+            </MapView>
+          </View>
+
+          {/* Line Chart Container */}
+          <View className="mb-6 rounded-2xl shadow-sm shadow-neutral-400 overflow-hidden">
+            <View className="p-4">
+              <View className="flex-row justify-between items-center mb-4">
+                <Text className="text-lg font-Bold text-gray-800">
+                  {showDetail ? getChartTitle() : `Statistics: ${selectedYear}`}
+                </Text>
+                {!showDetail && (
+                  <View className="bg-red-100 px-3 py-1 rounded-full">
                     <Text className="text-red-600 text-sm font-Medium">
                       {getCurrentYearData().find(
                         (item) => item.label === selectedDay
@@ -514,142 +788,154 @@ export default function Statistics() {
                     </Text>
                   </View>
                 )}
-                <TouchableOpacity
-                  className={`px-4 py-2 rounded-lg ${
-                    showDetail ? 'bg-red-600' : 'bg-green-600'
-                  }`}
-                  onPress={toggleDetail}
-                >
-                  <Text className="text-white font-Medium">
-                    {showDetail ? 'Kembali' : 'Detail'}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-
-            {/* Year Selector - Show in both overview and detail mode */}
-            <View className="mb-4">
-              <Text className="text-sm font-Medium text-gray-600 mb-2">
-                Choose Year:
-              </Text>
-              <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{ paddingHorizontal: 4 }}
-              >
-                {availableYears.map((year) => (
+                <View className="flex-row items-center">
+                  {showDetail && (
+                    <View className="bg-red-100 px-3 py-1 me-1 ml-1 rounded-full">
+                      <Text className="text-red-600 text-sm font-Medium">
+                        {getCurrentYearData().find(
+                          (item) => item.label === selectedDay
+                        )?.value || 0}{' '}
+                        Accidents
+                      </Text>
+                    </View>
+                  )}
                   <TouchableOpacity
-                    key={year}
-                    className={`px-4 py-2 rounded-full mr-2 ${
-                      selectedYear === year ? 'bg-green-600' : 'bg-gray-200'
+                    className={`px-4 py-2 rounded-lg ${
+                      showDetail ? 'bg-red-600' : 'bg-green-600'
                     }`}
-                    onPress={() => handleYearChange(year as Year)}
+                    onPress={toggleDetail}
                   >
-                    <Text
-                      className={`font-Medium ${
-                        selectedYear === year ? 'text-white' : 'text-gray-700'
-                      }`}
-                    >
-                      {year}
+                    <Text className="text-white font-Medium">
+                      {showDetail ? 'Kembali' : 'Detail'}
                     </Text>
                   </TouchableOpacity>
-                ))}
-              </ScrollView>
-            </View>
-          </View>
+                </View>
+              </View>
 
-          {/* Filter Buttons - Show only in detail mode */}
-          {showDetail && (
-            <Animated.View
-              style={{
-                opacity: fadeAnim,
-                transform: [
-                  {
-                    translateY: slideAnim.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [-20, 0],
-                    }),
-                  },
-                ],
-              }}
-            >
-              <Text className="text-sm font-Medium text-gray-600 mb-2">
-                Choose Month:
-              </Text>
+              {/* Year Selector - Show in both overview and detail mode */}
               <View className="mb-4">
+                <Text className="text-sm font-Medium text-gray-600 mb-2">
+                  Choose Year:
+                </Text>
                 <ScrollView
                   horizontal
                   showsHorizontalScrollIndicator={false}
                   contentContainerStyle={{ paddingHorizontal: 4 }}
                 >
-                  {/* Tombol Bulan */}
-                  {getCurrentYearData().map((item, index) => (
+                  {availableYears.map((year) => (
                     <TouchableOpacity
-                      key={index}
+                      key={year}
                       className={`px-4 py-2 rounded-full mr-2 ${
-                        selectedDay === item.label
-                          ? 'bg-red-600'
-                          : 'bg-gray-200'
+                        selectedYear === year ? 'bg-green-600' : 'bg-gray-200'
                       }`}
-                      onPress={() => handleDayChange(item.label as Day)}
+                      onPress={() => handleYearChange(year as Year)}
                     >
                       <Text
                         className={`font-Medium ${
-                          selectedDay === item.label
-                            ? 'text-white'
-                            : 'text-gray-700'
+                          selectedYear === year ? 'text-white' : 'text-gray-700'
                         }`}
                       >
-                        {monthNames[item.label]}
+                        {year}
                       </Text>
                     </TouchableOpacity>
                   ))}
                 </ScrollView>
               </View>
-            </Animated.View>
-          )}
+            </View>
 
-          {/* Chart Section - Fixed Container */}
-          <View
-            style={{
-              height: 300,
-              overflow: 'hidden',
-              borderRadius: 8,
-            }}
-          >
-            <Animated.View
+            {/* Filter Buttons - Show only in detail mode */}
+            {showDetail && (
+              <Animated.View
+                style={{
+                  opacity: fadeAnim,
+                  transform: [
+                    {
+                      translateY: slideAnim.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [-20, 0],
+                      }),
+                    },
+                  ],
+                }}
+              >
+                <Text className="text-sm font-Medium text-gray-600 mb-2">
+                  Choose Month:
+                </Text>
+                <View className="mb-4">
+                  <ScrollView
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={{ paddingHorizontal: 4 }}
+                  >
+                    {/* Tombol Bulan */}
+                    {getCurrentYearData().map((item, index) => (
+                      <TouchableOpacity
+                        key={index}
+                        className={`px-4 py-2 rounded-full mr-2 ${
+                          selectedDay === item.label
+                            ? 'bg-red-600'
+                            : 'bg-gray-200'
+                        }`}
+                        onPress={() => handleDayChange(item.label as Day)}
+                      >
+                        <Text
+                          className={`font-Medium ${
+                            selectedDay === item.label
+                              ? 'text-white'
+                              : 'text-gray-700'
+                          }`}
+                        >
+                          {monthNames[item.label]}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </ScrollView>
+                </View>
+              </Animated.View>
+            )}
+
+            {/* Chart Section - Fixed Container */}
+            <View
               style={{
-                opacity: !showDetail ? chartFadeAnim : fadeAnim,
-                flex: 1,
-                paddingVertical: 8,
+                height: 300,
+                overflow: 'hidden',
+                borderRadius: 8,
               }}
             >
-              <LineChart
-                data={getCurrentChartData()}
-                thickness={3}
-                color="#EF4444"
-                hideDataPoints={true}
-                dataPointsRadius={4}
-                startFillColor="#FFFFFF"
-                endFillColor="#FFFFFF"
-                startOpacity={0.3}
-                endOpacity={0.05}
-                yAxisColor="transparent"
-                xAxisColor="transparent"
-                xAxisLabelTextStyle={{ color: '#6B7280', fontSize: 12 }}
-                yAxisTextStyle={{ color: '#6B7280', fontSize: 12 }}
-                curved
-                animationDuration={800}
-                height={220}
-                initialSpacing={20}
-                spacing={70}
-                rulesColor="#E5E7EB"
-                isAnimated={true}
-                curveType={CurveType.QUADRATIC}
-                hideRules
-                animateOnDataChange={true}
-              />
-            </Animated.View>
+              <Animated.View
+                style={{
+                  opacity: !showDetail ? chartFadeAnim : fadeAnim,
+                  flex: 1,
+                  paddingVertical: 8,
+                }}
+              >
+                <LineChart
+                  data={getCurrentChartData()}
+                  thickness={3}
+                  color="#EF4444"
+                  hideDataPoints={true}
+                  dataPointsRadius={4}
+                  startFillColor="#FFFFFF"
+                  endFillColor="#FFFFFF"
+                  startOpacity={0.3}
+                  endOpacity={0.05}
+                  yAxisColor="transparent"
+                  xAxisColor="transparent"
+                  xAxisLabelTextStyle={{ color: '#6B7280', fontSize: 12 }}
+                  yAxisTextStyle={{ color: '#6B7280', fontSize: 12 }}
+                  curved
+                  animationDuration={800}
+                  height={220}
+                  initialSpacing={20}
+                  spacing={70}
+                  rulesColor="#E5E7EB"
+                  isAnimated={true}
+                  curveType={CurveType.QUADRATIC}
+                  hideRules
+                  animateOnDataChange={true}
+                />
+              </Animated.View>
+            </View>
           </View>
         </View>
       </ScrollView>
