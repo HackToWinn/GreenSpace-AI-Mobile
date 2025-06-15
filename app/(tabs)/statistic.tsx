@@ -1,7 +1,13 @@
 import Layout from '@/components/Layout';
 import { useRef, useState } from 'react';
-import { Animated, ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import { LineChart } from 'react-native-gifted-charts';
+import {
+  Animated,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { CurveType, LineChart } from 'react-native-gifted-charts';
 import MapView, { Marker } from 'react-native-maps';
 
 export default function Statistics() {
@@ -72,84 +78,84 @@ export default function Statistics() {
     };
   } = {
     '2024': {
-      'Jan': [
+      Jan: [
         { value: 5, label: 'Flood' },
         { value: 3, label: 'Landslide' },
         { value: 2, label: 'Earthquake' },
         { value: 1, label: 'Fire' },
         { value: 1, label: 'Strong Wind' },
       ],
-      'Feb': [
+      Feb: [
         { value: 4, label: 'Flood' },
         { value: 2, label: 'Landslide' },
         { value: 1, label: 'Earthquake' },
         { value: 1, label: 'Fire' },
         { value: 0, label: 'Strong Wind' },
       ],
-      'Mar': [
+      Mar: [
         { value: 8, label: 'Flood' },
         { value: 4, label: 'Landslide' },
         { value: 2, label: 'Earthquake' },
         { value: 1, label: 'Fire' },
         { value: 0, label: 'Strong Wind' },
       ],
-      'Apr': [
+      Apr: [
         { value: 12, label: 'Flood' },
         { value: 6, label: 'Landslide' },
         { value: 2, label: 'Earthquake' },
         { value: 1, label: 'Fire' },
         { value: 1, label: 'Strong Wind' },
       ],
-      'Mei': [
+      Mei: [
         { value: 10, label: 'Flood' },
         { value: 5, label: 'Landslide' },
         { value: 2, label: 'Earthquake' },
         { value: 1, label: 'Fire' },
         { value: 0, label: 'Strong Wind' },
       ],
-      'Jun': [
+      Jun: [
         { value: 15, label: 'Flood' },
         { value: 7, label: 'Landslide' },
         { value: 2, label: 'Earthquake' },
         { value: 1, label: 'Fire' },
         { value: 0, label: 'Strong Wind' },
       ],
-      'Jul': [
+      Jul: [
         { value: 18, label: 'Flood' },
         { value: 8, label: 'Landslide' },
         { value: 2, label: 'Earthquake' },
         { value: 1, label: 'Fire' },
         { value: 1, label: 'Strong Wind' },
       ],
-      'Agu': [
+      Agu: [
         { value: 20, label: 'Flood' },
         { value: 10, label: 'Landslide' },
         { value: 3, label: 'Earthquake' },
         { value: 1, label: 'Fire' },
         { value: 1, label: 'Strong Wind' },
       ],
-      'Sep': [
+      Sep: [
         { value: 16, label: 'Flood' },
         { value: 8, label: 'Landslide' },
         { value: 2, label: 'Earthquake' },
         { value: 1, label: 'Fire' },
         { value: 1, label: 'Strong Wind' },
       ],
-      'Okt': [
+      Okt: [
         { value: 12, label: 'Flood' },
         { value: 5, label: 'Landslide' },
         { value: 2, label: 'Earthquake' },
         { value: 1, label: 'Fire' },
         { value: 0, label: 'Strong Wind' },
       ],
-      'Nov': [
+      Nov: [
         { value: 9, label: 'Flood' },
         { value: 4, label: 'Landslide' },
         { value: 2, label: 'Earthquake' },
         { value: 1, label: 'Fire' },
         { value: 0, label: 'Strong Wind' },
       ],
-      'Des': [
+      Des: [
         { value: 8, label: 'Flood' },
         { value: 3, label: 'Landslide' },
         { value: 2, label: 'Earthquake' },
@@ -158,84 +164,84 @@ export default function Statistics() {
       ],
     },
     '2023': {
-      'Jan': [
+      Jan: [
         { value: 4, label: 'Flood' },
         { value: 3, label: 'Landslide' },
         { value: 2, label: 'Earthquake' },
         { value: 1, label: 'Fire' },
         { value: 0, label: 'Strong Wind' },
       ],
-      'Feb': [
+      Feb: [
         { value: 7, label: 'Flood' },
         { value: 4, label: 'Landslide' },
         { value: 2, label: 'Earthquake' },
         { value: 1, label: 'Fire' },
         { value: 0, label: 'Strong Wind' },
       ],
-      'Mar': [
+      Mar: [
         { value: 10, label: 'Flood' },
         { value: 5, label: 'Landslide' },
         { value: 2, label: 'Earthquake' },
         { value: 1, label: 'Fire' },
         { value: 0, label: 'Strong Wind' },
       ],
-      'Apr': [
+      Apr: [
         { value: 9, label: 'Flood' },
         { value: 4, label: 'Landslide' },
         { value: 2, label: 'Earthquake' },
         { value: 1, label: 'Fire' },
         { value: 0, label: 'Strong Wind' },
       ],
-      'Mei': [
+      Mei: [
         { value: 12, label: 'Flood' },
         { value: 5, label: 'Landslide' },
         { value: 2, label: 'Earthquake' },
         { value: 1, label: 'Fire' },
         { value: 0, label: 'Strong Wind' },
       ],
-      'Jun': [
+      Jun: [
         { value: 14, label: 'Flood' },
         { value: 6, label: 'Landslide' },
         { value: 3, label: 'Earthquake' },
         { value: 1, label: 'Fire' },
         { value: 0, label: 'Strong Wind' },
       ],
-      'Jul': [
+      Jul: [
         { value: 16, label: 'Flood' },
         { value: 8, label: 'Landslide' },
         { value: 3, label: 'Earthquake' },
         { value: 1, label: 'Fire' },
         { value: 0, label: 'Strong Wind' },
       ],
-      'Agu': [
+      Agu: [
         { value: 18, label: 'Flood' },
         { value: 9, label: 'Landslide' },
         { value: 3, label: 'Earthquake' },
         { value: 1, label: 'Fire' },
         { value: 1, label: 'Strong Wind' },
       ],
-      'Sep': [
+      Sep: [
         { value: 15, label: 'Flood' },
         { value: 7, label: 'Landslide' },
         { value: 3, label: 'Earthquake' },
         { value: 1, label: 'Fire' },
         { value: 0, label: 'Strong Wind' },
       ],
-      'Okt': [
+      Okt: [
         { value: 13, label: 'Flood' },
         { value: 6, label: 'Landslide' },
         { value: 2, label: 'Earthquake' },
         { value: 1, label: 'Fire' },
         { value: 0, label: 'Strong Wind' },
       ],
-      'Nov': [
+      Nov: [
         { value: 11, label: 'Flood' },
         { value: 4, label: 'Landslide' },
         { value: 2, label: 'Earthquake' },
         { value: 1, label: 'Fire' },
         { value: 0, label: 'Strong Wind' },
       ],
-      'Des': [
+      Des: [
         { value: 7, label: 'Flood' },
         { value: 3, label: 'Landslide' },
         { value: 1, label: 'Earthquake' },
@@ -244,84 +250,84 @@ export default function Statistics() {
       ],
     },
     '2022': {
-      'Jan': [
+      Jan: [
         { value: 3, label: 'Flood' },
         { value: 2, label: 'Landslide' },
         { value: 2, label: 'Earthquake' },
         { value: 1, label: 'Fire' },
         { value: 0, label: 'Strong Wind' },
       ],
-      'Feb': [
+      Feb: [
         { value: 6, label: 'Flood' },
         { value: 3, label: 'Landslide' },
         { value: 2, label: 'Earthquake' },
         { value: 1, label: 'Fire' },
         { value: 0, label: 'Strong Wind' },
       ],
-      'Mar': [
+      Mar: [
         { value: 9, label: 'Flood' },
         { value: 4, label: 'Landslide' },
         { value: 2, label: 'Earthquake' },
         { value: 1, label: 'Fire' },
         { value: 0, label: 'Strong Wind' },
       ],
-      'Apr': [
+      Apr: [
         { value: 11, label: 'Flood' },
         { value: 5, label: 'Landslide' },
         { value: 3, label: 'Earthquake' },
         { value: 1, label: 'Fire' },
         { value: 0, label: 'Strong Wind' },
       ],
-      'Mei': [
+      Mei: [
         { value: 8, label: 'Flood' },
         { value: 4, label: 'Landslide' },
         { value: 2, label: 'Earthquake' },
         { value: 1, label: 'Fire' },
         { value: 0, label: 'Strong Wind' },
       ],
-      'Jun': [
+      Jun: [
         { value: 13, label: 'Flood' },
         { value: 6, label: 'Landslide' },
         { value: 2, label: 'Earthquake' },
         { value: 1, label: 'Fire' },
         { value: 0, label: 'Strong Wind' },
       ],
-      'Jul': [
+      Jul: [
         { value: 15, label: 'Flood' },
         { value: 7, label: 'Landslide' },
         { value: 3, label: 'Earthquake' },
         { value: 1, label: 'Fire' },
         { value: 0, label: 'Strong Wind' },
       ],
-      'Agu': [
+      Agu: [
         { value: 17, label: 'Flood' },
         { value: 8, label: 'Landslide' },
         { value: 3, label: 'Earthquake' },
         { value: 1, label: 'Fire' },
         { value: 1, label: 'Strong Wind' },
       ],
-      'Sep': [
+      Sep: [
         { value: 14, label: 'Flood' },
         { value: 6, label: 'Landslide' },
         { value: 3, label: 'Earthquake' },
         { value: 1, label: 'Fire' },
         { value: 0, label: 'Strong Wind' },
       ],
-      'Okt': [
+      Okt: [
         { value: 10, label: 'Flood' },
         { value: 5, label: 'Landslide' },
         { value: 2, label: 'Earthquake' },
         { value: 1, label: 'Fire' },
         { value: 0, label: 'Strong Wind' },
       ],
-      'Nov': [
+      Nov: [
         { value: 8, label: 'Flood' },
         { value: 4, label: 'Landslide' },
         { value: 1, label: 'Earthquake' },
         { value: 1, label: 'Fire' },
         { value: 0, label: 'Strong Wind' },
       ],
-      'Des': [
+      Des: [
         { value: 6, label: 'Flood' },
         { value: 2, label: 'Landslide' },
         { value: 1, label: 'Earthquake' },
@@ -332,22 +338,24 @@ export default function Statistics() {
   };
 
   const monthNames: { [key: string]: string } = {
-    'Jan': 'Januari',
-    'Feb': 'Februari',
-    'Mar': 'Maret',
-    'Apr': 'April',
-    'Mei': 'Mei',
-    'Jun': 'Juni',
-    'Jul': 'Juli',
-    'Agu': 'Agustus',
-    'Sep': 'September',
-    'Okt': 'Oktober',
-    'Nov': 'November',
-    'Des': 'Desember',
+    Jan: 'Januari',
+    Feb: 'Februari',
+    Mar: 'Maret',
+    Apr: 'April',
+    Mei: 'Mei',
+    Jun: 'Juni',
+    Jul: 'Juli',
+    Agu: 'Agustus',
+    Sep: 'September',
+    Okt: 'Oktober',
+    Nov: 'November',
+    Des: 'Desember',
   };
 
   const getCurrentYearData = () => {
-    return yearlyData[selectedYear as '2024' | '2023' | '2022'] || yearlyData['2024'];
+    return (
+      yearlyData[selectedYear as '2024' | '2023' | '2022'] || yearlyData['2024']
+    );
   };
 
   const toggleDetail = () => {
@@ -384,7 +392,19 @@ export default function Statistics() {
     }
   };
 
-  type Day = 'Jan' | 'Feb' | 'Mar' | 'Apr' | 'May' | 'Jun' | 'Jul' | 'Aug' | 'Sep' | 'Oct' | 'Nov' | 'Dec';
+  type Day =
+    | 'Jan'
+    | 'Feb'
+    | 'Mar'
+    | 'Apr'
+    | 'May'
+    | 'Jun'
+    | 'Jul'
+    | 'Aug'
+    | 'Sep'
+    | 'Oct'
+    | 'Nov'
+    | 'Dec';
 
   const handleDayChange = (day: Day) => {
     Animated.timing(fadeAnim, {
@@ -420,11 +440,11 @@ export default function Statistics() {
   };
 
   const getCurrentChartData = () => {
-    return detailData[selectedYear]?.[selectedDay] || detailData[selectedYear]?.['Jan'] || [];
-  };
-
-  const getChartColor = () => {
-    return '#EF4444';
+    return (
+      detailData[selectedYear]?.[selectedDay] ||
+      detailData[selectedYear]?.['Jan'] ||
+      []
+    );
   };
 
   const getChartTitle = () => {
@@ -434,11 +454,20 @@ export default function Statistics() {
   return (
     <Layout>
       {/* Konten scrollable */}
-      <ScrollView contentContainerStyle={{ paddingTop: 4 }} className='h-full' scrollEventThrottle={16} decelerationRate="normal" showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}>
-        <Text className='font-Bold text-4xl mb-4'>Statistic</Text>
+      <ScrollView
+        contentContainerStyle={{ paddingTop: 4 }}
+        className="h-full"
+        scrollEventThrottle={16}
+        decelerationRate="normal"
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+      >
+        <Text className="font-Bold text-4xl mb-4">Statistic</Text>
         {/* Map Card */}
-        <View className="rounded-xl overflow-hidden border border-gray-200 mb-6" style={{ height: 180 }}>
+        <View
+          className="rounded-xl overflow-hidden border border-gray-200 mb-6"
+          style={{ height: 180 }}
+        >
           <MapView
             accessibilityLanguage="id"
             style={{ flex: 1 }}
@@ -458,59 +487,75 @@ export default function Statistics() {
         </View>
 
         {/* Line Chart Container */}
-        <View className="mb-6 p-4 rounded-2xl shadow-md shadow-neutral-400 overflow-hidden" style={{ backgroundColor: 'white' }}>
-          <View className="flex-row justify-between items-center mb-4">
-            <Text className="text-lg font-Bold text-gray-800">
-              {showDetail ? getChartTitle() : `Statistics: ${selectedYear}`}
-            </Text>
-            {!showDetail && (
-              <View className="bg-red-100 px-3 py-1 rounded-full">
-                <Text className="text-red-600 text-sm font-Medium">
-                  {getCurrentYearData().find(item => item.label === selectedDay)?.value || 0} Accidents
-                </Text>
-              </View>
-            )}
-            <View className="flex-row items-center">
-              {showDetail && (
-                <View className="bg-red-100 px-3 py-1 me-1 ml-1 rounded-full">
+        <View className="mb-6 rounded-2xl shadow-sm shadow-neutral-400 overflow-hidden">
+          <View className="p-4">
+            <View className="flex-row justify-between items-center mb-4">
+              <Text className="text-lg font-Bold text-gray-800">
+                {showDetail ? getChartTitle() : `Statistics: ${selectedYear}`}
+              </Text>
+              {!showDetail && (
+                <View className="bg-red-100 px-3 py-1 rounded-full">
                   <Text className="text-red-600 text-sm font-Medium">
-                    {getCurrentYearData().find(item => item.label === selectedDay)?.value || 0} Accidents
+                    {getCurrentYearData().find(
+                      (item) => item.label === selectedDay
+                    )?.value || 0}{' '}
+                    Accidents
                   </Text>
                 </View>
               )}
-              <TouchableOpacity
-                className={`px-4 py-2 rounded-lg ${showDetail ? 'bg-red-500' : 'bg-blue-500'}`}
-                onPress={toggleDetail}
-              >
-                <Text className="text-white font-Medium">
-                  {showDetail ? 'Kembali' : 'Detail'}
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-
-          {/* Year Selector - Show in both overview and detail mode */}
-          <View className="mb-4">
-            <Text className="text-sm font-Medium text-gray-600 mb-2">Choose Year:</Text>
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={{ paddingHorizontal: 4 }}
-            >
-              {availableYears.map((year) => (
+              <View className="flex-row items-center">
+                {showDetail && (
+                  <View className="bg-red-100 px-3 py-1 me-1 ml-1 rounded-full">
+                    <Text className="text-red-600 text-sm font-Medium">
+                      {getCurrentYearData().find(
+                        (item) => item.label === selectedDay
+                      )?.value || 0}{' '}
+                      Accidents
+                    </Text>
+                  </View>
+                )}
                 <TouchableOpacity
-                  key={year}
-                  className={`px-4 py-2 rounded-full mr-2 ${selectedYear === year ? 'bg-green-500' : 'bg-gray-200'
-                    }`}
-                  onPress={() => handleYearChange(year as Year)}
+                  className={`px-4 py-2 rounded-lg ${
+                    showDetail ? 'bg-red-600' : 'bg-green-600'
+                  }`}
+                  onPress={toggleDetail}
                 >
-                  <Text className={`font-Medium ${selectedYear === year ? 'text-white' : 'text-gray-700'
-                    }`}>
-                    {year}
+                  <Text className="text-white font-Medium">
+                    {showDetail ? 'Kembali' : 'Detail'}
                   </Text>
                 </TouchableOpacity>
-              ))}
-            </ScrollView>
+              </View>
+            </View>
+
+            {/* Year Selector - Show in both overview and detail mode */}
+            <View className="mb-4">
+              <Text className="text-sm font-Medium text-gray-600 mb-2">
+                Choose Year:
+              </Text>
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={{ paddingHorizontal: 4 }}
+              >
+                {availableYears.map((year) => (
+                  <TouchableOpacity
+                    key={year}
+                    className={`px-4 py-2 rounded-full mr-2 ${
+                      selectedYear === year ? 'bg-green-600' : 'bg-gray-200'
+                    }`}
+                    onPress={() => handleYearChange(year as Year)}
+                  >
+                    <Text
+                      className={`font-Medium ${
+                        selectedYear === year ? 'text-white' : 'text-gray-700'
+                      }`}
+                    >
+                      {year}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            </View>
           </View>
 
           {/* Filter Buttons - Show only in detail mode */}
@@ -528,25 +573,33 @@ export default function Statistics() {
                 ],
               }}
             >
-              <Text className="text-sm font-Medium text-gray-600 mb-2">Choose Month:</Text>
+              <Text className="text-sm font-Medium text-gray-600 mb-2">
+                Choose Month:
+              </Text>
               <View className="mb-4">
                 <ScrollView
                   horizontal
                   showsHorizontalScrollIndicator={false}
                   contentContainerStyle={{ paddingHorizontal: 4 }}
                 >
-
-
                   {/* Tombol Bulan */}
                   {getCurrentYearData().map((item, index) => (
                     <TouchableOpacity
                       key={index}
-                      className={`px-4 py-2 rounded-full mr-2 ${selectedDay === item.label ? 'bg-red-500' : 'bg-gray-200'
-                        }`}
+                      className={`px-4 py-2 rounded-full mr-2 ${
+                        selectedDay === item.label
+                          ? 'bg-red-600'
+                          : 'bg-gray-200'
+                      }`}
                       onPress={() => handleDayChange(item.label as Day)}
                     >
-                      <Text className={`font-Medium ${selectedDay === item.label ? 'text-white' : 'text-gray-700'
-                        }`}>
+                      <Text
+                        className={`font-Medium ${
+                          selectedDay === item.label
+                            ? 'text-white'
+                            : 'text-gray-700'
+                        }`}
+                      >
                         {monthNames[item.label]}
                       </Text>
                     </TouchableOpacity>
@@ -557,16 +610,17 @@ export default function Statistics() {
           )}
 
           {/* Chart Section - Fixed Container */}
-          <View style={{
-            height: 300,
-            overflow: 'hidden',
-            borderRadius: 8,
-          }}>
+          <View
+            style={{
+              height: 300,
+              overflow: 'hidden',
+              borderRadius: 8,
+            }}
+          >
             <Animated.View
               style={{
                 opacity: !showDetail ? chartFadeAnim : fadeAnim,
                 flex: 1,
-                paddingHorizontal: 8,
                 paddingVertical: 8,
               }}
             >
@@ -574,31 +628,25 @@ export default function Statistics() {
                 data={getCurrentChartData()}
                 thickness={3}
                 color="#EF4444"
-                hideDataPoints={false}
-                dataPointsColor="#EF4444"
+                hideDataPoints={true}
                 dataPointsRadius={4}
-                startFillColor="#EF4444"
-                endFillColor="transparent"
+                startFillColor="#FFFFFF"
+                endFillColor="#FFFFFF"
                 startOpacity={0.3}
                 endOpacity={0.05}
-                yAxisColor="#E5E7EB"
-                xAxisColor="#E5E7EB"
+                yAxisColor="transparent"
+                xAxisColor="transparent"
                 xAxisLabelTextStyle={{ color: '#6B7280', fontSize: 12 }}
-                areaChart
+                yAxisTextStyle={{ color: '#6B7280', fontSize: 12 }}
                 curved
                 animationDuration={800}
                 height={220}
-                width={undefined}
                 initialSpacing={20}
                 spacing={70}
-                maxValue={25}
-                noOfSections={4}
-                hideOrigin={true}
-                hideAxesAndRules={false}
-                showVerticalLines={false}
                 rulesColor="#E5E7EB"
-                rulesType="solid"
                 isAnimated={true}
+                curveType={CurveType.QUADRATIC}
+                hideRules
                 animateOnDataChange={true}
               />
             </Animated.View>
