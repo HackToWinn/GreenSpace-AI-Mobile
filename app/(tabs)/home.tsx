@@ -3,10 +3,10 @@ import DashboardCard from '@/components/DashboardCard';
 import Layout from '@/components/Layout';
 import TooltipContent from '@/components/TooltipContent';
 import { dashboardCards as staticDashboardCards } from '@/constants';
+import { useCamera } from '@/context/CameraContext';
 import { useCurrentLocation } from '@/hooks/useCurrentLocation';
 import { getTotalReportsThisWeek } from '@/lib/api';
 import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
@@ -16,6 +16,7 @@ export default function Home() {
   const { location, loading, errorMsg, refreshLocation, getMapRegion } = useCurrentLocation();
   const [dashboardCards, setDashboardCards] = useState(staticDashboardCards);
   const [isLoading, setLoading] = useState(false);
+  const { openCameraModal } = useCamera();
   const [tooltipStep, setTooltipStep] = useState(0);
 
   useEffect(() => {
@@ -160,7 +161,7 @@ export default function Home() {
           onClose={() => setTooltipStep(0)}
         ></Tooltip>
         <View className="w-full">
-          <CustomButton title="Report an Issue" bgVariant="primary" textVariant="secondary" IconLeft={() => <Ionicons name="clipboard-outline" size={24} color="white" className="mr-2" />} onPress={() => router.replace('/(tabs)/camera')} />
+          <CustomButton title="Report an Issue" bgVariant="primary" textVariant="secondary" IconLeft={() => <Ionicons name="clipboard-outline" size={24} color="white" className="mr-2" />} onPress={openCameraModal} />
         </View>
       </View>
     </Layout>
