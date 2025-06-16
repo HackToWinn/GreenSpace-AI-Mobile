@@ -1,13 +1,38 @@
 import Layout from '@/components/Layout';
+import TooltipContent from '@/components/TooltipContent';
 import WalletCardComponent from '@/components/WalletCardComponent';
 import { FontAwesome, MaterialIcons, SimpleLineIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { Pressable, Text, View } from 'react-native';
+import Tooltip from 'react-native-walkthrough-tooltip';
 
 export default function Profile() {
   const router = useRouter();
+  const [tooltipStep, setTooltipStep] = useState(0);
+
+  useEffect(() => {
+    setTooltipStep(1);
+  }, []);
+
   return (
     <Layout>
+      <Tooltip
+        isVisible={tooltipStep === 1}
+        placement='center'
+        useReactNativeModal={true}
+        contentStyle={{ height: 184 }}
+        content={
+          <TooltipContent
+            title='Welcome to the Profile Page'
+            description='This is the profile page, where you can view your profile information and manage your ICP wallet & settings.'
+            buttonText='Got it'
+            onButtonPress={() => setTooltipStep(0)}
+          />
+        }
+        onClose={() => setTooltipStep(0)}>
+        <View />
+      </Tooltip>
       <View className="flex-1 items-center mt-4 ">
         {/* <Image source={{ uri: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fid.pinterest.com%2Fpin%2F804174077250339329%2F&psig=AOvVaw32AGrM95BZmHAGePXgh9Tg&ust=1749245070149000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCPDs4Oqb240DFQAAAAAdAAAAABAE' }} className="w-24 h-24 rounded-full mb-4" /> */}
         <View className="w-24 h-24 rounded-full mb-4 bg-primary-900"></View>
@@ -16,9 +41,7 @@ export default function Profile() {
           <Text className="text-sm font-SemiBold text-black">23</Text>
           <Text className="text-sm font-Regular text-black">Total Reports</Text>
         </View>
-
         <WalletCardComponent />
-
         <View className="w-full">
           <Pressable onPress={() => router.push('/setting')} className="flex-row justify-between items-center py-4 border-b border-gray-200">
             <View className="flex-row gap-4 items-center ">

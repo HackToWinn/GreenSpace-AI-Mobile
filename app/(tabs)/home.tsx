@@ -1,6 +1,7 @@
 import CustomButton from '@/components/CustomButton';
 import DashboardCard from '@/components/DashboardCard';
 import Layout from '@/components/Layout';
+import TooltipContent from '@/components/TooltipContent';
 import { dashboardCards as staticDashboardCards } from '@/constants';
 import { useCurrentLocation } from '@/hooks/useCurrentLocation';
 import { getTotalReportsThisWeek } from '@/lib/api';
@@ -9,12 +10,17 @@ import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
+import Tooltip from 'react-native-walkthrough-tooltip';
+
 export default function Home() {
   const { location, loading, errorMsg, refreshLocation, getMapRegion } = useCurrentLocation();
   const [dashboardCards, setDashboardCards] = useState(staticDashboardCards);
   const [isLoading, setLoading] = useState(false);
+  const [tooltipStep, setTooltipStep] = useState(0);
 
   useEffect(() => {
+    setTooltipStep(1);
+
     const fetchReportsThisWeek = async () => {
       setLoading(true);
       const total = await getTotalReportsThisWeek();
@@ -23,9 +29,9 @@ export default function Home() {
         prevCards.map(card =>
           card.title === 'Reports This Week'
             ? {
-                ...card,
-                value: total !== null ? total : '?'
-              }
+              ...card,
+              value: total !== null ? total : '?'
+            }
             : card
         )
       );
@@ -38,6 +44,22 @@ export default function Home() {
 
   return (
     <Layout>
+      <Tooltip
+        isVisible={tooltipStep === 1}
+        placement='center'
+        useReactNativeModal={true}
+        contentStyle={{ height: 170 }}
+        content={
+          <TooltipContent
+            title='Welcome to the Homepage'
+            description='This is where you can see brief information about the environment around you.'
+            buttonText='Next'
+            onButtonPress={() => setTooltipStep(2)}
+          />
+        }
+        onClose={() => setTooltipStep(0)}>
+        <View />
+      </Tooltip>
       <View className="flex flex-col items-start gap-y-4">
         <Text className="font-Bold text-4xl">Dashboard</Text>
         <View className="flex flex-row items-start gap-x-2">
@@ -62,7 +84,23 @@ export default function Home() {
             {errorMsg && <Text className="font-Medium text-xs text-red-500">{errorMsg}</Text>}
           </View>
         </View>
-        <View className="rounded-2xl overflow-hidden border border-gray-200 mb-2" style={{ height: 160, width: '100%' }}>
+        <Tooltip
+          isVisible={tooltipStep === 2}
+          placement="top"
+          useReactNativeModal={true}
+          contentStyle={{ height: 170 }}
+          content={
+            <TooltipContent
+              title="Location Map"
+              description="Here you can see your current location. This will help when creating a report."
+              buttonText="Next"
+              onButtonPress={() => setTooltipStep(3)}
+            />
+          }
+          onClose={() => setTooltipStep(0)}
+        >
+        </Tooltip>
+        <View style={{ width: '100%', height: 160 }} className="rounded-2xl overflow-hidden border border-gray-200 mb-2">
           {loading ? (
             <View className="flex-1 justify-center items-center bg-gray-100">
               <ActivityIndicator size="large" color="#3E9E45" />
@@ -86,11 +124,41 @@ export default function Home() {
             </View>
           )}
         </View>
+        <Tooltip
+          isVisible={tooltipStep === 3}
+          placement="center"
+          useReactNativeModal={true}
+          contentStyle={{ height: 184 }}
+          content={
+            <TooltipContent
+              title="Report Cards"
+              description="These cards provide you with quick access to the most important information about your environment."
+              buttonText="Next"
+              onButtonPress={() => setTooltipStep(4)}
+            />
+          }
+          onClose={() => setTooltipStep(0)}
+        ></Tooltip>
         <View className="flex flex-row flex-wrap justify-between w-full">
           {dashboardCards.map((item, index) => (
             <DashboardCard key={index} onPress={item.onPress} title={item.title} value={item.value} iconName={item.iconName} CTAIcon={item.CTAIcon} isLoading={item.title === 'Reports This Week' && isLoading} />
           ))}
         </View>
+        <Tooltip
+          isVisible={tooltipStep === 4}
+          placement="center"
+          useReactNativeModal={true}
+          contentStyle={{ height: 184 }}
+          content={
+            <TooltipContent
+              title="Report an Issue"
+              description="Click the button below to open the camera and take a picture of a problem you see in your environment."
+              buttonText="Got it"
+              onButtonPress={() => setTooltipStep(0)}
+            />
+          }
+          onClose={() => setTooltipStep(0)}
+        ></Tooltip>
         <View className="w-full">
           <CustomButton title="Report an Issue" bgVariant="primary" textVariant="secondary" IconLeft={() => <Ionicons name="clipboard-outline" size={24} color="white" className="mr-2" />} onPress={() => router.replace('/(tabs)/camera')} />
         </View>

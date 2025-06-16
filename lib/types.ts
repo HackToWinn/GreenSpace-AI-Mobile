@@ -38,3 +38,10 @@ export interface CameraModalProps {
   visible: boolean;
   onClose: () => void;
 }
+
+export interface TooltipProps {
+	title: string;
+	description: string;
+	buttonText: string;
+	onButtonPress: () => void;
+}
