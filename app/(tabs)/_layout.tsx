@@ -1,4 +1,5 @@
 import CameraModal from '@/components/CameraModal';
+import { CameraContext } from '@/context/CameraContext';
 import { colors } from '@/lib/colors';
 import { TabBarItemProps } from '@/lib/types';
 import { Ionicons } from '@expo/vector-icons';
@@ -67,7 +68,7 @@ export default function LayoutTabs() {
   };
 
   return (
-    <>
+    <CameraContext.Provider value={{ openCameraModal }}>
       <CameraModal visible={isCameraModalVisible} onClose={closeCameraModal} />
 
       <Tabs
@@ -107,6 +108,6 @@ export default function LayoutTabs() {
         <Tabs.Screen name="feedback" options={{ href: null }} />
         <Tabs.Screen name="faq" options={{ href: null }} />
       </Tabs>
-    </>
+    </CameraContext.Provider>
   );
 }

@@ -1,5 +1,6 @@
 import Layout from '@/components/Layout';
-import { useRef, useState } from 'react';
+import TooltipContent from '@/components/TooltipContent';
+import { useEffect, useRef, useState } from 'react';
 import {
   Animated,
   ScrollView,
@@ -9,6 +10,7 @@ import {
 } from 'react-native';
 import { CurveType, LineChart } from 'react-native-gifted-charts';
 import MapView, { Marker } from 'react-native-maps';
+import Tooltip from 'react-native-walkthrough-tooltip';
 
 export default function Statistics() {
   const [showDetail, setShowDetail] = useState(false);
@@ -577,8 +579,30 @@ export default function Statistics() {
     return `${selectedYear} - ${monthNames[selectedDay]}`;
   };
 
+  const [tooltipStep, setTooltipStep] = useState(0);
+
+  useEffect(() => {
+    setTooltipStep(1);
+  }, []);
+
   return (
     <Layout className="pt-4 h-full">
+      <Tooltip
+        isVisible={tooltipStep === 1}
+        placement='center'
+        useReactNativeModal={true}
+        contentStyle={{ height: 184 }}
+        content={
+          <TooltipContent
+            title='Welcome to the Statistic Page'
+            description='This is where you can see the statistics of the reports you have made and trends of the reports.'
+            buttonText='Got it'
+            onButtonPress={() => setTooltipStep(0)}
+          />
+        }
+        onClose={() => setTooltipStep(0)}>
+        <View />
+      </Tooltip>
       {/* Konten scrollable */}
       <ScrollView
         contentContainerStyle={{ paddingTop: 4 }}
@@ -591,7 +615,7 @@ export default function Statistics() {
         <View id="trends">
           <View>
             <View className="px-8">
-              <Text className="text-neutral-800 font-bold text-2xl mb-2">
+              <Text className="font-Bold text-4xl mb-2">
                 Report Trends
               </Text>
 
@@ -600,7 +624,7 @@ export default function Statistics() {
                   <Text className="text-green-600 font-semibold text-sm mr-1">
                     ⬆
                   </Text>
-                  <Text className="text-green-600 font-semibold text-sm">
+                  <Text className="text-green-600 font-SemiBold text-sm">
                     5% Today
                   </Text>
                 </View>
@@ -609,43 +633,37 @@ export default function Statistics() {
               {/* Tabs */}
               <View className="flex-row justify-around">
                 <TouchableOpacity
-                  className={`px-6 py-2 rounded-full ${
-                    filterTrend === 'daily' ? 'bg-neutral-100' : ''
-                  }`}
+                  className={`px-6 py-2 rounded-full ${filterTrend === 'daily' ? 'bg-neutral-100' : ''
+                    }`}
                   onPress={() => handleFilterChange('daily')}
                 >
                   <Text
-                    className={`font-semibold ${
-                      filterTrend === 'daily' ? 'text-black' : 'text-gray-500'
-                    }`}
+                    className={`font-SemiBold ${filterTrend === 'daily' ? 'text-black' : 'text-gray-500'
+                      }`}
                   >
                     Daily
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  className={`px-6 py-2 rounded-full ${
-                    filterTrend === 'weekly' ? 'bg-neutral-100' : ''
-                  }`}
+                  className={`px-6 py-2 rounded-full ${filterTrend === 'weekly' ? 'bg-neutral-100' : ''
+                    }`}
                   onPress={() => handleFilterChange('weekly')}
                 >
                   <Text
-                    className={`font-semibold ${
-                      filterTrend === 'weekly' ? 'text-black' : 'text-gray-500'
-                    }`}
+                    className={`font-SemiBold ${filterTrend === 'weekly' ? 'text-black' : 'text-gray-500'
+                      }`}
                   >
                     Weekly
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  className={`px-6 py-2 rounded-full ${
-                    filterTrend === 'monthly' ? 'bg-neutral-100' : ''
-                  }`}
+                  className={`px-6 py-2 rounded-full ${filterTrend === 'monthly' ? 'bg-neutral-100' : ''
+                    }`}
                   onPress={() => handleFilterChange('monthly')}
                 >
                   <Text
-                    className={`font-semibold ${
-                      filterTrend === 'monthly' ? 'text-black' : 'text-gray-500'
-                    }`}
+                    className={`font-SemiBold ${filterTrend === 'monthly' ? 'text-black' : 'text-gray-500'
+                      }`}
                   >
                     Monthly
                   </Text>
@@ -692,8 +710,8 @@ export default function Statistics() {
 
             {/* Trends Overview */}
             <View className="px-8">
-              <Text className="font-bold text-xl mb-1">Trends</Text>
-              <Text className="text-gray-500 mb-3">Trends Overview</Text>
+              <Text className="font-Bold text-xl mb-1">Trends</Text>
+              <Text className="text-gray-500 text-md font-Regular mb-3">Trends Overview</Text>
 
               <View className="flex-row flex-wrap justify-between">
                 {categoryData.map((item, index) => (
@@ -701,10 +719,10 @@ export default function Statistics() {
                     key={index}
                     className={`w-[48%] rounded-xl p-4 mb-3  bg-green-100/50`}
                   >
-                    <Text className="font-semibold text-base">
+                    <Text className="font-SemiBold text-base">
                       {item.title}
                     </Text>
-                    <Text className="text-gray-600 mb-1">{item.value}</Text>
+                    <Text className="text-gray-600 font-Regular mb-1">{item.value}</Text>
                     <View
                       style={{
                         overflow: 'hidden',
@@ -732,11 +750,7 @@ export default function Statistics() {
                       />
                     </View>
                     <Text
-                      className={
-                        item.changes.includes('+')
-                          ? 'text-green-500'
-                          : 'text-red-500'
-                      }
+                      className={`font-Regular ${item.changes.includes('+') ? 'text-green-500' : 'text-red-500'}`}
                     >
                       {item.changes}
                     </Text>
@@ -800,9 +814,8 @@ export default function Statistics() {
                     </View>
                   )}
                   <TouchableOpacity
-                    className={`px-4 py-2 rounded-lg ${
-                      showDetail ? 'bg-red-600' : 'bg-green-600'
-                    }`}
+                    className={`px-4 py-2 rounded-lg ${showDetail ? 'bg-red-600' : 'bg-green-600'
+                      }`}
                     onPress={toggleDetail}
                   >
                     <Text className="text-white font-Medium">
@@ -825,15 +838,13 @@ export default function Statistics() {
                   {availableYears.map((year) => (
                     <TouchableOpacity
                       key={year}
-                      className={`px-4 py-2 rounded-full mr-2 ${
-                        selectedYear === year ? 'bg-green-600' : 'bg-gray-200'
-                      }`}
+                      className={`px-4 py-2 rounded-full mr-2 ${selectedYear === year ? 'bg-green-600' : 'bg-gray-200'
+                        }`}
                       onPress={() => handleYearChange(year as Year)}
                     >
                       <Text
-                        className={`font-Medium ${
-                          selectedYear === year ? 'text-white' : 'text-gray-700'
-                        }`}
+                        className={`font-Medium ${selectedYear === year ? 'text-white' : 'text-gray-700'
+                          }`}
                       >
                         {year}
                       </Text>
@@ -871,19 +882,17 @@ export default function Statistics() {
                     {getCurrentYearData().map((item, index) => (
                       <TouchableOpacity
                         key={index}
-                        className={`px-4 py-2 rounded-full mr-2 ${
-                          selectedDay === item.label
-                            ? 'bg-red-600'
-                            : 'bg-gray-200'
-                        }`}
+                        className={`px-4 py-2 rounded-full mr-2 ${selectedDay === item.label
+                          ? 'bg-red-600'
+                          : 'bg-gray-200'
+                          }`}
                         onPress={() => handleDayChange(item.label as Day)}
                       >
                         <Text
-                          className={`font-Medium ${
-                            selectedDay === item.label
-                              ? 'text-white'
-                              : 'text-gray-700'
-                          }`}
+                          className={`font-Medium ${selectedDay === item.label
+                            ? 'text-white'
+                            : 'text-gray-700'
+                            }`}
                         >
                           {monthNames[item.label]}
                         </Text>
