@@ -1,30 +1,41 @@
 import { DashboardCardProps } from '@/lib/types';
 import { router } from 'expo-router';
+import onboarding1 from '@/assets/images/onboarding1.png';
+import onboarding2 from '@/assets/images/onboarding2.png';
+import onboarding3 from '@/assets/images/onboarding3.png';
+import onboarding4 from '@/assets/images/onboarding4.png';
+
+const images = {
+  onboarding1,
+  onboarding2,
+  onboarding3,
+  onboarding4
+}
 
 export const onboarding = [
   {
     id: 1,
     title: 'Welcome to GreenSpace',
     description: 'Explore smarter ways to care for the environment with the power of AI and technology.',
-    image: null
+    image: images.onboarding1
   },
   {
     id: 2,
     title: 'Analyze Your Environment',
     description: 'Use your camera to capture and analyze aspects of your surroundings — air, waste, greenery, and more.',
-    image: null
+    image: images.onboarding2
   },
   {
     id: 3,
     title: 'Store & Share with the World',
     description: 'Save environmental data securely to IPFS and contribute to global awareness.',
-    image: null
+    image: images.onboarding3
   },
   {
     id: 4,
     title: 'Be Part of the Change',
     description: 'Join a growing community that takes action for a cleaner, greener planet.',
-    image: null
+    image: images.onboarding4
   },
 ];
 

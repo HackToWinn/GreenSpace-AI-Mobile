@@ -25,8 +25,8 @@ const Onboarding = () => {
         activeDot={<View className='mx-1 h-[8px] w-[32px] rounded-full bg-primary-500'></View>}
         onIndexChanged={(index) => setActiveIndex(index)}>
         {onboarding.map((item, index) => (
-          <View key={index} className='flex justify-center items-center p-1'>
-            {/* <Image source={require('@/assets/icons/ios-light.png')} className='w-full h-64 mb-4' /> */}
+          <View key={index} className='flex-1 justify-center items-center p-1'>
+            <Image source={item.image} className='w-[300px] h-[300px]' />
             <View className='mt-10 flex w-full flex-row items-center justify-center'>
               <Text className='font-Bold text-3xl text-center mb-4'>{item.title}</Text>
             </View>
