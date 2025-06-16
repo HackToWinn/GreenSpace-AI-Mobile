@@ -108,16 +108,18 @@ export default function Home() {
               <Text className="mt-2 text-gray-600">Loading map...</Text>
             </View>
           ) : location ? (
-            <MapView accessibilityLanguage="id" style={{ flex: 1 }} initialRegion={getMapRegion()} region={getMapRegion()} showsUserLocation={true} showsMyLocationButton={true} followsUserLocation={false}>
-              <Marker
-                coordinate={{
-                  latitude: location.latitude,
-                  longitude: location.longitude
-                }}
-                title="Your Current Location"
-                description={location.address || 'Current position'}
-              />
-            </MapView>
+            <></>
+            // <MapView accessibilityLanguage="id" style={{ flex: 1 }}  initialRegion={getMapRegion()} region={getMapRegion()} showsUserLocation={true} showsMyLocationButton={true} followsUserLocation={false}>
+            //   <UrlTile urlTemplate="https://a.tile.openstreetmap.org/{z}/{x}/{y}.png" maximumZ={19} flipY={false} />
+            //   <Marker
+            //     coordinate={{
+            //       latitude: location.latitude,
+            //       longitude: location.longitude
+            //     }}
+            //     title="Your Current Location"
+            //     description={location.address || 'Current position'}
+            //   />
+            // </MapView>
           ) : (
             <View className="flex-1 justify-center items-center bg-gray-100">
               <Ionicons name="location-outline" size={40} color="#9CA3AF" />

@@ -16,7 +16,7 @@ const listTabs: TabBarItemProps[] = [
   },
   {
     iconName: 'bar-chart-outline',
-    label: 'Statistic',
+    label: 'Trend',
     size: 26,
     IconComponent: Ionicons
   },

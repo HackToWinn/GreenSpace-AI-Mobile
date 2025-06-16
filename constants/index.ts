@@ -1,3 +1,4 @@
+import 'react-native-get-random-values';
 import { DashboardCardProps } from '@/lib/types';
 import { router } from 'expo-router';
 import onboarding1 from '@/assets/images/onboarding1.png';
