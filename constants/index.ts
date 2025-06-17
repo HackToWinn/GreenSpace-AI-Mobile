@@ -78,8 +78,8 @@ export const reports: ReportCardProps[] = [
     image: images.report1,
     userProfile: images.profile,
     username: 'Hanif Ahmad',
-    date: 'June 10, 2023',
-    title: 'Air Pollution',
+    date: 'June 11, 2025',
+    title: 'Air Pollution in Balikpapan has decreased by 6%',
     description: 'High levels of air pollution can cause respiratory issues and damage the environment.',
     location: 'Balikpapan, Indonesia',
     commentsCount: 12
@@ -90,8 +90,8 @@ export const reports: ReportCardProps[] = [
     image: images.report1,
     userProfile: images.profile,
     username: 'Hanif Ahmad',
-    date: 'June 11, 2023',
-    title: 'Air Pollution',
+    date: 'June 8, 2025',
+    title: 'WARNING! Air Pollution in Balikpapan has increased up to 10%',
     description: 'High levels of air pollution can cause respiratory issues and damage the environment.',
     location: 'Balikpapan, Indonesia',
     commentsCount: 12

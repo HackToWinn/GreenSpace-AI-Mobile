@@ -54,7 +54,7 @@ export interface ReportCardProps {
 	username: string;
 	date: string;
 	title: string;
-	description: string;
-	location: string;
-	commentsCount: number;
+	description?: string;
+	location?: string;
+	commentsCount?: number;
 }

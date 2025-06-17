@@ -2,7 +2,7 @@ import { ReportCardProps } from "@/lib/types";
 import { Ionicons } from "@expo/vector-icons";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 
-const ReportCardComponent = ({onPress, image, userProfile, username, date, title, description, location, commentsCount}: ReportCardProps) => {
+const ReportsPageCardComponent = ({ onPress, image, userProfile, username, date, title, description, location, commentsCount }: ReportCardProps) => {
   return (
     <TouchableOpacity onPress={onPress} className='w-[320px] h-[350px] p-4 flex flex-col gap-y-6 bg-[#FBFDFC] rounded-2xl border border-gray-300 shadow-md shadow-neutral-400'>
       <Image source={image} className='w-full h-[12rem] bg-gray-300 rounded-lg' />
@@ -37,4 +37,24 @@ const ReportCardComponent = ({onPress, image, userProfile, username, date, title
   )
 };
 
-export const ReportCard = ReportCardComponent
+const ReportsCardComponent = ({ onPress, image, userProfile, username, date, title }: ReportCardProps) => {
+  return (
+    <TouchableOpacity onPress={onPress} className='w-full p-4 bg-white rounded-2xl border border-gray-200 shadow-md shadow-neutral-400'>
+      <View className='flex flex-row gap-x-4 items-center'>
+        <Image source={image} className='w-24 h-24 rounded-lg bg-gray-200' />
+        <View className='flex-1 flex-col gap-y-3'>
+          <Text className='text-xl font-Bold' numberOfLines={2}>{title}</Text>
+          <View className='flex flex-row justify-between items-center'>
+            <View className='max-w-[45%] flex-1 flex-row gap-x-2'>
+              <Image source={userProfile} className='w-6 h-6 rounded-full bg-gray-200' />
+              <Text className="text-md text-primary-600 font-SemiBold" numberOfLines={1}>{username}</Text>
+            </View>
+            <Text className="max-w-[50%] text-md text-gray-500 font-SemiBold" numberOfLines={1}>{date}</Text>
+          </View>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+}
+
+export {ReportsPageCardComponent, ReportsCardComponent}
