@@ -1,4 +1,4 @@
-import { Ed25519KeyIdentity } from 'df';
+import { Ed25519KeyIdentity } from '@dfinity/identity';
 import { Ionicons } from '@expo/vector-icons';
 import { Linking } from 'react-native';
 import CustomButton from './CustomButton';
