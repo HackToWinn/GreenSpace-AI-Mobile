@@ -1,3 +1,4 @@
+import AfterLogin from '@/components/AfterLogin';
 import Layout from '@/components/Layout';
 import TooltipContent from '@/components/TooltipContent';
 import WalletCardComponent from '@/components/WalletCardComponent';
@@ -17,27 +18,15 @@ export default function Profile() {
 
   return (
     <Layout>
-      <Tooltip
-        isVisible={tooltipStep === 1}
-        placement='center'
-        useReactNativeModal={true}
-        contentStyle={{ height: 184 }}
-        content={
-          <TooltipContent
-            title='Welcome to the Profile Page'
-            description='This is the profile page, where you can view your profile information and manage your ICP wallet & settings.'
-            buttonText='Got it'
-            onButtonPress={() => setTooltipStep(0)}
-          />
-        }
-        onClose={() => setTooltipStep(0)}>
+      <AfterLogin />
+      <Tooltip isVisible={tooltipStep === 1} placement="center" useReactNativeModal={true} contentStyle={{ height: 184 }} content={<TooltipContent title="Welcome to the Profile Page" description="This is the profile page, where you can view your profile information and manage your ICP wallet & settings." buttonText="Got it" onButtonPress={() => setTooltipStep(0)} />} onClose={() => setTooltipStep(0)}>
         <View />
       </Tooltip>
       <View className="flex-1 items-center mt-4 ">
         {/* <Image source={{ uri: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fid.pinterest.com%2Fpin%2F804174077250339329%2F&psig=AOvVaw32AGrM95BZmHAGePXgh9Tg&ust=1749245070149000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCPDs4Oqb240DFQAAAAAdAAAAABAE' }} className="w-24 h-24 rounded-full mb-4" /> */}
         <View className="w-24 h-24 rounded-full mb-4 bg-primary-900"></View>
         <Text className="text-2xl font-Bold text-gray-800">Hanif Ahmad</Text>
-        <View className='flex flex-row justify-center items-center gap-x-1 mb-6'>
+        <View className="flex flex-row justify-center items-center gap-x-1 mb-6">
           <Text className="text-sm font-SemiBold text-black">23</Text>
           <Text className="text-sm font-Regular text-black">Total Reports</Text>
         </View>

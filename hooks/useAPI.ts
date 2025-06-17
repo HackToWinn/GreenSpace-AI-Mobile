@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 
-export function useBackend(){
+export function useAPI(){
     const [isLoading, setIsLoading] = useState<boolean>(false);
     
     const createReport = async ({ body}: {  body: FormData}) => {
@@ -22,16 +22,14 @@ export function useBackend(){
             console.error('Failed to create report:', error);           
         }
     }    
-    const getTotalReport = async () => {
+    const getReports = async () => {
         setIsLoading(true);
         try {
-            const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}report/total-report`);
+            const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/report`);
             if (!response.ok) {
                 throw new Error(`Error fetching reports: ${response.status} ${response.statusText}`);
             }
-            const data = await response.json();
-            setIsLoading(false);
-            return data;
+            return response.json();
         } catch (error) {
             setIsLoading(false);
             console.error('Failed to fetch reports:', error);
@@ -42,7 +40,7 @@ export function useBackend(){
     return {
         isLoading,
         createReport,
-        getTotalReport
+        getReports
         // getReportThisWeek,
         // getReports,
         // getTotalReportThisWeek,
