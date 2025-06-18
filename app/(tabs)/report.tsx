@@ -60,7 +60,8 @@ export default function Report() {
               snapToAlignment="start"
               data={reports}
               keyExtractor={(item) => item.id}
-              renderItem={({ item }) => <ReportsPageCardComponent {...item} />}
+              renderItem={({ item }) => <ReportsPageCardComponent {...item}/>}
+              style={{ marginBottom: 100 }}
             />
           </View>
         </View>

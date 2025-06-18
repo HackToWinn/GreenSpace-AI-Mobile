@@ -56,5 +56,13 @@ export interface ReportCardProps {
 	title: string;
 	description?: string;
 	location?: string;
-	commentsCount?: number;
+	comments?: ReportComments[];
+}
+
+export interface ReportComments {
+  id: string;
+  userProfile: ImageSourcePropType;
+  username: string;
+  date: string;
+  comment: string;
 }

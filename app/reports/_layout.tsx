@@ -6,6 +6,7 @@ export default function ReportsLayout() {
       <Stack.Screen name='latest/index' options={{ title: 'Latest Reports', headerTitleStyle: { fontFamily: 'JakartaSans-Bold' } }} />
       <Stack.Screen name='nearby/index' options={{ title: 'Nearby Reports', headerTitleStyle: { fontFamily: 'JakartaSans-Bold' } }} />
       <Stack.Screen name='your/index' options={{ title: 'Your Reports', headerTitleStyle: { fontFamily: 'JakartaSans-Bold' } }} />
+      <Stack.Screen name='[id]/index' options={{ title: '' }} />
     </Stack>
   )
 }
