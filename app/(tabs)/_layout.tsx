@@ -106,6 +106,7 @@ export default function LayoutTabs() {
 
         <Tabs.Screen name="setting" options={{ href: null }} />
         <Tabs.Screen name="feedback" options={{ href: null }} />
+        <Tabs.Screen name="Reward" options={{ href: null }} />
         <Tabs.Screen name="faq" options={{ href: null }} />
       </Tabs>
     </CameraContext.Provider>
