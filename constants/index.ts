@@ -1,16 +1,20 @@
 import 'react-native-get-random-values';
-import { DashboardCardProps } from '@/lib/types';
+import { DashboardCardProps, ReportCardProps } from '@/lib/types';
 import { router } from 'expo-router';
 import onboarding1 from '@/assets/images/onboarding1.png';
 import onboarding2 from '@/assets/images/onboarding2.png';
 import onboarding3 from '@/assets/images/onboarding3.png';
 import onboarding4 from '@/assets/images/onboarding4.png';
+import report1 from '@/assets/images/reports/report1.png';
+import profile from '@/assets/images/profile/profil_gg.jpg';
 
 const images = {
   onboarding1,
   onboarding2,
   onboarding3,
-  onboarding4
+  onboarding4,
+  report1,
+  profile,
 }
 
 export const onboarding = [
@@ -67,3 +71,59 @@ export const dashboardCards: DashboardCardProps[] = [
   },
 ];
 
+export const reports: ReportCardProps[] = [
+  {
+    id: '1',
+    onPress: () => router.push('/reports/1' ),
+    image: images.report1,
+    userProfile: images.profile,
+    username: 'Hanif Ahmad',
+    date: 'June 11, 2025',
+    title: 'Air Pollution in Balikpapan has decreased by 6%',
+    description: 'High levels of air pollution can cause respiratory issues and damage the environment.',
+    location: 'Balikpapan, Kalimantan Timur, Indonesia',
+    comments: [
+      {
+        id: '1',
+        userProfile: images.profile,
+        username: 'John Doe',
+        date: '1 days ago',
+        comment: 'I agree with this report. Air pollution is a serious problem that needs to be addressed.'
+      },
+      {
+        id: '2',
+        userProfile: images.profile,
+        username: 'Jane Smith',
+        date: '2 days ago',
+        comment: 'It’s good to hear things are improving in Balikpapan!'
+      }
+    ]
+  },
+  {
+    id: '2',
+    onPress: () => router.push('/reports/2'),
+    image: images.report1,
+    userProfile: images.profile,
+    username: 'Hanif Ahmad',
+    date: 'June 8, 2025',
+    title: 'WARNING! Air Pollution in Balikpapan has increased up to 10%',
+    description: 'High levels of air pollution can cause respiratory issues and damage the environment.',
+    location: 'Balikpapan, Indonesia',
+    comments: [
+      {
+        id: '1',
+        userProfile: images.profile,
+        username: 'John Doe',
+        date: '1 days ago',
+        comment: 'I agree with this report. Air pollution is a serious problem that needs to be addressed.'
+      },
+      {
+        id: '2',
+        userProfile: images.profile,
+        username: 'Jane Smith',
+        date: '2 days ago',
+        comment: 'It’s good to hear things are improving in Balikpapan!'
+      }
+    ]
+  },
+]
