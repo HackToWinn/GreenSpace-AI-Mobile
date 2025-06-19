@@ -1,15 +1,19 @@
 import { Ed25519KeyIdentity } from '@dfinity/identity';
 import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Buffer } from 'buffer';
+
 import { Linking } from 'react-native';
 import CustomButton from './CustomButton';
 
 export async function goToLogin() {
   const sessionIdentity = await Ed25519KeyIdentity.generate();
+  await AsyncStorage.setItem('identity-key', JSON.stringify(sessionIdentity.toJSON()));
   const publicKeyDer = sessionIdentity.getPublicKey().toDer();
   const publicKeyHex = Buffer.from(publicKeyDer).toString('hex');
+
   // const scheme = process.env.EXPO_PUBLIC_SCHEME;
-  const scheme = 'exp://192.168.1.12:8081/--/(tabs)/profile';
+  const scheme = 'greenspace://(tabs)/profile';
   const url = 'https://greenspace.hacktowin.systems/login';
 
   return Linking.openURL(`${url}?sessionKey=${publicKeyHex}&scheme=${scheme}`);

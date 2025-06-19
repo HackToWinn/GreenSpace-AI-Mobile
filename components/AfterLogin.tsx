@@ -1,4 +1,6 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { Modal, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { goToLogin } from './LoginButton';
@@ -6,16 +8,33 @@ import { goToLogin } from './LoginButton';
 export default function AfterLogin() {
   const params = useLocalSearchParams();
   const router = useRouter();
+  const [isSuccess, setIsSuccess] = useState(false);
 
-  if (!params.delegation) {
-    return;
-  }
+  useEffect(() => {
+    if (params.delegation) {
+      const saveDelegation = async () => {
+        try {
+          const delegationParam = params.delegation;
 
-  const isSuccess = true;
+          await AsyncStorage.setItem('delegation', delegationParam as string);
+          const identityJson = await AsyncStorage.getItem('identity-key');
+          if (!identityJson) throw new Error('Missing session identity key');
+          setIsSuccess(true);
+        } catch (e) {
+          console.error('Failed to save delegation', e);
+          setIsSuccess(false);
+        }
+      };
+      saveDelegation();
+    }
+  }, [params.delegation]);
+
   const message = params.message || (isSuccess ? 'You have logged in successfully!' : 'Login failed. Please try again.');
 
-  const handleClose = () => router.back();
+  const handleClose = () => router.replace('/(tabs)/profile');
   const handleRetry = () => goToLogin();
+
+  if (!params.delegation) return null;
 
   return (
     <Modal animationType="fade" transparent visible>

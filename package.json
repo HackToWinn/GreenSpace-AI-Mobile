@@ -8,12 +8,14 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
+    "postinstall": "patch-package",
     "lint": "expo lint"
   },
   "dependencies": {
     "@babel/runtime": "^7.27.6",
     "@dfinity/identity": "^2.4.1",
     "@expo/vector-icons": "^14.1.0",
+    "@react-native-async-storage/async-storage": "^2.2.0",
     "@react-navigation/bottom-tabs": "^7.3.10",
     "@react-navigation/elements": "^2.3.8",
     "@react-navigation/native": "^7.1.6",
@@ -25,6 +27,7 @@
     "buffer": "^6.0.3",
     "console-browserify": "^1.2.0",
     "constants-browserify": "^1.0.0",
+    "crypto-js": "^4.2.0",
     "dns.js": "^1.0.1",
     "domain-browser": "^1.2.0",
     "events": "^1.1.1",
@@ -40,6 +43,7 @@
     "expo-location": "~18.1.5",
     "expo-media-library": "^17.1.7",
     "expo-router": "~5.1.0",
+    "expo-secure-store": "^14.2.3",
     "expo-splash-screen": "~0.30.8",
     "expo-status-bar": "~2.2.3",
     "expo-symbols": "~0.4.4",
@@ -87,6 +91,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
+    "@types/crypto-js": "^4.2.2",
     "@types/react": "~19.0.10",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~9.2.0",

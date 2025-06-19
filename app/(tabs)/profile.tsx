@@ -2,8 +2,10 @@ import AfterLogin from '@/components/AfterLogin';
 import Layout from '@/components/Layout';
 import TooltipContent from '@/components/TooltipContent';
 import WalletCardComponent from '@/components/WalletCardComponent';
+import loadIdentity from '@/lib/loadIdentity';
 import { FontAwesome, MaterialIcons, SimpleLineIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+
 import { useEffect, useState } from 'react';
 import { Pressable, Text, View } from 'react-native';
 import Tooltip from 'react-native-walkthrough-tooltip';
@@ -15,7 +17,13 @@ export default function Profile() {
   useEffect(() => {
     setTooltipStep(1);
   }, []);
+  async function debugIdentity() {
+    const identity = await loadIdentity();
+    console.log('identity:', identity);
+  }
 
+
+  console.log('identity:', debugIdentity());
   return (
     <Layout>
       <AfterLogin />
