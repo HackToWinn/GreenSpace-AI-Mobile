@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import { TouchableOpacityProps } from 'react-native';
+import { TouchableOpacityProps, ImageSourcePropType } from 'react-native';
 
 export type TabBarItemProps = {
 	iconName: string;
@@ -44,4 +44,25 @@ export interface TooltipProps {
 	description: string;
 	buttonText: string;
 	onButtonPress: () => void;
+}
+
+export interface ReportCardProps {
+	id: string;
+	onPress?: () => void;
+	image: ImageSourcePropType;
+	userProfile: ImageSourcePropType;
+	username: string;
+	date: string;
+	title: string;
+	description?: string;
+	location?: string;
+	comments?: ReportComments[];
+}
+
+export interface ReportComments {
+  id: string;
+  userProfile: ImageSourcePropType;
+  username: string;
+  date: string;
+  comment: string;
 }

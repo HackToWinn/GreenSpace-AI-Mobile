@@ -521,7 +521,7 @@ export default function Statistics() {
 
   return (
     <Layout className="pt-4 h-full">
-      <Tooltip isVisible={tooltipStep === 1} placement="center" useReactNativeModal={true} contentStyle={{ height: 184 }} content={<TooltipContent title="Welcome to the Statistic Page" description="This is where you can see the statistics of the reports you have made and trends of the reports." buttonText="Got it" onButtonPress={() => setTooltipStep(0)} />} onClose={() => setTooltipStep(0)}>
+      <Tooltip isVisible={tooltipStep === 1} placement="center" useReactNativeModal={true} contentStyle={{ height: 184 }} content={<TooltipContent title="Welcome to the Trends Page" description="This is where you can see the statistics of the reports you have made and trends of the reports." buttonText="Got it" onButtonPress={() => setTooltipStep(0)} />} onClose={() => setTooltipStep(0)}>
         <View />
       </Tooltip>
       {/* Konten scrollable */}
@@ -529,7 +529,7 @@ export default function Statistics() {
         <View id="trends">
           <View>
             <View className="px-8">
-              <Text className="font-Bold text-4xl mb-2">Report Trends</Text>
+              <Text className="font-Bold text-4xl mb-2">Trends Metric</Text>
 
               <View className="flex-row items-center mb-4">
                 <View className="bg-green-100 px-2 py-1 rounded-lg flex-row items-center">
