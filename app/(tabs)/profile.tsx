@@ -6,6 +6,7 @@ import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Pressable, Text, View } from 'react-native';
 import Tooltip from 'react-native-walkthrough-tooltip';
+import ProfilePicture from '@/components/ProfilePicture';
 
 export default function Profile() {
   const router = useRouter();
@@ -34,8 +35,7 @@ export default function Profile() {
         <View />
       </Tooltip>
       <View className="flex-1 items-center mt-4 ">
-        {/* <Image source={{ uri: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fid.pinterest.com%2Fpin%2F804174077250339329%2F&psig=AOvVaw32AGrM95BZmHAGePXgh9Tg&ust=1749245070149000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCPDs4Oqb240DFQAAAAAdAAAAABAE' }} className="w-24 h-24 rounded-full mb-4" /> */}
-        <View className="w-24 h-24 rounded-full mb-4 bg-primary-900"></View>
+        <ProfilePicture />
         <Text className="text-2xl font-Bold text-gray-800">Hanif Ahmad</Text>
         <View className='flex flex-row justify-center items-center gap-x-1 mb-6'>
           <Text className="text-sm font-SemiBold text-black">23</Text>
@@ -67,5 +67,6 @@ export default function Profile() {
         </View>
       </View>
     </Layout>
-  );
-}
+  )
+};
+

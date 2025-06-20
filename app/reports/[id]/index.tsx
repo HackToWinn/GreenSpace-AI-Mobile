@@ -1,8 +1,8 @@
+import NotFoundScreen from "@/app/+not-found";
 import CommentBox from "@/components/CommentBox";
-import CustomButton from "@/components/CustomButton";
 import { reports } from "@/constants";
 import { Ionicons } from "@expo/vector-icons";
-import { Link, useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import { View, Text, Image, ScrollView, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform } from "react-native"
 
 const ReportsDetail = () => {
@@ -11,15 +11,7 @@ const ReportsDetail = () => {
   const report = reports.find((r) => r.id === id);
 
   if (!report) {
-    return (
-      <View className="flex-1 px-12 justify-center items-center bg-white">
-        <Text className="text-xl font-Bold text-red-500">Report not found</Text>
-        <Text className="text-md text-gray-500">The report you&apos;re looking for doesn&apos;t exist.</Text>
-        <Link href="/(tabs)/report" asChild>
-          <CustomButton title="Go back" bgVariant="primary" textVariant="secondary" className="mt-4 w-24" IconLeft={() => <Ionicons name='arrow-back-outline' size={24} color='white' className='mr-2' />} />
-        </Link>
-      </View>
-    );
+    NotFoundScreen();
   }
 
   return (
