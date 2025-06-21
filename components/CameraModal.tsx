@@ -1,5 +1,5 @@
-import { useBackend } from '@/hooks/useBackend';
 import { useCurrentLocation } from '@/hooks/useCurrentLocation';
+import { createReport } from '@/lib/api';
 import { Ionicons } from '@expo/vector-icons';
 import { CameraType, CameraView, useCameraPermissions } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
@@ -20,7 +20,6 @@ export default function CameraModal({ visible, onClose }: CameraModalProps) {
   const [mediaPermission, requestMediaPermission] = MediaLibrary.usePermissions();
   const cameraRef = useRef<CameraView>(null);
   const { location } = useCurrentLocation();
-  const { createReport } = useBackend();
   const handleClose = () => {
     setCapturedImage(null);
     onClose();

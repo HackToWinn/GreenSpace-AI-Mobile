@@ -3,7 +3,6 @@ import TooltipContent from '@/components/TooltipContent';
 import { useEffect, useRef, useState } from 'react';
 import { Animated, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { CurveType, LineChart } from 'react-native-gifted-charts';
-import MapView, { Marker } from 'react-native-maps';
 import Tooltip from 'react-native-walkthrough-tooltip';
 
 export default function Statistics() {
@@ -596,7 +595,7 @@ export default function Statistics() {
           <Text className="font-Bold text-4xl mb-4">Statistic</Text>
           {/* Map Card */}
           <View className="rounded-xl overflow-hidden border border-gray-200 mb-6" style={{ height: 180 }}>
-            <MapView
+            {/* <MapView
               accessibilityLanguage="id"
               style={{ flex: 1 }}
               initialRegion={{
@@ -606,7 +605,7 @@ export default function Statistics() {
                 longitudeDelta: 0.05
               }}>
               <Marker coordinate={{ latitude: -6.2, longitude: 106.816666 }} title="Area Rawan Bencana" description="Wilayah dengan tingkat risiko bencana tinggi" />
-            </MapView>
+            </MapView> */}
           </View>
 
           {/* Line Chart Container */}
