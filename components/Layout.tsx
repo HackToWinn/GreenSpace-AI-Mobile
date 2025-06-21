@@ -35,7 +35,7 @@ export default function Layout({
             </Pressable>
 
             <Pressable
-              onPress={() => router.push('/(auth)/profileSetup')}
+              onPress={() => router.push('/(tabs)/Reward')}
               className="p-2 rounded-full"
               style={({ pressed }) => ({
                 opacity: pressed ? 0.6 : 1,
