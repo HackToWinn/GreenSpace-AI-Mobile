@@ -19,5 +19,6 @@ export async function goToLogin() {
 }
 
 export default function LoginButton() {
+  
   return <CustomButton onPress={goToLogin} title={'Sign in with Internet Identity'} bgVariant={'primary'} textVariant={'secondary'} IconLeft={() => <Ionicons name="log-in" size={22} color={'white'} className="mr-2" />} className="mb-4" />;
 }
