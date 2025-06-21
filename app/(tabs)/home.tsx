@@ -5,11 +5,11 @@ import TooltipContent from '@/components/TooltipContent';
 import { dashboardCards as staticDashboardCards } from '@/constants';
 import { useCamera } from '@/context/CameraContext';
 import { useCurrentLocation } from '@/hooks/useCurrentLocation';
-import { getTotalReportsThisWeek } from '@/lib/api';
+import { getMostReportedCategories, getReports, getWeekReports } from '@/lib/api';
 import { Ionicons } from '@expo/vector-icons';
+import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
 import Tooltip from 'react-native-walkthrough-tooltip';
 
 export default function Home() {
@@ -18,30 +18,59 @@ export default function Home() {
   const [isLoading, setLoading] = useState(false);
   const { openCameraModal } = useCamera();
   const [tooltipStep, setTooltipStep] = useState(0);
+  const { data: reportsData, error: reportsError } = useQuery({
+  queryKey: ['reports'],
+  queryFn: getReports
+});
+  const { data: weekReportsData, error: weekReportsError } = useQuery({
+  queryKey: ['week-reports'],
+  queryFn: getWeekReports
+});
+  const { data: mostCategoryData, error: mostCategoryError } = useQuery({
+  queryKey: ['most-category-reports'],
+  queryFn: getMostReportedCategories
+});
+
+useEffect(() => {
+  if (weekReportsData && reportsData) {
+    const reportsThisWeek = weekReportsData.reports.length; 
+    const reports = reportsData.reports.length; 
+    
+    const mostCategory = mostCategoryData?.reports?.category|| 'Unknown';
+
+    setDashboardCards(prevCards =>
+      prevCards.map(card => {
+        if (card.title === 'Total Reports') {
+          return {
+            ...card,
+            value: reports,
+            isLoading: false
+          };
+        } else if (card.title === 'Reports This Week') {
+          return {
+            ...card,
+            value: reportsThisWeek,
+            isLoading: false
+          };
+        } else if (card.title === 'Most Reported Category') {
+          return {
+            ...card,
+            value: mostCategory,
+            isLoading: false
+          };
+        }
+        return card;
+      })
+    );
+  }
+}, [weekReportsData, weekReportsError, reportsData, reportsError]);
+
+
 
   useEffect(() => {
     setTooltipStep(1);
-
-    const fetchReportsThisWeek = async () => {
-      setLoading(true);
-      const total = await getTotalReportsThisWeek();
-
-      setDashboardCards(prevCards =>
-        prevCards.map(card =>
-          card.title === 'Reports This Week'
-            ? {
-              ...card,
-              value: total !== null ? total : '?'
-            }
-            : card
-        )
-      );
-
-      setLoading(false);
-    };
-
-    fetchReportsThisWeek();
   }, []);
+  
 
   return (
     <Layout>

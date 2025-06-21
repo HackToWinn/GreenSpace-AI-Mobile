@@ -1,14 +1,19 @@
+import AfterLogin from "@/components/AfterLogin";
 import Layout from "@/components/Layout";
 import ProfilePicture from "@/components/ProfilePicture";
+import { useProfile } from "@/context/ProfileContext";
+import { registerUser } from "@/lib/api";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { router } from "expo-router";
+import { JSX, useState } from "react";
 import {
+    Alert,
     SafeAreaView,
     Text,
-    View,
     TextInput,
     TouchableOpacity,
-    Alert
+    View
 } from "react-native";
-import { JSX, useState } from "react";
 
 interface ValidationErrors {
     name?: string;
@@ -18,7 +23,9 @@ interface ValidationErrors {
 export default function profileSetup(): JSX.Element {
     const [name, setName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
+    const [imageUri, setImageUri] = useState<string | null>(null);
     const [errors, setErrors] = useState<ValidationErrors>({});
+    const {setProfile} = useProfile();
 
     // Email validation regex
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -43,17 +50,36 @@ export default function profileSetup(): JSX.Element {
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
+    
 
-    const handleSubmit = (): void => {
+    const handleSubmit = async (): Promise<void> => {
         if (validateForm()) {
-            // Form is valid, proceed with submission
-            Alert.alert(
+            await AsyncStorage.setItem('profile-data', JSON.stringify({ pictureCid: imageUri, username: name, email }))
+            setProfile({ pictureCid: imageUri, username: name, email });
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('email', email);
+            if (imageUri) {
+                const fileExtension = imageUri.split('.').pop()?.toLowerCase() || 'jpg';
+                const mimeType = fileExtension === 'png' ? 'image/png' : 
+                                 fileExtension === 'gif' ? 'image/gif' : 
+                                 fileExtension === 'webp' ? 'image/webp' : 'image/jpeg';
+
+                formData.append('picture', {
+                    uri: imageUri,
+                    type: mimeType,
+                    name: `profile.${fileExtension}`,
+                } as unknown as Blob);
+            }
+
+            await registerUser({body: formData});
+
+             Alert.alert(
                 "Success",
                 "Profile setup completed successfully!",
                 [{ text: "OK" }]
             );
-            console.log("Name:", name);
-            console.log("Email:", email);
+            router.push('/(tabs)/home');
         }
     };
 
@@ -74,17 +100,18 @@ export default function profileSetup(): JSX.Element {
     };
 
     return (
-        <Layout>
+        <Layout disableHeader={true} >
+            <AfterLogin/>
             <SafeAreaView className="px-4">
                 <Text className="font-bold text-4xl mb-2">Profile Setup</Text>
 
                 <View className="items-center mt-10 mb-6">
-                    <ProfilePicture />
+                    <ProfilePicture externalSetUri={setImageUri}  />
                 </View>
 
                 <View className="space-y-4">
                     <View className="mb-5">
-                        <Text className="text-base font-medium mb-1">Name</Text>
+                        <Text className="text-base font-medium mb-1">Name<Text className="text-red-500">*</Text></Text>
                         <TextInput
                             value={name}
                             onChangeText={handleNameChange}
@@ -101,7 +128,7 @@ export default function profileSetup(): JSX.Element {
                     </View>
 
                     <View>
-                        <Text className="text-base font-medium mb-1">Email</Text>
+                        <Text className="text-base font-medium mb-1">Email <Text className="text-red-500">*</Text></Text>
                         <TextInput
                             value={email}
                             onChangeText={handleEmailChange}

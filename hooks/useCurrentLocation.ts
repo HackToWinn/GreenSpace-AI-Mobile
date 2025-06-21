@@ -62,7 +62,6 @@ export const useCurrentLocation = () => {
 					});
 				}
 			} catch (reverseError) {
-				console.log('Reverse geocoding failed:', reverseError);
 				setLocation({
 					latitude,
 					longitude,

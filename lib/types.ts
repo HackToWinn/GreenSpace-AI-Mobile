@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import { TouchableOpacityProps, ImageSourcePropType } from 'react-native';
+import { ImageSourcePropType, TouchableOpacityProps } from 'react-native';
 
 export type TabBarItemProps = {
 	iconName: string;
@@ -65,4 +65,15 @@ export interface ReportComments {
   username: string;
   date: string;
   comment: string;
+}
+export interface UserData{
+  pictureCid: string | null;
+  username: string;
+  email: string;
+}
+export interface ProfileContextProps{
+  profile: UserData | null;
+  setProfile: (data: UserData | null) => void;
+  isLoading: boolean;
+  setIsLoading: (loading: boolean) => void;
 }

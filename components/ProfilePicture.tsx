@@ -1,15 +1,23 @@
-import { View, Image, TouchableOpacity, Modal } from 'react-native'
-import CustomButton from './CustomButton'
-import { Ionicons } from '@expo/vector-icons'
 import { useImagePicker } from '@/hooks/useImagePicker';
+import { Ionicons } from '@expo/vector-icons';
+import { useEffect } from 'react';
+import { Image, Modal, TouchableOpacity, View } from 'react-native';
+import CustomButton from './CustomButton';
 
-const ProfilePicture = () => {
+const ProfilePicture = ({externalSetUri, source} : { externalSetUri?: (uri: string | null) => void, source: string }) => {
   const { imageUri, pickFromGallery, takePhoto, modalVisible, setModalVisible } = useImagePicker();
+
+  useEffect(() => {
+    if (externalSetUri) {
+      externalSetUri(imageUri);
+    }
+  }, [imageUri, externalSetUri]);
+
 
   return (
     <>
       <View className='relative'>
-        <Image source={imageUri ? { uri: imageUri } : require('@/assets/images/profile/profil_gg.jpg')} className="w-24 h-24 rounded-full mb-4" />
+        <Image source={imageUri ? { uri: imageUri } : {uri:source}} className="w-24 h-24 rounded-full mb-4" />
         <TouchableOpacity onPress={() => setModalVisible(true)} className='absolute bottom-4 right-0 bg-primary-500 w-6 h-6 rounded-full items-center justify-center'>
           <Ionicons name="pencil-outline" size={16} color="#fff" />
         </TouchableOpacity>

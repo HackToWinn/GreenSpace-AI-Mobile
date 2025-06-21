@@ -48,14 +48,14 @@ export const dashboardCards: DashboardCardProps[] = [
   {
     onPress: () => router.push('/(tabs)/report'),
     title: 'Total Reports',
-    value: 150,
+    value: 0,
     iconName: 'newspaper-outline',
     CTAIcon: true,
   },
   {
     onPress: () => router.push('/(tabs)/report'),
     title: 'Reports This Week',
-    value: 10,
+    value: 0,
     iconName: 'calendar-outline',
     CTAIcon: true,
   },
