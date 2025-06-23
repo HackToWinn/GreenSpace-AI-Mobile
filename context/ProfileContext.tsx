@@ -8,25 +8,6 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
     const [profile, setProfile] = useState<UserData | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    useEffect(() => {
-        const loadProfile = async () => {
-            setIsLoading(true);
-            try {
-                const storedProfile = await AsyncStorage.getItem("profile-data");
-                if (storedProfile) {
-                    setProfile(JSON.parse(storedProfile));
-                } else {
-                    setProfile({ pictureCid: null, username: "", email: "" });
-                }           
-            } catch (error) {
-                console.error("Failed to load profile data:", error);
-                setProfile({ pictureCid: null, username: "", email: "" });
-            } finally {
-                setIsLoading(false);
-            }
-        };
-        loadProfile();
-    }, []);
 
     return (
         <ProfileContext.Provider  value={{profile, setProfile, isLoading, setIsLoading} as ProfileContextProps}>

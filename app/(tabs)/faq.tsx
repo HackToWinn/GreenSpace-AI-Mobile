@@ -1,17 +1,10 @@
 import Layout from '@/components/Layout';
+import { faqs } from '@/lib/exampleData';
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { Link } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
-// Data FAQ
-const faqs = [
-  { question: 'How do I check my transaction history?', answer: "You can check your transaction history by navigating to the 'Statistic' tab from the main menu." },
-  { question: 'How to update my profile?', answer: "Go to the 'Profile' tab, then tap on 'Settings', and choose 'Edit Profile' to update your information." },
-  { question: 'Is my wallet secure?', answer: 'Yes, we use industry-standard encryption to protect your wallet. However, always be careful not to share your private keys.' }
-];
-
-// Komponen untuk setiap item FAQ
 const FaqItem = ({ question, answer }: { question: string; answer: string }) => {
   const [isOpen, setIsOpen] = useState(false);
 

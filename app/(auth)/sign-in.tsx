@@ -1,10 +1,13 @@
 import AuthLayout from '@/components/AuthLayout';
 import CustomButton from '@/components/CustomButton';
 import LoginButton from '@/components/LoginButton';
+import loadIdentity from '@/lib/loadIdentity';
 import { router } from 'expo-router';
+import { useEffect } from 'react';
 import { Image, Text } from 'react-native';
 
 const SignIn = () => {
+
   return (
     <AuthLayout>
       <Image source={require('@/assets/icons/ic-logo.png')} className='w-32 h-32 mb-4' />

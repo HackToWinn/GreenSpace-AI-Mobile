@@ -1,154 +1,206 @@
-import CustomButton from '@/components/CustomButton';
-import DashboardCard from '@/components/DashboardCard';
-import Layout from '@/components/Layout';
-import TooltipContent from '@/components/TooltipContent';
-import { dashboardCards as staticDashboardCards } from '@/constants';
-import { useCamera } from '@/context/CameraContext';
-import { useCurrentLocation } from '@/hooks/useCurrentLocation';
-import { getMostReportedCategories, getReports, getWeekReports } from '@/lib/api';
-import { Ionicons } from '@expo/vector-icons';
-import { useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
-import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
-import Tooltip from 'react-native-walkthrough-tooltip';
+import { Ionicons } from "@expo/vector-icons";
+import { useQuery } from "@tanstack/react-query";
+import { router } from "expo-router";
+import { useEffect, useState } from "react";
+import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
+import { LeafletView } from "react-native-leaflet-view";
+import Tooltip from "react-native-walkthrough-tooltip";
+
+import CustomButton from "@/components/CustomButton";
+import DashboardCard from "@/components/DashboardCard";
+import Layout from "@/components/Layout";
+import TooltipContent from "@/components/TooltipContent";
+import { dashboardCards as initialDashboardCards } from "@/constants";
+import { useCamera } from "@/context/CameraContext";
+import { useCurrentLocation } from "@/hooks/useCurrentLocation";
+import {
+  getMostReportedCategories,
+  getReports,
+  getWeekReports,
+} from "@/lib/api";
+import { eventBus } from "@/lib/eventBus";
+import { tooltipContents } from "@/lib/exampleData";
 
 export default function Home() {
-  const { location, loading, errorMsg, refreshLocation, getMapRegion } = useCurrentLocation();
-  const [dashboardCards, setDashboardCards] = useState(staticDashboardCards);
-  const [isLoading, setLoading] = useState(false);
+  const { location, loading, errorMsg, refreshLocation } = useCurrentLocation();
+  const [dashboardCards, setDashboardCards] = useState(initialDashboardCards);
   const { openCameraModal } = useCamera();
-  const [tooltipStep, setTooltipStep] = useState(0);
-  const { data: reportsData, error: reportsError } = useQuery({
-  queryKey: ['reports'],
-  queryFn: getReports
-});
-  const { data: weekReportsData, error: weekReportsError } = useQuery({
-  queryKey: ['week-reports'],
-  queryFn: getWeekReports
-});
-  const { data: mostCategoryData, error: mostCategoryError } = useQuery({
-  queryKey: ['most-category-reports'],
-  queryFn: getMostReportedCategories
-});
+  const [tooltipStep, setTooltipStep] = useState(1);
+  const tooltipVisible =
+    tooltipStep > 0 && tooltipStep <= tooltipContents.length;
 
-useEffect(() => {
-  if (weekReportsData && reportsData) {
-    const reportsThisWeek = weekReportsData.reports.length; 
-    const reports = reportsData.reports.length; 
-    
-    const mostCategory = mostCategoryData?.reports?.category|| 'Unknown';
+  // Queries
+  const { data: reportsData, refetch: refetchReports } = useQuery({
+    queryKey: ["reports"],
+    queryFn: getReports,
+  });
+  const { data: weekReportsData, refetch: refetchWeekReports } = useQuery({
+    queryKey: ["week-reports"],
+    queryFn: getWeekReports,
+  });
+  const { data: mostCategoryData, refetch: refetchMostCategory } = useQuery({
+    queryKey: ["most-category-reports"],
+    queryFn: getMostReportedCategories,
+  });
 
-    setDashboardCards(prevCards =>
-      prevCards.map(card => {
-        if (card.title === 'Total Reports') {
-          return {
-            ...card,
-            value: reports,
-            isLoading: false
-          };
-        } else if (card.title === 'Reports This Week') {
-          return {
-            ...card,
-            value: reportsThisWeek,
-            isLoading: false
-          };
-        } else if (card.title === 'Most Reported Category') {
-          return {
-            ...card,
-            value: mostCategory,
-            isLoading: false
-          };
-        }
-        return card;
-      })
-    );
-  }
-}, [weekReportsData, weekReportsError, reportsData, reportsError]);
-
-
-
+  // Refetch reports on report created
   useEffect(() => {
-    setTooltipStep(1);
+    const handler = () => {
+      refetchReports();
+      refetchWeekReports();
+      refetchMostCategory();
+    };
+    eventBus.on("report:created", handler);
+    return () => eventBus.off("report:created", handler);
   }, []);
-  
+
+  // Update dashboard cards
+  useEffect(() => {
+    if (weekReportsData && reportsData) {
+      const reports = reportsData.reports.length;
+      const reportsThisWeek = weekReportsData.reports.length;
+      const mostCategory = mostCategoryData?.category || "Unknown";
+
+      setDashboardCards((prev) =>
+        prev.map((card) => {
+          if (card.title === "Total Reports") {
+            return { ...card, value: reports, isLoading: false };
+          }
+          if (card.title === "Reports This Week") {
+            return { ...card, value: reportsThisWeek, isLoading: false };
+          }
+          if (card.title === "Most Reported Category") {
+            return { ...card, value: mostCategory, isLoading: false };
+          }
+          return card;
+        })
+      );
+    }
+  }, [weekReportsData, reportsData, mostCategoryData]);
 
   return (
     <Layout>
       <Tooltip
-        isVisible={tooltipStep === 1}
-        placement='center'
-        useReactNativeModal={true}
+        isVisible={tooltipVisible}
+        placement="center"
+        useReactNativeModal
         contentStyle={{ height: 170 }}
         content={
-          <TooltipContent
-            title='Welcome to the Homepage'
-            description='This is where you can see brief information about the environment around you.'
-            buttonText='Next'
-            onButtonPress={() => setTooltipStep(2)}
-          />
+          tooltipVisible ? (
+            <TooltipContent
+              title={tooltipContents[tooltipStep - 1].title}
+              description={tooltipContents[tooltipStep - 1].description}
+              buttonText={tooltipContents[tooltipStep - 1].buttonText}
+              onButtonPress={() =>
+                setTooltipStep(
+                  tooltipStep < tooltipContents.length ? tooltipStep + 1 : 0
+                )
+              }
+            />
+          ) : undefined
         }
-        onClose={() => setTooltipStep(0)}>
+        onClose={() => setTooltipStep(0)}
+      >
         <View />
       </Tooltip>
+
       <View className="flex flex-col items-start gap-y-4">
         <Text className="font-Bold text-4xl">Dashboard</Text>
+
+        {/* Location Section */}
         <View className="flex flex-row items-start gap-x-2">
-          <Ionicons name="location-outline" size={24} color={'#3E9E45'} className="mt-1" />
+          <Ionicons
+            name="location-outline"
+            size={24}
+            color="#3E9E45"
+            className="mt-1"
+          />
           <View className="flex flex-col pr-8">
             <View className="w-full flex flex-row items-center justify-between">
-              <Text className="font-SemiBold text-md text-primary-600">Your Location</Text>
-              <TouchableOpacity onPress={refreshLocation} className="p-1" disabled={loading}>
-                <Ionicons name={loading ? 'refresh' : 'refresh-outline'} size={18} color="#3E9E45" />
+              <Text className="font-SemiBold text-md text-primary-600">
+                Your Location
+              </Text>
+              <TouchableOpacity
+                onPress={refreshLocation}
+                className="p-1"
+                disabled={loading}
+              >
+                <Ionicons
+                  name={loading ? "refresh" : "refresh-outline"}
+                  size={18}
+                  color="#3E9E45"
+                />
               </TouchableOpacity>
             </View>
             {loading ? (
               <View className="flex flex-row items-center gap-x-2">
                 <ActivityIndicator size="small" color="#3E9E45" />
-                <Text className="font-Medium text-sm text-gray-500">Getting location...</Text>
+                <Text className="font-Medium text-sm text-gray-500">
+                  Getting location...
+                </Text>
               </View>
             ) : (
-              <Text className="font-Bold text-md" numberOfLines={1} ellipsizeMode="tail">
-                {location?.address || 'Location not available'}
+              <Text
+                className="font-Bold text-md"
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                {location?.address || "Location not available"}
               </Text>
             )}
-            {errorMsg && <Text className="font-Medium text-xs text-red-500">{errorMsg}</Text>}
+            {errorMsg && (
+              <Text className="font-Medium text-xs text-red-500">
+                {errorMsg}
+              </Text>
+            )}
           </View>
         </View>
-        <Tooltip
-          isVisible={tooltipStep === 2}
-          placement="top"
-          useReactNativeModal={true}
-          contentStyle={{ height: 170 }}
-          content={
-            <TooltipContent
-              title="Location Map"
-              description="Here you can see your current location. This will help when creating a report."
-              buttonText="Next"
-              onButtonPress={() => setTooltipStep(3)}
-            />
-          }
-          onClose={() => setTooltipStep(0)}
+
+        {/* Map Section */}
+        <View
+          style={{ width: "100%", height: 160 }}
+          className="rounded-2xl overflow-hidden border border-gray-200 mb-2"
         >
-        </Tooltip>
-        <View style={{ width: '100%', height: 160 }} className="rounded-2xl overflow-hidden border border-gray-200 mb-2">
           {loading ? (
             <View className="flex-1 justify-center items-center bg-gray-100">
               <ActivityIndicator size="large" color="#3E9E45" />
               <Text className="mt-2 text-gray-600">Loading map...</Text>
             </View>
           ) : location ? (
-            <></>
-            // <MapView accessibilityLanguage="id" style={{ flex: 1 }}  initialRegion={getMapRegion()} region={getMapRegion()} showsUserLocation={true} showsMyLocationButton={true} followsUserLocation={false}>
-            //   <UrlTile urlTemplate="https://a.tile.openstreetmap.org/{z}/{x}/{y}.png" maximumZ={19} flipY={false} />
-            //   <Marker
-            //     coordinate={{
-            //       latitude: location.latitude,
-            //       longitude: location.longitude
-            //     }}
-            //     title="Your Current Location"
-            //     description={location.address || 'Current position'}
-            //   />
-            // </MapView>
+            <>
+              <LeafletView
+                renderLoading={() => (
+                  <ActivityIndicator size="large" color="green" />
+                )}
+                mapCenterPosition={{
+                  lat: location.latitude,
+                  lng: location.longitude,
+                }}
+                zoom={16}
+                zoomControl
+                attributionControl={false}
+                mapMarkers={[
+                  {
+                    id: "current-location",
+                    position: {
+                      lat: location.latitude,
+                      lng: location.longitude,
+                    },
+                    icon: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
+                    size: [24, 24],
+                    iconAnchor: [16, 41],
+                    title: "Clicked Location",
+                  },
+                ]}
+                doDebug={false}
+              />
+              <TouchableOpacity
+                onPress={() => router.push("/(tabs)/full-map-screen")}
+                className="mt-2 self-end p-2 bg-primary-600 rounded-lg"
+              >
+                <Text className="text-white font-SemiBold">Open Full Map</Text>
+              </TouchableOpacity>
+            </>
           ) : (
             <View className="flex-1 justify-center items-center bg-gray-100">
               <Ionicons name="location-outline" size={40} color="#9CA3AF" />
@@ -156,43 +208,34 @@ useEffect(() => {
             </View>
           )}
         </View>
-        <Tooltip
-          isVisible={tooltipStep === 3}
-          placement="center"
-          useReactNativeModal={true}
-          contentStyle={{ height: 184 }}
-          content={
-            <TooltipContent
-              title="Report Cards"
-              description="These cards provide you with quick access to the most important information about your environment."
-              buttonText="Next"
-              onButtonPress={() => setTooltipStep(4)}
-            />
-          }
-          onClose={() => setTooltipStep(0)}
-        ></Tooltip>
+
+        {/* Dashboard Cards */}
         <View className="flex flex-row flex-wrap justify-between w-full">
-          {dashboardCards.map((item, index) => (
-            <DashboardCard key={index} onPress={item.onPress} title={item.title} value={item.value} iconName={item.iconName} CTAIcon={item.CTAIcon} isLoading={item.title === 'Reports This Week' && isLoading} />
+          {dashboardCards.map((item, idx) => (
+            <DashboardCard
+              key={idx}
+              {...item}
+              isLoading={item.title === "Reports This Week" && loading}
+            />
           ))}
         </View>
-        <Tooltip
-          isVisible={tooltipStep === 4}
-          placement="center"
-          useReactNativeModal={true}
-          contentStyle={{ height: 184 }}
-          content={
-            <TooltipContent
-              title="Report an Issue"
-              description="Click the button below to open the camera and take a picture of a problem you see in your environment."
-              buttonText="Got it"
-              onButtonPress={() => setTooltipStep(0)}
-            />
-          }
-          onClose={() => setTooltipStep(0)}
-        ></Tooltip>
+
+        {/* Action Button */}
         <View className="w-full">
-          <CustomButton title="Report an Issue" bgVariant="primary" textVariant="secondary" IconLeft={() => <Ionicons name="clipboard-outline" size={24} color="white" className="mr-2" />} onPress={openCameraModal} />
+          <CustomButton
+            title="Report an Issue"
+            bgVariant="primary"
+            textVariant="secondary"
+            IconLeft={() => (
+              <Ionicons
+                name="clipboard-outline"
+                size={24}
+                color="white"
+                className="mr-2"
+              />
+            )}
+            onPress={openCameraModal}
+          />
         </View>
       </View>
     </Layout>

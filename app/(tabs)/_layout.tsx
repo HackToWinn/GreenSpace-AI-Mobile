@@ -70,7 +70,6 @@ export default function LayoutTabs() {
   return (
     <CameraContext.Provider value={{ openCameraModal }}>
       <CameraModal visible={isCameraModalVisible} onClose={closeCameraModal} />
-
       <Tabs
         screenOptions={{
           tabBarActiveTintColor: colors.primary[600],
@@ -108,6 +107,7 @@ export default function LayoutTabs() {
         <Tabs.Screen name="feedback" options={{ href: null }} />
         <Tabs.Screen name="Reward" options={{ href: null }} />
         <Tabs.Screen name="faq" options={{ href: null }} />
+        <Tabs.Screen name="full-map-screen" options={{ href: null }} />
       </Tabs>
     </CameraContext.Provider>
   );

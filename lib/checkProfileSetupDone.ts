@@ -6,17 +6,16 @@ import loadIdentity from "./loadIdentity";
 export default function CheckProfileSetupDone() {
   const segments = useSegments();
   const hasNavigated = useRef(false);
-
+  
   useEffect(() => {
     const check = async () => {
-    if (hasNavigated.current) return; 
-      const identity = await loadIdentity();
+      const {pubKey, delegation} = await loadIdentity();
+      if (hasNavigated.current) return; 
       const profileData = await AsyncStorage.getItem("profile-data");
-        // console.log("CheckAuth identity:", identity);
-      if (identity && !profileData) {
+      if (pubKey && delegation && !profileData) {
         hasNavigated.current = true;
         router.push("/(auth)/profile-setup");
-      } else if (identity && profileData && segments[0] === "(auth)") {
+      } else if (pubKey && delegation && profileData && segments[0] === "(auth)") {
         hasNavigated.current = true;
         router.replace("/(tabs)/home");
       }

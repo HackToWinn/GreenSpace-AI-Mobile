@@ -1,10 +1,29 @@
 import Layout from '@/components/Layout';
 import { ReportsPageCardComponent } from '@/components/ReportCardComponent';
 import { reports } from '@/constants';
+import { getLatestReports, getMyReports } from '@/lib/api';
+import loadIdentity from '@/lib/loadIdentity';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { Link } from 'expo-router';
 import { Text, View, FlatList, Dimensions, ScrollView } from 'react-native';
 
 export default function Report() {
+   const { data: myReportsData } = useQuery({
+    queryKey: ['myReports'],
+    queryFn: async () => {
+      const {pubKey, delegation} = await loadIdentity();
+      const formData = new FormData();
+      formData.append('delegation', JSON.stringify(delegation));
+      formData.append('identity', JSON.stringify(pubKey));
+      return getMyReports({ body: formData });
+    },
+  });
+  
+  const { data: latestReportsData } = useQuery({
+    queryKey: ['latestReports'],
+    queryFn: getLatestReports
+  });
+
   return (
     <Layout>
       <ScrollView showsVerticalScrollIndicator={false} >
@@ -28,7 +47,7 @@ export default function Report() {
               keyExtractor={(item) => item.id}
               renderItem={({ item }) => <ReportsPageCardComponent {...item} />}
             />
-            <View className='w-full flex flex-row justify-between items-center'>
+            {/* <View className='w-full flex flex-row justify-between items-center'>
               <Text className='text-xl font-Bold'>Nearby Reports</Text>
               <Link href={'/reports/nearby'}>
                 <Text className='text-md text-primary-500 font-Bold'>See All</Text>
@@ -44,7 +63,7 @@ export default function Report() {
               data={reports}
               keyExtractor={(item) => item.id}
               renderItem={({ item }) => <ReportsPageCardComponent {...item} />}
-            />
+            /> */}
             <View className='w-full flex flex-row justify-between items-center'>
               <Text className='text-xl font-Bold'>Your Reports</Text>
               <Link href={'/reports/your'}>

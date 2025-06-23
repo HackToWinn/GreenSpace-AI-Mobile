@@ -1,4 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
+import { ReactNode } from 'react';
 import { ImageSourcePropType, TouchableOpacityProps } from 'react-native';
 
 export type TabBarItemProps = {
@@ -77,3 +78,16 @@ export interface ProfileContextProps{
   isLoading: boolean;
   setIsLoading: (loading: boolean) => void;
 }
+export type SettingRowProps = {
+  icon: 'search' | 'repeat' | 'anchor' | 'bold' | 'link' | 'at' | 'sort' | 'map' | 'filter' | 'user-o' | 'bell-o' | 'shield' | 'language' | 'image' | 'header' | 'forward' | 'retweet' | 'minus' | undefined;
+  name: string;
+  children?: ReactNode;
+  onPress: () => void;
+};
+export type ProfileMenuItemProps = {
+  onPress: () => void;
+  icon: ReactNode;
+  label: string;
+  labelClassName?: string;
+  rightIconColor?: string;
+};

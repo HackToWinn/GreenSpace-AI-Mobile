@@ -1,39 +1,8 @@
 import Layout from '@/components/Layout';
 import { SafeAreaView, Text, View, Image, ScrollView } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { rewards } from '@/lib/exampleData';
 
-const rewards = [
-  {
-    id: 1,
-    name: 'Crypto Points',
-    image: require('@/assets/images/reward/CryptoPoints.png'), // ganti path sesuai file kamu
-    cost: 50,
-  },
-  {
-    id: 2,
-    name: 'GreenSpace T-Shirt',
-    image: require('@/assets/images/reward/Tshirt.png'), // ganti path sesuai file kamu
-    cost: 30,
-  },
-  {
-    id: 3,
-    name: 'GreenSpace WaterProof Jacket',
-    image: require('@/assets/images/reward/WaterProofJacket.png'), // ganti path sesuai file kamu
-    cost: 200,
-  },
-  {
-    id: 4,
-    name: 'GreenSpace Smart Watch',
-    image: require('@/assets/images/reward/SmartWatch.png'), // ganti path sesuai file kamu
-    cost: 500,
-  },
-  {
-    id: 5,
-    name: 'GreenSpace Polo Shirt',
-    image: require('@/assets/images/reward/PoloShirt.png'), // ganti path sesuai file kamu
-    cost: 150,
-  },
-];
 
 export default function reward() {
   return (
@@ -66,7 +35,7 @@ export default function reward() {
               <View 
                 key={item.id} 
                 style={{
-                  width: '48%', // Membuat 2 item per baris dengan sedikit margin
+                  width: '48%', 
                   marginBottom: 16,
                   borderRadius: 12,
                   overflow: 'hidden',

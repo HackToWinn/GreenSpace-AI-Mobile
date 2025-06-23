@@ -1,92 +1,101 @@
-import Layout from '@/components/Layout';
-import ProfilePicture from '@/components/ProfilePicture';
-import TooltipContent from '@/components/TooltipContent';
-import WalletCardComponent from '@/components/WalletCardComponent';
-import { useProfile } from '@/context/ProfileContext';
-import { FontAwesome, MaterialIcons, SimpleLineIcons } from '@expo/vector-icons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
-import { Pressable, Text, View } from 'react-native';
-import Tooltip from 'react-native-walkthrough-tooltip';
+import Layout from "@/components/Layout";
+import { ProfileMenuItem } from "@/components/ProfileMenuItem";
+import ProfilePicture from "@/components/ProfilePicture";
+import TooltipContent from "@/components/TooltipContent";
+import WalletCardComponent from "@/components/WalletCardComponent";
+import { useProfile } from "@/context/ProfileContext";
+import { ProfileMenuItemProps } from "@/lib/types";
+import { FontAwesome, MaterialIcons, SimpleLineIcons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useRouter } from "expo-router";
+import { useState } from "react";
+import { Pressable, Text, View } from "react-native";
+import Tooltip from "react-native-walkthrough-tooltip";
 
 export default function Profile() {
   const router = useRouter();
-  const [tooltipStep, setTooltipStep] = useState(0);
-  const {profile, setProfile} = useProfile();
+  const [tooltipStep, setTooltipStep] = useState(1);
+  const { profile, setProfile } = useProfile();
 
+  // Handle logout
   const handleLogout = async () => {
-    // Clear profile data from context and storage
-    await AsyncStorage.removeItem('profile-data');
-    await AsyncStorage.removeItem('delegation');
-    await AsyncStorage.removeItem('identity-key');
+    await AsyncStorage.removeItem("profile-data");
+    await AsyncStorage.removeItem("delegation");
+    await AsyncStorage.removeItem("identity-key");
+
     setProfile(null);
-    // Navigate to the login page
-    router.push('/(auth)/sign-in');
+    router.push("/(auth)/sign-in");
   };
 
-  useEffect(() => {
-    setTooltipStep(1);
-  }, []);
+  // Tooltip logic
+  const tooltipVisible = tooltipStep === 1;
 
   return (
     <Layout>
       <Tooltip
-        isVisible={tooltipStep === 1}
-        placement='center'
-        useReactNativeModal={true}
+        isVisible={tooltipVisible}
+        placement="center"
+        useReactNativeModal
         contentStyle={{ height: 184 }}
         content={
-          <TooltipContent
-            title='Welcome to the Profile Page'
-            description='This is the profile page, where you can view your profile information and manage your ICP wallet & settings.'
-            buttonText='Got it'
-            onButtonPress={() => setTooltipStep(0)}
-          />
+          tooltipVisible
+            ? (
+                <TooltipContent
+                  title="Welcome to the Profile Page"
+                  description="This is the profile page, where you can view your profile information and manage your ICP wallet & settings."
+                  buttonText="Got it"
+                  onButtonPress={() => setTooltipStep(0)}
+                />
+              )
+            : undefined // penting untuk TS/prop type!
         }
-        onClose={() => setTooltipStep(0)}>
+        onClose={() => setTooltipStep(0)}
+      >
         <View />
       </Tooltip>
-      <View className="flex-1 items-center mt-4 ">
-        <ProfilePicture source={profile?.pictureCid ? profile.pictureCid : ''}/>
-        <Text className="text-2xl font-Bold text-gray-800 mb-6">{profile?.username ? profile.username : "Guest User"}</Text>
-        <View className='flex flex-row justify-center items-center gap-x-1 mb-6'>
-          <Text className="text-sm font-SemiBold text-black">Email: {profile?.email ? profile.email : "Unknown"} </Text>
-          <Text className="text-sm font-Regular text-black"></Text>
+
+      <View className="flex-1 items-center mt-4">
+        <ProfilePicture
+          source={
+            profile?.pictureCid
+              ? "https://w3s.link/ipfs/" + profile.pictureCid
+              : ""
+          }
+        />
+        <Text className="text-2xl font-Bold text-gray-800 mb-2">
+          {profile?.username || "Guest User"}
+        </Text>
+        <View className="flex flex-row justify-center items-center gap-x-1 mb-6">
+          <Text className="text-sm font-SemiBold text-black">
+            Email: {profile?.email || "Unknown"}
+          </Text>
         </View>
         <WalletCardComponent />
         <View className="w-full">
-          <Pressable onPress={() => router.push('/setting')} className="flex-row justify-between items-center py-4 border-b border-gray-200">
-            <View className="flex-row gap-4 items-center ">
-              <SimpleLineIcons name="settings" size={24} color="gray" />
-              <Text className="text-base font-Regular text-gray-700">Settings</Text>
-            </View>
-            <FontAwesome name="chevron-right" size={16} color="gray" />
-          </Pressable>
-          <Pressable onPress={() => router.push('/(tabs)/feedback')} className="flex-row justify-between items-center py-4 border-b border-gray-200">
-            <View className="flex-row gap-4 items-center ">
-              <MaterialIcons name="feedback" size={24} color="gray" />
-              <Text className="text-base font-Regular text-gray-700">FeedBack</Text>
-            </View>
-            <FontAwesome name="chevron-right" size={16} color="gray" />
-          </Pressable>
-          <Pressable onPress={() => router.push('/(tabs)/faq')} className="flex-row justify-between items-center py-4 border-b border-gray-200">
-            <View className="flex-row gap-4 items-center ">
-              <SimpleLineIcons name="question" size={24} color="gray" />
-              <Text className="text-base font-Regular text-gray-700">Help & Support</Text>
-            </View>
-            <FontAwesome name="chevron-right" size={16} color="gray" />
-          </Pressable>
-          <Pressable onPress={()=> handleLogout()} className="flex-row justify-between items-center py-4 border-b border-gray-200">
-            <View className="flex-row gap-4 items-center ">
-              <SimpleLineIcons name="logout" size={24} color="red" />
-              <Text className="text-base font-Regular text-red-700">Logout</Text>
-            </View>
-            <FontAwesome name="chevron-right" size={16} color="red" />
-          </Pressable>
+          <ProfileMenuItem
+            onPress={() => router.push("/setting")}
+            icon={<SimpleLineIcons name="settings" size={24} color="gray" />}
+            label="Settings"
+          />
+          <ProfileMenuItem
+            onPress={() => router.push("/(tabs)/feedback")}
+            icon={<MaterialIcons name="feedback" size={24} color="gray" />}
+            label="FeedBack"
+          />
+          <ProfileMenuItem
+            onPress={() => router.push("/(tabs)/faq")}
+            icon={<SimpleLineIcons name="question" size={24} color="gray" />}
+            label="Help & Support"
+          />
+          <ProfileMenuItem
+            onPress={handleLogout}
+            icon={<SimpleLineIcons name="logout" size={24} color="red" />}
+            label="Logout"
+            labelClassName="text-red-700"
+            rightIconColor="red"
+          />
         </View>
       </View>
     </Layout>
-  )
-};
-
+  );
+}

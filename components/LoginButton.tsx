@@ -10,10 +10,9 @@ export async function goToLogin() {
   await AsyncStorage.setItem('identity-key', JSON.stringify(sessionIdentity.toJSON()));
   const publicKeyDer = sessionIdentity.getPublicKey().toDer();
   const publicKeyHex = Buffer.from(publicKeyDer).toString('hex');
-
-  const scheme = 'greenspace://(auth)/profile-setup'; 
-  const url = 'https://greenspace.hacktowin.systems/login';
-
+  const scheme = process.env.EXPO_PUBLIC_SCHEME_URL || 'greenspace://(auth)/profile-setup'; 
+  const url = process.env.EXPO_PUBLIC_LOGIN_URL || 'https://greenspace.hacktowin.systems/login'; 
+  
   return Linking.openURL(`${url}?sessionKey=${publicKeyHex}&scheme=${scheme}`);
 }
 
