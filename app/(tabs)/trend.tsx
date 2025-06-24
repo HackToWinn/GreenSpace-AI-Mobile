@@ -539,13 +539,13 @@ export default function Statistics() {
 
               {/* Tabs */}
               <View className="flex-row justify-around">
-                <TouchableOpacity className={`px-6 py-2 rounded-full ${filterTrend === 'daily' ? 'bg-neutral-100' : ''}`} onPress={() => handleFilterChange('daily')}>
+                <TouchableOpacity className={`px-6 py-2 rounded-full ${filterTrend === 'daily' ? 'bg-primary-800/10' : ''}`} onPress={() => handleFilterChange('daily')}>
                   <Text className={`font-SemiBold ${filterTrend === 'daily' ? 'text-black' : 'text-gray-500'}`}>Daily</Text>
                 </TouchableOpacity>
-                <TouchableOpacity className={`px-6 py-2 rounded-full ${filterTrend === 'weekly' ? 'bg-neutral-100' : ''}`} onPress={() => handleFilterChange('weekly')}>
+                <TouchableOpacity className={`px-6 py-2 rounded-full ${filterTrend === 'weekly' ? 'bg-primary-800/10' : ''}`} onPress={() => handleFilterChange('weekly')}>
                   <Text className={`font-SemiBold ${filterTrend === 'weekly' ? 'text-black' : 'text-gray-500'}`}>Weekly</Text>
                 </TouchableOpacity>
-                <TouchableOpacity className={`px-6 py-2 rounded-full ${filterTrend === 'monthly' ? 'bg-neutral-100' : ''}`} onPress={() => handleFilterChange('monthly')}>
+                <TouchableOpacity className={`px-6 py-2 rounded-full ${filterTrend === 'monthly' ? 'bg-primary-800/10' : ''}`} onPress={() => handleFilterChange('monthly')}>
                   <Text className={`font-SemiBold ${filterTrend === 'monthly' ? 'text-black' : 'text-gray-500'}`}>Monthly</Text>
                 </TouchableOpacity>
               </View>

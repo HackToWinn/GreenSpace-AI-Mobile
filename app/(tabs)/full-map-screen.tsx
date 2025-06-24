@@ -1,11 +1,44 @@
 import { useCurrentLocation } from "@/hooks/useCurrentLocation";
-import { useState } from "react";
-import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
+import { Asset } from "expo-asset";
+import { useEffect, useState } from "react";
+import { ActivityIndicator, Alert, Text, TouchableOpacity, View } from "react-native";
 import { LeafletView } from "react-native-leaflet-view";
+import * as FileSystem from 'expo-file-system';
 
 export default function FullMapScreen() {
   const { location, getMapRegion } = useCurrentLocation();
   const [selectedMarkerId, setSelectedMarkerId] = useState<string | null>(null);
+  const [webViewContent, setWebViewContent] = useState<string | null>(null);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadHtml = async () => {
+      try {
+        const path = require("../../assets/leaflet.html");
+        const asset = Asset.fromModule(path);
+        await asset.downloadAsync();
+        const htmlContent = await FileSystem.readAsStringAsync(asset.localUri!);
+
+        if (isMounted) {
+          setWebViewContent(htmlContent);
+        }
+      } catch (error) {
+        Alert.alert('Error loading HTML', JSON.stringify(error));
+        console.error('Error loading HTML:', error);
+      }
+    };
+
+    loadHtml();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  if (!webViewContent) {
+    return <ActivityIndicator size="large" color="green" />
+  }
 
   return (
     <>
@@ -30,7 +63,7 @@ export default function FullMapScreen() {
                   lng: location.longitude,
                 },
                 icon: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
-                size: [24, 24],
+                size: [24, 36],
                 iconAnchor: [16, 41],
                 title: "Your Location",
               },
@@ -46,6 +79,7 @@ export default function FullMapScreen() {
               }
             }}
             doDebug={false}
+            source={{ html: webViewContent }}
           />
         )}
       </View>

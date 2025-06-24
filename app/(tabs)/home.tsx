@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Alert, Text, TouchableOpacity, View } from "react-native";
 import { LeafletView } from "react-native-leaflet-view";
 import Tooltip from "react-native-walkthrough-tooltip";
 
@@ -20,6 +20,8 @@ import {
 } from "@/lib/api";
 import { eventBus } from "@/lib/eventBus";
 import { tooltipContents } from "@/lib/exampleData";
+import { Asset } from "expo-asset";
+import * as FileSystem from 'expo-file-system';
 
 export default function Home() {
   const { location, loading, errorMsg, refreshLocation } = useCurrentLocation();
@@ -28,6 +30,7 @@ export default function Home() {
   const [tooltipStep, setTooltipStep] = useState(1);
   const tooltipVisible =
     tooltipStep > 0 && tooltipStep <= tooltipContents.length;
+  const [webViewContent, setWebViewContent] = useState<string | null>(null);
 
   // Queries
   const { data: reportsData, refetch: refetchReports } = useQuery({
@@ -52,13 +55,13 @@ export default function Home() {
     };
     eventBus.on("report:created", handler);
     return () => eventBus.off("report:created", handler);
-  }, []);
+  }, [refetchMostCategory, refetchReports, refetchWeekReports]);
 
   // Update dashboard cards
   useEffect(() => {
     if (weekReportsData && reportsData) {
-      const reports = reportsData.reports.length;
-      const reportsThisWeek = weekReportsData.reports.length;
+      const reports = reportsData.reports ? reportsData.reports.length : 0;
+      const reportsThisWeek = weekReportsData.reports ? weekReportsData.reports.length : 0;
       const mostCategory = mostCategoryData?.category || "Unknown";
 
       setDashboardCards((prev) =>
@@ -77,6 +80,36 @@ export default function Home() {
       );
     }
   }, [weekReportsData, reportsData, mostCategoryData]);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadHtml = async () => {
+      try {
+        const path = require("../../assets/leaflet.html");
+        const asset = Asset.fromModule(path);
+        await asset.downloadAsync();
+        const htmlContent = await FileSystem.readAsStringAsync(asset.localUri!);
+
+        if (isMounted) {
+          setWebViewContent(htmlContent);
+        }
+      } catch (error) {
+        Alert.alert('Error loading HTML', JSON.stringify(error));
+        console.error('Error loading HTML:', error);
+      }
+    };
+
+    loadHtml();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  if (!webViewContent) {
+    return <ActivityIndicator size="large" color="green" />
+  }
 
   return (
     <Layout>
@@ -187,18 +220,19 @@ export default function Home() {
                       lng: location.longitude,
                     },
                     icon: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
-                    size: [24, 24],
+                    size: [24, 36],
                     iconAnchor: [16, 41],
                     title: "Clicked Location",
                   },
                 ]}
                 doDebug={false}
+                source={{ html: webViewContent }}
               />
               <TouchableOpacity
                 onPress={() => router.push("/(tabs)/full-map-screen")}
-                className="mt-2 self-end p-2 bg-primary-600 rounded-lg"
+                className="mt-2 mr-2 self-end p-2 bg-white rounded-lg"
               >
-                <Text className="text-white font-SemiBold">Open Full Map</Text>
+                <Ionicons name="scan-outline" size={24} color="#4CAF50" />
               </TouchableOpacity>
             </>
           ) : (
