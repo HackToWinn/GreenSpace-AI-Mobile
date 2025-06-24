@@ -52,13 +52,13 @@ export default function Home() {
     };
     eventBus.on("report:created", handler);
     return () => eventBus.off("report:created", handler);
-  }, []);
+  }, [refetchMostCategory, refetchReports, refetchWeekReports]);
 
   // Update dashboard cards
   useEffect(() => {
     if (weekReportsData && reportsData) {
-      const reports = reportsData.reports.length;
-      const reportsThisWeek = weekReportsData.reports.length;
+      const reports = reportsData.reports ? reportsData.reports.length : 0;
+      const reportsThisWeek = weekReportsData.reports ? weekReportsData.reports.length : 0;
       const mostCategory = mostCategoryData?.category || "Unknown";
 
       setDashboardCards((prev) =>
