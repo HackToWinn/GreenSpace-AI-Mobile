@@ -196,9 +196,9 @@ export default function Home() {
               />
               <TouchableOpacity
                 onPress={() => router.push("/(tabs)/full-map-screen")}
-                className="mt-2 self-end p-2 bg-primary-600 rounded-lg"
+                className="mt-2 mr-2 self-end p-2 bg-white rounded-lg"
               >
-                <Text className="text-white font-SemiBold">Open Full Map</Text>
+                <Ionicons name="scan-outline" size={24} color="#4CAF50" />
               </TouchableOpacity>
             </>
           ) : (
