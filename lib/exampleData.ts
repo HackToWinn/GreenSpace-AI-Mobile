@@ -6,26 +6,26 @@ import { ButtonProps } from "./types";
       title: "Welcome to the Homepage",
       description:
         "This is where you can see brief information about the environment around you.",
-      buttonText: "Next",
-    },
-    {
-      title: "Location Map",
-      description:
-        "Here you can see your current location. This will help when creating a report.",
-      buttonText: "Next",
-    },
-    {
-      title: "Report Cards",
-      description:
-        "These cards provide you with quick access to the most important information about your environment.",
-      buttonText: "Next",
-    },
-    {
-      title: "Report an Issue",
-      description:
-        "Click the button below to open the camera and take a picture of a problem you see in your environment.",
       buttonText: "Got it",
     },
+    // {
+    //   title: "Location Map",
+    //   description:
+    //     "Here you can see your current location. This will help when creating a report.",
+    //   buttonText: "Next",
+    // },
+    // {
+    //   title: "Report Cards",
+    //   description:
+    //     "These cards provide you with quick access to the most important information about your environment.",
+    //   buttonText: "Next",
+    // },
+    // {
+    //   title: "Report an Issue",
+    //   description:
+    //     "Click the button below to open the camera and take a picture of a problem you see in your environment.",
+    //   buttonText: "Got it",
+    // },
   ];
 
   export const faqs = [
