@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Alert, Text, TouchableOpacity, View } from "react-native";
 import { LeafletView } from "react-native-leaflet-view";
 import Tooltip from "react-native-walkthrough-tooltip";
 
@@ -20,6 +20,8 @@ import {
 } from "@/lib/api";
 import { eventBus } from "@/lib/eventBus";
 import { tooltipContents } from "@/lib/exampleData";
+import { Asset } from "expo-asset";
+import * as FileSystem from 'expo-file-system';
 
 export default function Home() {
   const { location, loading, errorMsg, refreshLocation } = useCurrentLocation();
@@ -28,6 +30,7 @@ export default function Home() {
   const [tooltipStep, setTooltipStep] = useState(1);
   const tooltipVisible =
     tooltipStep > 0 && tooltipStep <= tooltipContents.length;
+  const [webViewContent, setWebViewContent] = useState<string | null>(null);
 
   // Queries
   const { data: reportsData, refetch: refetchReports } = useQuery({
@@ -77,6 +80,36 @@ export default function Home() {
       );
     }
   }, [weekReportsData, reportsData, mostCategoryData]);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadHtml = async () => {
+      try {
+        const path = require("../../assets/leaflet.html");
+        const asset = Asset.fromModule(path);
+        await asset.downloadAsync();
+        const htmlContent = await FileSystem.readAsStringAsync(asset.localUri!);
+
+        if (isMounted) {
+          setWebViewContent(htmlContent);
+        }
+      } catch (error) {
+        Alert.alert('Error loading HTML', JSON.stringify(error));
+        console.error('Error loading HTML:', error);
+      }
+    };
+
+    loadHtml();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  if (!webViewContent) {
+    return <ActivityIndicator size="large" color="green" />
+  }
 
   return (
     <Layout>
@@ -187,12 +220,13 @@ export default function Home() {
                       lng: location.longitude,
                     },
                     icon: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
-                    size: [24, 24],
+                    size: [24, 36],
                     iconAnchor: [16, 41],
                     title: "Clicked Location",
                   },
                 ]}
                 doDebug={false}
+                source={{ html: webViewContent }}
               />
               <TouchableOpacity
                 onPress={() => router.push("/(tabs)/full-map-screen")}
