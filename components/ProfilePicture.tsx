@@ -6,6 +6,22 @@ import CustomButton from './CustomButton';
 
 const ProfilePicture = ({externalSetUri, source} : { externalSetUri?: (uri: string ) => void, source: string }) => {
   const { imageUri, pickFromGallery, takePhoto, modalVisible, setModalVisible } = useImagePicker();
+  useEffect(() => {
+    if (imageUri) {
+      // Fetch image size in bytes, then convert to KB/MB
+      fetch(imageUri)
+        .then(res => res.blob())
+        .then(blob => {
+          const sizeInBytes = blob.size;
+          const sizeInKB = (sizeInBytes / 1024).toFixed(2);
+          const sizeInMB = (sizeInBytes / (1024 * 1024)).toFixed(2);
+          console.log(`Image file size: ${sizeInKB} KB (${sizeInMB} MB)`);
+        })
+        .catch(err => {
+          console.log('Failed to get image file size:', err);
+        });
+    }
+  }, [imageUri]);
 
   useEffect(() => {
     if (externalSetUri && imageUri !== null) {

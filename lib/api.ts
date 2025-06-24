@@ -61,7 +61,7 @@ export const registerUser = async ({ body }: { body: FormData }) => {
     });
   } catch (error) {
     console.error('Failed to register user:', error);
-    return null;
+    throw new Error('Registration failed');
   }
 };
 

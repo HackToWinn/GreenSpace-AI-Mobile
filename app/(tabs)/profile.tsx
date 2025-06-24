@@ -16,7 +16,6 @@ export default function Profile() {
   const router = useRouter();
   const [tooltipStep, setTooltipStep] = useState(1);
   const { profile, setProfile } = useProfile();
-
   // Handle logout
   const handleLogout = async () => {
     await AsyncStorage.removeItem("profile-data");
@@ -58,7 +57,7 @@ export default function Profile() {
         <ProfilePicture
           source={
             profile?.pictureCid
-              ? "https://w3s.link/ipfs/" + profile.pictureCid
+              ?  profile.pictureCid
               : ""
           }
         />

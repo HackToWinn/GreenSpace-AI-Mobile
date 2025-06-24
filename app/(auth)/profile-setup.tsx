@@ -42,6 +42,7 @@ export default function profileSetup(): JSX.Element {
             formData.append("delegation", JSON.stringify(delegation));
             formData.append("identity", JSON.stringify(pubKey));
             const profileData = await getUserInfo({ body: formData });
+            console.log("Profile data loaded:", profileData); 
 
         if (profileData.length > 0) {
           const { pictureCid, username, email } = profileData[0] || {};
@@ -122,18 +123,19 @@ export default function profileSetup(): JSX.Element {
       try {
         const response = await registerUser({ body: formData });
         console.log("Registration successful:", response);
+        setProfile({ pictureCid: imageUri, username: name, email });
+
+        Alert.alert("Success", "Profile setup completed successfully!", [
+        { text: "OK" },
+      ]);
+      router.push("/(tabs)/home");
       } catch (error) {
         console.error("Registration failed:", error);
         Alert.alert("Error", "Failed to register user. Please try again.");
         return;
+      }finally {
+        setIsLoading(false);
       }
-      setProfile({ pictureCid: imageUri, username: name, email });
-      setIsLoading(false);
-
-      Alert.alert("Success", "Profile setup completed successfully!", [
-        { text: "OK" },
-      ]);
-      router.push("/(tabs)/home");
     }
   };
 

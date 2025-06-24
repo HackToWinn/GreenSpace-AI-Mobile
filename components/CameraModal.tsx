@@ -40,7 +40,7 @@ export default function CameraModal({ visible, onClose }: CameraModalProps) {
     if (cameraRef.current) {
       try {
         const photo = await cameraRef.current.takePictureAsync({
-          quality: 0.8,
+          quality: 0.5,
           base64: false,
         });
         setCapturedImage(photo.uri);
@@ -52,10 +52,11 @@ export default function CameraModal({ visible, onClose }: CameraModalProps) {
   };
 
   const savePicture = async () => {
-    if (!await checkAuth()) {
-      Alert.alert('Error', 'You must be logged in to save photos.');
-      return;
-    }
+    // if (!await checkAuth()) {
+    //   Alert.alert('Error', 'You must be logged in to save photos.');
+    //   return;
+    // }
+    console.log('Saving picture:', capturedImage);
     setIsLoading(true);
 
     const { pubKey, delegation } = await loadIdentity();
@@ -65,7 +66,6 @@ export default function CameraModal({ visible, onClose }: CameraModalProps) {
       Alert.alert('Permission required', 'Media library permission is required to save photos.');
       return;
     }
-
     if (capturedImage) {
       try {
         const asset = await MediaLibrary.createAssetAsync(capturedImage);
