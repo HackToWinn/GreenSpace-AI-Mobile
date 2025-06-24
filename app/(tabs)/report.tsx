@@ -18,6 +18,7 @@ export default function Report() {
       return getMyReports({ body: formData });
     },
   });
+  console.log('My Reports Data:', myReportsData);
   
   const { data: latestReportsData } = useQuery({
     queryKey: ['latestReports'],
