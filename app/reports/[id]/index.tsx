@@ -1,6 +1,5 @@
 import NotFoundScreen from "@/app/+not-found";
 import CommentBox from "@/components/CommentBox";
-import { reports } from "@/constants";
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams } from "expo-router";
 import { View, Text, Image, ScrollView, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform } from "react-native"

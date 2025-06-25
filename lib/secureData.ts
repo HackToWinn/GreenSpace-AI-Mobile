@@ -1,15 +1,15 @@
 import * as CryptoJs from 'crypto-js';
 
-export function encrypt(text: string, key: string){
+export function encrypt(text: string, key: string) {
     return CryptoJs.AES.encrypt(text, key).toString();
 }
-export function decrypt(encryptedBase64: string, key: string){
+export function decrypt(encryptedBase64: string, key: string) {
     const decrypted = CryptoJs.AES.decrypt(encryptedBase64, key);
     try {
         const str = decrypted.toString(CryptoJs.enc.Utf8);
-        if(str.length > 0){
+        if (str.length > 0) {
             return str;
-        }else{
+        } else {
             return 'Error: Decryption failed - empty result or invalid key';
         }
     } catch (error) {
