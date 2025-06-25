@@ -1,34 +1,13 @@
-import { ButtonProps } from "./types";
-
-  // Tooltip Step content map
-  export const tooltipContents = [
-    {
-      title: "Welcome to the Homepage",
-      description:
-        "This is where you can see brief information about the environment around you.",
-      buttonText: "Got it",
-    },
-    // {
-    //   title: "Location Map",
-    //   description:
-    //     "Here you can see your current location. This will help when creating a report.",
-    //   buttonText: "Next",
-    // },
-    // {
-    //   title: "Report Cards",
-    //   description:
-    //     "These cards provide you with quick access to the most important information about your environment.",
-    //   buttonText: "Next",
-    // },
-    // {
-    //   title: "Report an Issue",
-    //   description:
-    //     "Click the button below to open the camera and take a picture of a problem you see in your environment.",
-    //   buttonText: "Got it",
-    // },
-  ];
-
-  export const faqs = [
+// Tooltip Step content map
+export const tooltipContents = [
+  {
+    title: "Welcome to the Homepage",
+    description:
+      "This is where you can see brief information about the environment around you.",
+    buttonText: "Got it",
+  },
+];
+export const faqs = [
   { question: 'How do I check my transaction history?', answer: "You can check your transaction history by navigating to the 'Statistic' tab from the main menu." },
   { question: 'How to update my profile?', answer: "Go to the 'Profile' tab, then tap on 'Settings', and choose 'Edit Profile' to update your information." },
   { question: 'Is my wallet secure?', answer: 'Yes, we use industry-standard encryption to protect your wallet. However, always be careful not to share your private keys.' }

@@ -50,22 +50,28 @@ export interface TooltipProps {
 export interface ReportCardProps {
 	id: string;
 	onPress?: () => void;
-	image: ImageSourcePropType;
+	imageCid: ImageSourcePropType;
 	userProfile: ImageSourcePropType;
 	username: string;
-	date: string;
+	timestamp: string;
 	title: string;
+	category?: string;
 	description?: string;
 	location?: string;
 	comments?: ReportComments[];
+	confidence?: string;
+	presentage_confidence?: string;
+	status?: string;
+	rewardGiven?: number;
 }
 
 export interface ReportComments {
   id: string;
+	userId: string;
   userProfile: ImageSourcePropType;
   username: string;
-  date: string;
-  comment: string;
+  message: string;
+	rating?: number;
 }
 export interface UserData{
   pictureCid: string | null;

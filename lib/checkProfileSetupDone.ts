@@ -6,11 +6,11 @@ import loadIdentity from "./loadIdentity";
 export default function CheckProfileSetupDone() {
   const segments = useSegments();
   const hasNavigated = useRef(false);
-  
+
   useEffect(() => {
     const check = async () => {
-      const {pubKey, delegation} = await loadIdentity();
-      if (hasNavigated.current) return; 
+      const { pubKey, delegation } = await loadIdentity();
+      if (hasNavigated.current) return;
       const profileData = await AsyncStorage.getItem("profile-data");
       if (pubKey && delegation && !profileData) {
         hasNavigated.current = true;

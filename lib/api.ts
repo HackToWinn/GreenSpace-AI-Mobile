@@ -1,4 +1,6 @@
-const BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'https://api.hacktowin.systems/api/v1';
+const BASE_URL = __DEV__
+  ? process.env.EXPO_PUBLIC_API_URL_DEV
+  : process.env.EXPO_PUBLIC_API_URL_PROD;
 
 const fetchJSON = async (url: string, options?: RequestInit) => {
   const response = await fetch(url, options);
@@ -77,6 +79,12 @@ export const getLatestReports = async () => {
 
 // Get My Reports
 export const getMyReports = async ({ body }: { body: FormData }) => {
+  const userId = body.get("userId");
+  if (!userId) {
+    console.warn("getMyReports cancelled: user id not found");
+    return [];
+  }
+
   try {
     return await fetchJSON(`${BASE_URL}/report/my-report`, {
       method: 'POST',
