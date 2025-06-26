@@ -34,6 +34,20 @@ export const getReports = async () => {
   }
 };
 
+// Get Report by ID
+export const getReportById = async (id: string) => {
+  try {
+    const response = await fetch(`${BASE_URL}/report/${id}`);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch report with id ${id}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Failed to fetch report by ID:', error);
+    return null;
+  }
+};
+
 // Get Reports This Week
 export const getWeekReports = async () => {
   try {
