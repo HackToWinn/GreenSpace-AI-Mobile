@@ -1,47 +1,54 @@
-import CameraModal from '@/components/CameraModal';
-import { CameraContext } from '@/context/CameraContext';
-import { colors } from '@/lib/colors';
-import { TabBarItemProps } from '@/lib/types';
-import { Ionicons } from '@expo/vector-icons';
-import { Tabs } from 'expo-router';
-import { useState } from 'react';
-import { Pressable, SafeAreaView, Text, View } from 'react-native';
+import CameraModal from "@/components/CameraModal";
+import { CameraContext } from "@/context/CameraContext";
+import { colors } from "@/lib/colors";
+import { TabBarItemProps } from "@/lib/types";
+import { Ionicons } from "@expo/vector-icons";
+import { Tabs } from "expo-router";
+import { useState } from "react";
+import { Pressable, SafeAreaView, Text, View } from "react-native";
 
 const listTabs: TabBarItemProps[] = [
   {
-    iconName: 'home-outline',
-    label: 'Home',
+    iconName: "home-outline",
+    label: "Home",
     size: 26,
-    IconComponent: Ionicons
+    IconComponent: Ionicons,
   },
   {
-    iconName: 'bar-chart-outline',
-    label: 'Trend',
+    iconName: "bar-chart-outline",
+    label: "Trend",
     size: 26,
-    IconComponent: Ionicons
+    IconComponent: Ionicons,
   },
   {
-    iconName: 'camera-outline',
-    label: 'Camera',
+    iconName: "camera-outline",
+    label: "Camera",
     size: 26,
-    IconComponent: Ionicons
+    IconComponent: Ionicons,
   },
   {
-    iconName: 'newspaper-outline',
-    label: 'Report',
+    iconName: "newspaper-outline",
+    label: "Report",
     size: 26,
-    IconComponent: Ionicons
+    IconComponent: Ionicons,
   },
   {
-    iconName: 'person-outline',
-    label: 'Profile',
+    iconName: "person-outline",
+    label: "Profile",
     size: 26,
-    IconComponent: Ionicons
-  }
+    IconComponent: Ionicons,
+  },
 ];
 
-const TabBarItem = ({ iconName, IconComponent = Ionicons, size = 26, color, focused, label }: TabBarItemProps) => {
-  const isCamera = iconName === 'camera-outline';
+const TabBarItem = ({
+  iconName,
+  IconComponent = Ionicons,
+  size = 26,
+  color,
+  focused,
+  label,
+}: TabBarItemProps) => {
+  const isCamera = iconName === "camera-outline";
   return (
     <SafeAreaView className="items-center justify-center pt-1 w-20">
       {isCamera ? (
@@ -51,7 +58,13 @@ const TabBarItem = ({ iconName, IconComponent = Ionicons, size = 26, color, focu
       ) : (
         <IconComponent name={iconName} size={size} color={color} />
       )}
-      {!isCamera && <Text className={`text-xs mt-1 font-medium ${focused ? 'text-primary-600' : 'text-neutral-500'}`}>{label}</Text>}
+      {!isCamera && (
+        <Text
+          className={`text-xs mt-1 font-medium ${focused ? "text-primary-600" : "text-neutral-500"}`}
+        >
+          {label}
+        </Text>
+      )}
     </SafeAreaView>
   );
 };
@@ -81,24 +94,42 @@ export default function LayoutTabs() {
             elevation: 0,
             paddingTop: 10,
             paddingHorizontal: 16,
-            backgroundColor: colors.primary[50]
-          }
-        }}>
+            backgroundColor: colors.primary[50],
+          },
+        }}
+      >
         {listTabs.map((item: TabBarItemProps, index: number) => (
           <Tabs.Screen
             key={index}
             name={item.label?.toLowerCase() || `tab${index}`}
             options={{
-              ...(item.label === 'Camera'
+              ...(item.label === "Camera"
                 ? {
-                    tabBarButton: props => (
-                      <Pressable android_ripple={null} onPress={openCameraModal} className="items-center justify-center">
-                        <TabBarItem {...item} color={colors.primary[500]} focused={false} />
+                    tabBarButton: (props) => (
+                      <Pressable
+                        android_ripple={null}
+                        onPress={openCameraModal}
+                        className="items-center justify-center"
+                      >
+                        <TabBarItem
+                          {...item}
+                          color={colors.primary[500]}
+                          focused={false}
+                        />
                       </Pressable>
-                    )
+                    ),
                   }
                 : {}),
-              tabBarIcon: ({ color, focused }) => <TabBarItem iconName={item.iconName} IconComponent={item.IconComponent} color={color} focused={focused} size={item.size} label={item.label} />
+              tabBarIcon: ({ color, focused }) => (
+                <TabBarItem
+                  iconName={item.iconName}
+                  IconComponent={item.IconComponent}
+                  color={color}
+                  focused={focused}
+                  size={item.size}
+                  label={item.label}
+                />
+              ),
             }}
           />
         ))}

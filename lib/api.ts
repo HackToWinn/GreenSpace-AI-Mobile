@@ -27,11 +27,11 @@ const fetchJSON = async (url: string, options?: RequestInit) => {
 export const createReport = async ({ body }: { body: FormData }) => {
   try {
     return await fetchJSON(`${BASE_URL}/report/create`, {
-      method: 'POST',
+      method: "POST",
       body,
     });
   } catch (error) {
-    console.error('Failed to create report:', error);
+    console.error("Failed to create report:", error);
     // Return null so caller can check for error
     return null;
   }
@@ -47,7 +47,7 @@ export const getReports = async () => {
   try {
     return await fetchJSON(`${BASE_URL}/report`);
   } catch (error) {
-    console.error('Failed to fetch reports:', error);
+    console.error("Failed to fetch reports:", error);
     // Return an empty array so caller can handle it gracefully
     return [];
   }
@@ -68,7 +68,7 @@ export const getReportById = async (id: string) => {
     }
     return await response.json();
   } catch (error) {
-    console.error('Failed to fetch report by ID:', error);
+    console.error("Failed to fetch report by ID:", error);
     return null;
   }
 };
@@ -83,7 +83,7 @@ export const getWeekReports = async () => {
   try {
     return await fetchJSON(`${BASE_URL}/report/week`);
   } catch (error) {
-    console.error('Failed to fetch total reports:', error);
+    console.error("Failed to fetch total reports:", error);
     return [];
   }
 };
@@ -98,7 +98,7 @@ export const getMostReportedCategories = async () => {
   try {
     return await fetchJSON(`${BASE_URL}/report/most/category`);
   } catch (error) {
-    console.error('Failed to fetch most reported categories:', error);
+    console.error("Failed to fetch most reported categories:", error);
     return null;
   }
 };
@@ -114,12 +114,12 @@ export const getMostReportedCategories = async () => {
 export const registerUser = async ({ body }: { body: FormData }) => {
   try {
     return await fetchJSON(`${BASE_URL}/user/create`, {
-      method: 'POST',
+      method: "POST",
       body,
     });
   } catch (error) {
-    console.error('Failed to register user:', error);
-    throw new Error('Registration failed');
+    console.error("Failed to register user:", error);
+    throw new Error("Registration failed");
   }
 };
 
@@ -133,7 +133,7 @@ export const getLatestReports = async () => {
   try {
     return await fetchJSON(`${BASE_URL}/report/latest`);
   } catch (error) {
-    console.error('Failed to fetch latest reports:', error);
+    console.error("Failed to fetch latest reports:", error);
     return [];
   }
 };
@@ -155,11 +155,11 @@ export const getMyReports = async ({ body }: { body: FormData }) => {
 
   try {
     return await fetchJSON(`${BASE_URL}/report/my-report`, {
-      method: 'POST',
+      method: "POST",
       body,
     });
   } catch (error) {
-    console.error('Failed to fetch user reports:', error);
+    console.error("Failed to fetch user reports:", error);
     return [];
   }
 };
@@ -175,11 +175,11 @@ export const getMyReports = async ({ body }: { body: FormData }) => {
 export const getUserInfo = async ({ body }: { body: FormData }) => {
   try {
     return await fetchJSON(`${BASE_URL}/user/get`, {
-      method: 'POST',
+      method: "POST",
       body,
     });
   } catch (error) {
-    console.error('Failed to fetch user info:', error);
+    console.error("Failed to fetch user info:", error);
     return null;
   }
 };

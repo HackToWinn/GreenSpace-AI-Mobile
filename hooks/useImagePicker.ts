@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { Alert } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
+import { Alert } from "react-native";
+import * as ImagePicker from "expo-image-picker";
 
 export function useImagePicker() {
   const [imageUri, setImageUri] = useState<string | null>(null);
@@ -8,9 +8,13 @@ export function useImagePicker() {
 
   useEffect(() => {
     (async () => {
-      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (status !== 'granted') {
-        Alert.alert('Permission required', 'We need library access to select a photo');
+      const { status } =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert(
+          "Permission required",
+          "We need library access to select a photo",
+        );
       }
     })();
   }, []);
@@ -18,7 +22,7 @@ export function useImagePicker() {
   const pickFromGallery = async () => {
     setModalVisible(false);
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ['images'],
+      mediaTypes: ["images"],
       allowsEditing: true,
       aspect: [1, 1],
       quality: 1,
@@ -29,11 +33,14 @@ export function useImagePicker() {
   const takePhoto = async () => {
     setModalVisible(false);
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
-    if (status !== 'granted') {
-      return Alert.alert('Permission required', 'Camera permission is required to take a photo.');
+    if (status !== "granted") {
+      return Alert.alert(
+        "Permission required",
+        "Camera permission is required to take a photo.",
+      );
     }
     const result = await ImagePicker.launchCameraAsync({
-      mediaTypes: ['images'],
+      mediaTypes: ["images"],
       allowsEditing: true,
       aspect: [1, 1],
       quality: 1,
@@ -41,5 +48,11 @@ export function useImagePicker() {
     if (!result.canceled) setImageUri(result.assets[0].uri);
   };
 
-  return { imageUri, modalVisible, setModalVisible, pickFromGallery, takePhoto };
+  return {
+    imageUri,
+    modalVisible,
+    setModalVisible,
+    pickFromGallery,
+    takePhoto,
+  };
 }

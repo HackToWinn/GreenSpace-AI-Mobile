@@ -1,9 +1,15 @@
 import { useCurrentLocation } from "@/hooks/useCurrentLocation";
 import { Asset } from "expo-asset";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Alert, Text, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  Alert,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { LeafletView } from "react-native-leaflet-view";
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from "expo-file-system";
 
 export default function FullMapScreen() {
   const { location } = useCurrentLocation();
@@ -24,8 +30,8 @@ export default function FullMapScreen() {
           setWebViewContent(htmlContent);
         }
       } catch (error) {
-        Alert.alert('Error loading HTML', JSON.stringify(error));
-        console.error('Error loading HTML:', error);
+        Alert.alert("Error loading HTML", JSON.stringify(error));
+        console.error("Error loading HTML:", error);
       }
     };
 
@@ -37,7 +43,7 @@ export default function FullMapScreen() {
   }, []);
 
   if (!webViewContent) {
-    return <ActivityIndicator size="large" color="green" />
+    return <ActivityIndicator size="large" color="green" />;
   }
 
   return (

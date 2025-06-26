@@ -38,11 +38,11 @@ export default function ProfileSetup(): JSX.Element {
           console.error("Identity not loaded properly");
           return;
         }
-            const formData = new FormData();
-            formData.append("delegation", JSON.stringify(delegation));
-            formData.append("identity", JSON.stringify(pubKey));
-            const profileData = await getUserInfo({ body: formData });
-            console.log("Profile data loaded:", profileData); 
+        const formData = new FormData();
+        formData.append("delegation", JSON.stringify(delegation));
+        formData.append("identity", JSON.stringify(pubKey));
+        const profileData = await getUserInfo({ body: formData });
+        console.log("Profile data loaded:", profileData);
 
         if (profileData.length > 0) {
           const { pictureCid, username, email } = profileData[0] || {};
@@ -87,7 +87,7 @@ export default function ProfileSetup(): JSX.Element {
     if (validateForm()) {
       await AsyncStorage.setItem(
         "profile-data",
-        JSON.stringify({ pictureCid: imageUri, username: name, email })
+        JSON.stringify({ pictureCid: imageUri, username: name, email }),
       );
       const formData = new FormData();
       let fileExtension: string;
@@ -100,10 +100,10 @@ export default function ProfileSetup(): JSX.Element {
           fileExtension === "png"
             ? "image/png"
             : fileExtension === "gif"
-            ? "image/gif"
-            : fileExtension === "webp"
-            ? "image/webp"
-            : "image/jpeg";
+              ? "image/gif"
+              : fileExtension === "webp"
+                ? "image/webp"
+                : "image/jpeg";
 
         picture = {
           uri: imageUri,
@@ -126,14 +126,14 @@ export default function ProfileSetup(): JSX.Element {
         setProfile({ pictureCid: imageUri, username: name, email });
 
         Alert.alert("Success", "Profile setup completed successfully!", [
-        { text: "OK" },
-      ]);
-      router.push("/(tabs)/home");
+          { text: "OK" },
+        ]);
+        router.push("/(tabs)/home");
       } catch (error) {
         console.error("Registration failed:", error);
         Alert.alert("Error", "Failed to register user. Please try again.");
         return;
-      }finally {
+      } finally {
         setIsLoading(false);
       }
     }

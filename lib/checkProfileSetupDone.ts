@@ -11,12 +11,17 @@ export default function CheckProfileSetupDone() {
     const check = async () => {
       const { pubKey, delegation } = await loadIdentity();
       if (hasNavigated.current) return;
-      
+
       const profileData = await AsyncStorage.getItem("profile-data");
       if (pubKey && delegation && !profileData) {
         hasNavigated.current = true;
         router.push("/(auth)/profile-setup");
-      } else if (pubKey && delegation && profileData && segments[0] === "(auth)") {
+      } else if (
+        pubKey &&
+        delegation &&
+        profileData &&
+        segments[0] === "(auth)"
+      ) {
         hasNavigated.current = true;
         router.replace("/(tabs)/home");
       }

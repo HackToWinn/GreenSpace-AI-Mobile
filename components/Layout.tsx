@@ -14,7 +14,6 @@ export default function Layout({
   disableHeader?: boolean;
 }) {
   return (
-
     <LinearGradient
       colors={["#DFF3E2", "#FBFDFC"]}
       start={{ x: 0, y: 0 }}

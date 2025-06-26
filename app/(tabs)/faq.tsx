@@ -1,18 +1,37 @@
-import Layout from '@/components/Layout';
-import { faqs } from '@/lib/exampleData';
-import { FontAwesome, Ionicons } from '@expo/vector-icons';
-import { Link } from 'expo-router';
-import { useState } from 'react';
-import { Pressable, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import Layout from "@/components/Layout";
+import { faqs } from "@/lib/exampleData";
+import { FontAwesome, Ionicons } from "@expo/vector-icons";
+import { Link } from "expo-router";
+import { useState } from "react";
+import {
+  Pressable,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
-const FaqItem = ({ question, answer }: { question: string; answer: string }) => {
+const FaqItem = ({
+  question,
+  answer,
+}: {
+  question: string;
+  answer: string;
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <View className="border-b border-gray-300/50">
-      <TouchableOpacity className="flex-row items-center justify-between p-4" onPress={() => setIsOpen(!isOpen)}>
+      <TouchableOpacity
+        className="flex-row items-center justify-between p-4"
+        onPress={() => setIsOpen(!isOpen)}
+      >
         <Text className="text-base text-gray-800 w-11/12">{question}</Text>
-        <FontAwesome name={isOpen ? 'chevron-up' : 'chevron-down'} size={16} color="gray" />
+        <FontAwesome
+          name={isOpen ? "chevron-up" : "chevron-down"}
+          size={16}
+          color="gray"
+        />
       </TouchableOpacity>
       {isOpen && (
         <View className="p-4 pt-0">
@@ -28,10 +47,12 @@ export default function HelpAndSupport() {
     <Layout>
       <View className="mt-10">
         <Pressable className="flex-row gap-2">
-          <Link href={'/(tabs)/profile'}>
+          <Link href={"/(tabs)/profile"}>
             <Ionicons name="arrow-back-outline" size={24} />
           </Link>
-          <Text className="text-xl font-normal text-gray-800 mb-6 ">Help & Support</Text>
+          <Text className="text-xl font-normal text-gray-800 mb-6 ">
+            Help & Support
+          </Text>
         </Pressable>
       </View>
 

@@ -2,7 +2,13 @@ import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Alert, Text, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  Alert,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { LeafletView } from "react-native-leaflet-view";
 import Tooltip from "react-native-walkthrough-tooltip";
 
@@ -21,7 +27,7 @@ import {
 import { eventBus } from "@/lib/eventBus";
 import { tooltipContents } from "@/lib/exampleData";
 import { Asset } from "expo-asset";
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from "expo-file-system";
 
 export default function Home() {
   const { location, loading, errorMsg, refreshLocation } = useCurrentLocation();
@@ -61,7 +67,9 @@ export default function Home() {
   useEffect(() => {
     if (weekReportsData && reportsData) {
       const reports = reportsData.reports ? reportsData.reports.length : 0;
-      const reportsThisWeek = weekReportsData.reports ? weekReportsData.reports.length : 0;
+      const reportsThisWeek = weekReportsData.reports
+        ? weekReportsData.reports.length
+        : 0;
       const mostCategory = mostCategoryData?.category || "Unknown";
 
       setDashboardCards((prev) =>
@@ -76,7 +84,7 @@ export default function Home() {
             return { ...card, value: mostCategory, isLoading: false };
           }
           return card;
-        })
+        }),
       );
     }
   }, [weekReportsData, reportsData, mostCategoryData]);
@@ -95,8 +103,8 @@ export default function Home() {
           setWebViewContent(htmlContent);
         }
       } catch (error) {
-        Alert.alert('Error loading HTML', JSON.stringify(error));
-        console.error('Error loading HTML:', error);
+        Alert.alert("Error loading HTML", JSON.stringify(error));
+        console.error("Error loading HTML:", error);
       }
     };
 
@@ -108,7 +116,7 @@ export default function Home() {
   }, []);
 
   if (!webViewContent) {
-    return <ActivityIndicator size="large" color="green" />
+    return <ActivityIndicator size="large" color="green" />;
   }
 
   return (
@@ -126,7 +134,7 @@ export default function Home() {
               buttonText={tooltipContents[tooltipStep - 1].buttonText}
               onButtonPress={() =>
                 setTooltipStep(
-                  tooltipStep < tooltipContents.length ? tooltipStep + 1 : 0
+                  tooltipStep < tooltipContents.length ? tooltipStep + 1 : 0,
                 )
               }
             />

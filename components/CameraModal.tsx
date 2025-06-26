@@ -1,22 +1,26 @@
-import { useCurrentLocation } from '@/hooks/useCurrentLocation';
-import { createReport } from '@/lib/api';
-import { eventBus } from '@/lib/eventBus';
-import loadIdentity from '@/lib/loadIdentity';
-import { Ionicons } from '@expo/vector-icons';
-import { CameraType, CameraView, useCameraPermissions } from 'expo-camera';
-import * as MediaLibrary from 'expo-media-library';
-import { useRef, useState } from 'react';
-import { ActivityIndicator, Alert, Image, Modal, Text, TouchableOpacity, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-
-interface CameraModalProps {
-  visible: boolean;
-  onClose: () => void;
-}
+import { useCurrentLocation } from "@/hooks/useCurrentLocation";
+import { createReport } from "@/lib/api";
+import { eventBus } from "@/lib/eventBus";
+import loadIdentity from "@/lib/loadIdentity";
+import { CameraModalProps } from "@/lib/types";
+import { Ionicons } from "@expo/vector-icons";
+import { CameraType, CameraView, useCameraPermissions } from "expo-camera";
+import * as MediaLibrary from "expo-media-library";
+import { useRef, useState } from "react";
+import {
+  ActivityIndicator,
+  Alert,
+  Image,
+  Modal,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function CameraModal({ visible, onClose }: CameraModalProps) {
-  const [facing, setFacing] = useState<CameraType>('back');
-  const [flash, setFlash] = useState<'off' | 'on'>('off');
+  const [facing, setFacing] = useState<CameraType>("back");
+  const [flash, setFlash] = useState<"off" | "on">("off");
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -31,8 +35,9 @@ export default function CameraModal({ visible, onClose }: CameraModalProps) {
     onClose();
   };
 
-  const toggleCameraFacing = () => setFacing((prev) => (prev === 'back' ? 'front' : 'back'));
-  const toggleFlash = () => setFlash((prev) => (prev === 'off' ? 'on' : 'off'));
+  const toggleCameraFacing = () =>
+    setFacing((prev) => (prev === "back" ? "front" : "back"));
+  const toggleFlash = () => setFlash((prev) => (prev === "off" ? "on" : "off"));
 
   const takePicture = async () => {
     if (cameraRef.current) {
@@ -43,21 +48,24 @@ export default function CameraModal({ visible, onClose }: CameraModalProps) {
         });
         setCapturedImage(photo.uri);
       } catch (error) {
-        Alert.alert('Error', 'Failed to take picture');
-        console.error('Error taking picture:', error);
+        Alert.alert("Error", "Failed to take picture");
+        console.error("Error taking picture:", error);
       }
     }
   };
 
   const savePicture = async () => {
-    console.log('Saving picture:', capturedImage);
+    console.log("Saving picture:", capturedImage);
     setIsLoading(true);
 
     const { pubKey, delegation } = await loadIdentity();
     const { status } = await MediaLibrary.requestPermissionsAsync();
 
-    if (status !== 'granted') {
-      Alert.alert('Permission required', 'Media library permission is required to save photos.');
+    if (status !== "granted") {
+      Alert.alert(
+        "Permission required",
+        "Media library permission is required to save photos.",
+      );
       return;
     }
     if (capturedImage) {
@@ -65,35 +73,35 @@ export default function CameraModal({ visible, onClose }: CameraModalProps) {
         const asset = await MediaLibrary.createAssetAsync(capturedImage);
         const metadata = await MediaLibrary.getAssetInfoAsync(asset.id);
 
-        const fileUri = metadata.localUri || metadata.uri || '';
-        const extension = fileUri.split('.').pop()?.toLowerCase() || 'jpg';
-        let mimeType = 'image/jpeg';
+        const fileUri = metadata.localUri || metadata.uri || "";
+        const extension = fileUri.split(".").pop()?.toLowerCase() || "jpg";
+        let mimeType = "image/jpeg";
 
-        if (extension === 'png') mimeType = 'image/png';
-        else if (extension === 'webp') mimeType = 'image/webp';
+        if (extension === "png") mimeType = "image/png";
+        else if (extension === "webp") mimeType = "image/webp";
 
         const formData = new FormData();
-        formData.append('image', {
+        formData.append("image", {
           uri: fileUri,
           name: `photo.${extension}`,
           type: mimeType,
         } as any);
-        formData.append('location', JSON.stringify(location?.address));
-        formData.append('delegation', JSON.stringify(delegation));
-        formData.append('identity', JSON.stringify(pubKey));
+        formData.append("location", JSON.stringify(location?.address));
+        formData.append("delegation", JSON.stringify(delegation));
+        formData.append("identity", JSON.stringify(pubKey));
 
         const response = await createReport({ body: formData });
         if (!response) {
-          Alert.alert('Error', 'Failed to save photo to the server.');
+          Alert.alert("Error", "Failed to save photo to the server.");
           return;
         }
-        Alert.alert('Success', 'Photo saved successfully!');
-        eventBus.emit('report:created');
+        Alert.alert("Success", "Photo saved successfully!");
+        eventBus.emit("report:created");
         setCapturedImage(null);
         onClose();
       } catch (error) {
-        console.error('Error saving photo:', error);
-        Alert.alert('Error', 'An error occurred while saving the photo.');
+        console.error("Error saving photo:", error);
+        Alert.alert("Error", "An error occurred while saving the photo.");
       } finally {
         setIsLoading(false);
       }
@@ -128,7 +136,9 @@ export default function CameraModal({ visible, onClose }: CameraModalProps) {
               className="bg-blue-500 px-5 py-2 rounded-full mb-2"
               onPress={requestPermission}
             >
-              <Text className="text-white text-lg font-bold">Grant Permission</Text>
+              <Text className="text-white text-lg font-bold">
+                Grant Permission
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity className="p-2" onPress={handleClose}>
               <Text className="text-gray-500 text-lg">Close</Text>
@@ -144,11 +154,11 @@ export default function CameraModal({ visible, onClose }: CameraModalProps) {
     <Modal visible={visible} animationType="slide">
       <SafeAreaView className="flex-1">
         {isLoading && (
-        <View className="absolute z-50 top-0 left-0 right-0 bottom-0 bg-black/70 justify-center items-center">
-          <ActivityIndicator size="large" color="#fff" />
-          <Text className="text-white mt-4 text-lg">Send...</Text>
-        </View>
-      )}
+          <View className="absolute z-50 top-0 left-0 right-0 bottom-0 bg-black/70 justify-center items-center">
+            <ActivityIndicator size="large" color="#fff" />
+            <Text className="text-white mt-4 text-lg">Send...</Text>
+          </View>
+        )}
         {capturedImage ? (
           <View className="flex-1">
             <Image source={{ uri: capturedImage }} className="flex-1 w-full" />
@@ -175,7 +185,7 @@ export default function CameraModal({ visible, onClose }: CameraModalProps) {
             ref={cameraRef}
             className="flex-1"
             facing={facing}
-            style={{ height: '100%' }}
+            style={{ height: "100%" }}
             flash={flash}
           >
             <SafeAreaView className="flex-1 justify-between bg-transparent">
@@ -192,9 +202,9 @@ export default function CameraModal({ visible, onClose }: CameraModalProps) {
                   onPress={toggleFlash}
                 >
                   <Ionicons
-                    name={flash === 'on' ? 'flash' : 'flash-off'}
+                    name={flash === "on" ? "flash" : "flash-off"}
                     size={24}
-                    color={flash === 'on' ? '#FFD700' : 'white'}
+                    color={flash === "on" ? "#FFD700" : "white"}
                   />
                 </TouchableOpacity>
               </View>
@@ -204,7 +214,11 @@ export default function CameraModal({ visible, onClose }: CameraModalProps) {
                   className="w-12 h-12 justify-center items-center"
                   onPress={toggleCameraFacing}
                 >
-                  <Ionicons name="camera-reverse-outline" size={32} color="white" />
+                  <Ionicons
+                    name="camera-reverse-outline"
+                    size={32}
+                    color="white"
+                  />
                 </TouchableOpacity>
                 <TouchableOpacity
                   className="w-16 h-16 rounded-full bg-white/30 justify-center items-center border-4 border-white"
@@ -223,7 +237,15 @@ export default function CameraModal({ visible, onClose }: CameraModalProps) {
 }
 
 // Extracted button for clarity
-function ModalButton({ icon, label, onPress }: { icon: any, label: string, onPress: () => void }) {
+function ModalButton({
+  icon,
+  label,
+  onPress,
+}: {
+  icon: any;
+  label: string;
+  onPress: () => void;
+}) {
   return (
     <TouchableOpacity className="items-center p-2" onPress={onPress}>
       <Ionicons name={icon} size={24} color="white" />

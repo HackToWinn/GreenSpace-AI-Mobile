@@ -36,16 +36,14 @@ export default function Profile() {
         useReactNativeModal
         contentStyle={{ height: 184 }}
         content={
-          tooltipVisible
-            ? (
-                <TooltipContent
-                  title="Welcome to the Profile Page"
-                  description="This is the profile page, where you can view your profile information and manage your ICP wallet & settings."
-                  buttonText="Got it"
-                  onButtonPress={() => setTooltipStep(0)}
-                />
-              )
-            : undefined // penting untuk TS/prop type!
+          tooltipVisible ? (
+            <TooltipContent
+              title="Welcome to the Profile Page"
+              description="This is the profile page, where you can view your profile information and manage your ICP wallet & settings."
+              buttonText="Got it"
+              onButtonPress={() => setTooltipStep(0)}
+            />
+          ) : undefined // penting untuk TS/prop type!
         }
         onClose={() => setTooltipStep(0)}
       >
@@ -54,11 +52,7 @@ export default function Profile() {
 
       <View className="flex-1 items-center mt-4">
         <ProfilePicture
-          source={
-            profile?.pictureCid
-              ?  profile.pictureCid
-              : ""
-          }
+          source={profile?.pictureCid ? profile.pictureCid : ""}
         />
         <Text className="text-2xl font-Bold text-gray-800 mb-2">
           {profile?.username || "Guest User"}

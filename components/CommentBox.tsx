@@ -1,7 +1,12 @@
 import { ReportComments } from "@/lib/types";
-import { View, Image, Text } from "react-native"
+import { View, Image, Text } from "react-native";
 
-const CommentBox = ({ userProfile, username, date, comment }: ReportComments) => {
+const CommentBox = ({
+  userProfile,
+  username,
+  date,
+  comment,
+}: ReportComments) => {
   return (
     <View className="mb-6">
       <View className="flex flex-col gap-y-2">
@@ -17,7 +22,7 @@ const CommentBox = ({ userProfile, username, date, comment }: ReportComments) =>
         </View>
       </View>
     </View>
-  )
-}
+  );
+};
 
 export default CommentBox;

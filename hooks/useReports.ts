@@ -4,19 +4,19 @@ import { useQuery } from "@tanstack/react-query";
 
 export const useLatestReports = () => {
   return useQuery({
-    queryKey: ['latestReports'],
+    queryKey: ["latestReports"],
     queryFn: getLatestReports,
   });
 };
 
 export const useMyReports = () => {
   return useQuery({
-    queryKey: ['myReports'],
+    queryKey: ["myReports"],
     queryFn: async () => {
       const { pubKey, delegation } = await loadIdentity();
       const formData = new FormData();
-      formData.append('delegation', JSON.stringify(delegation));
-      formData.append('identity', JSON.stringify(pubKey));
+      formData.append("delegation", JSON.stringify(delegation));
+      formData.append("identity", JSON.stringify(pubKey));
       return getMyReports({ body: formData });
     },
   });

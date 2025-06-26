@@ -16,7 +16,9 @@ export function ProfileMenuItem({
     >
       <View className="flex-row gap-4 items-center ">
         {icon}
-        <Text className={`text-base font-Regular ${labelClassName}`}>{label}</Text>
+        <Text className={`text-base font-Regular ${labelClassName}`}>
+          {label}
+        </Text>
       </View>
       <FontAwesome name="chevron-right" size={16} color={rightIconColor} />
     </Pressable>
