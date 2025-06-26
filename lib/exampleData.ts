@@ -16,31 +16,31 @@ export const rewards = [
   {
     id: 1,
     name: 'Crypto Points',
-    image: require('@/assets/images/reward/CryptoPoints.png'), // ganti path sesuai file kamu
+    image: require('@/assets/images/reward/CryptoPoints.png'),
     cost: 50,
   },
   {
     id: 2,
     name: 'GreenSpace T-Shirt',
-    image: require('@/assets/images/reward/Tshirt.png'), // ganti path sesuai file kamu
+    image: require('@/assets/images/reward/Tshirt.png'),
     cost: 30,
   },
   {
     id: 3,
     name: 'GreenSpace WaterProof Jacket',
-    image: require('@/assets/images/reward/WaterProofJacket.png'), // ganti path sesuai file kamu
+    image: require('@/assets/images/reward/WaterProofJacket.png'),
     cost: 200,
   },
   {
     id: 4,
     name: 'GreenSpace Smart Watch',
-    image: require('@/assets/images/reward/SmartWatch.png'), // ganti path sesuai file kamu
+    image: require('@/assets/images/reward/SmartWatch.png'),
     cost: 500,
   },
   {
     id: 5,
     name: 'GreenSpace Polo Shirt',
-    image: require('@/assets/images/reward/PoloShirt.png'), // ganti path sesuai file kamu
+    image: require('@/assets/images/reward/PoloShirt.png'),
     cost: 150,
   },
 ];

@@ -1,5 +1,5 @@
 import { ProfileContextProps, UserData } from "@/lib/types";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
 export const ProfileContext = createContext<ProfileContextProps | undefined>(undefined);
 
@@ -8,7 +8,7 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     return (
-        <ProfileContext.Provider  value={{profile, setProfile, isLoading, setIsLoading} as ProfileContextProps}>
+        <ProfileContext.Provider value={{ profile, setProfile, isLoading, setIsLoading } as ProfileContextProps}>
             {children}
         </ProfileContext.Provider>
     );

@@ -29,7 +29,6 @@ const ProfilePicture = ({externalSetUri, source} : { externalSetUri?: (uri: stri
     }
   }, [imageUri, externalSetUri]);
 
-
   return (
     <>
       <View className='relative'>

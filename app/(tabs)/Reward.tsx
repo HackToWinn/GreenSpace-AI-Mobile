@@ -3,7 +3,6 @@ import { SafeAreaView, Text, View, Image, ScrollView } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { rewards } from '@/lib/exampleData';
 
-
 export default function reward() {
   return (
     <Layout>

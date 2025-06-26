@@ -4,12 +4,11 @@ import ProfilePicture from "@/components/ProfilePicture";
 import TooltipContent from "@/components/TooltipContent";
 import WalletCardComponent from "@/components/WalletCardComponent";
 import { useProfile } from "@/context/ProfileContext";
-import { ProfileMenuItemProps } from "@/lib/types";
-import { FontAwesome, MaterialIcons, SimpleLineIcons } from "@expo/vector-icons";
+import { MaterialIcons, SimpleLineIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { Pressable, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import Tooltip from "react-native-walkthrough-tooltip";
 
 export default function Profile() {

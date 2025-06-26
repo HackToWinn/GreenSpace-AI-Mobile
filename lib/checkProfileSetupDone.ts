@@ -11,6 +11,7 @@ export default function CheckProfileSetupDone() {
     const check = async () => {
       const { pubKey, delegation } = await loadIdentity();
       if (hasNavigated.current) return;
+      
       const profileData = await AsyncStorage.getItem("profile-data");
       if (pubKey && delegation && !profileData) {
         hasNavigated.current = true;

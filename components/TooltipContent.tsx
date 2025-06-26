@@ -1,5 +1,5 @@
 import { TooltipProps } from "@/lib/types";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text } from "react-native";
 import CustomButton from "./CustomButton";
 
 const TooltipContent = ({ title, description, buttonText, onButtonPress }: TooltipProps) => {

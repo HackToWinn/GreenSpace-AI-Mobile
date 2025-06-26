@@ -40,7 +40,6 @@ export default function Layout({
                 >
                   <SimpleLineIcons name="settings" size={24} color="#1F7D53" />
                 </Pressable>
-
                 <Pressable
                   onPress={() => router.push("/(tabs)/Reward")}
                   className="p-2 rounded-full"
