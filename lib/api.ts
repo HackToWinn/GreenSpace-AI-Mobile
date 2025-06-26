@@ -1,6 +1,4 @@
-const BASE_URL = __DEV__
-  ? process.env.EXPO_PUBLIC_API_URL_DEV
-  : process.env.EXPO_PUBLIC_API_URL_PROD;
+const BASE_URL = process.env.EXPO_PUBLIC_API_URL_PROD;
 
 /**
  * Fetches JSON data from a URL and returns the response as a JSON object.
@@ -50,6 +48,7 @@ export const getReports = async () => {
     return await fetchJSON(`${BASE_URL}/report`);
   } catch (error) {
     console.error('Failed to fetch reports:', error);
+    // Return an empty array so caller can handle it gracefully
     return [];
   }
 };

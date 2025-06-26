@@ -21,7 +21,6 @@ export default function CheckProfileSetupDone() {
         router.replace("/(tabs)/home");
       }
     };
-
     check();
   }, [segments]);
 

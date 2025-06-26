@@ -6,7 +6,7 @@ import { Linking } from 'react-native';
 import CustomButton from './CustomButton';
 
 export async function goToLogin() {
-  const sessionIdentity = await Ed25519KeyIdentity.generate();
+  const sessionIdentity = Ed25519KeyIdentity.generate();
   await AsyncStorage.setItem('identity-key', JSON.stringify(sessionIdentity.toJSON()));
   const publicKeyDer = sessionIdentity.getPublicKey().toDer();
   const publicKeyHex = Buffer.from(publicKeyDer).toString('hex');
