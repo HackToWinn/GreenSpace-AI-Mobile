@@ -10,10 +10,8 @@ import { goToLogin } from './LoginButton';
 
   export default function AfterLogin() {
     const params = useLocalSearchParams();
-    const router = useRouter();
     const [isModalVisible, setIsModalVisible] = useState(true);
     const [isSuccess, setIsSuccess] = useState(false);
-    const { setProfile } = useProfile();
 
     useEffect(() => {
       if (params.delegation) {

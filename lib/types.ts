@@ -72,6 +72,8 @@ export interface ReportComments {
   username: string;
   message: string;
 	rating?: number;
+	date: Date;
+	comment: string;
 }
 export interface UserData{
   pictureCid: string | null;

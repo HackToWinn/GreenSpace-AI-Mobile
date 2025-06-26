@@ -9,7 +9,7 @@ const CommentBox = ({ userProfile, username, date, comment }: ReportComments) =>
           <Image source={userProfile} className="w-8 h-8 rounded-full" />
           <View className="flex flex-col">
             <Text className="text-sm text-gray-900 font-Bold">{username}</Text>
-            <Text className="text-sm">{date}</Text>
+            <Text className="text-sm">{new Date(date).toLocaleString()}</Text>
           </View>
         </View>
         <View>

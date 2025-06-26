@@ -13,8 +13,6 @@ const Onboarding = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const isLastSlide = activeIndex === onboarding.length - 1;
 
-  
-
   return (
     <AuthLayout>
       <TouchableOpacity onPress={() => router.replace('/(auth)/sign-in')} className='flex w-full items-end justify-end p-4'>
