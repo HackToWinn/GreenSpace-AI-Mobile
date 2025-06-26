@@ -6,14 +6,11 @@ import { Text, Image, TouchableOpacity, View } from 'react-native'
 import { useRef, useState } from 'react'
 import Swiper from 'react-native-swiper'
 import { onboarding } from '@/constants'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const Onboarding = () => {
   const swiperRef = useRef<Swiper>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const isLastSlide = activeIndex === onboarding.length - 1;
-
-  
 
   return (
     <AuthLayout>

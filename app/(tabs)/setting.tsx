@@ -5,8 +5,6 @@ import { Link } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, Switch, Text, TouchableOpacity, View } from 'react-native';
 
-
-
 const SettingRow = ({ icon, name, children, onPress }: SettingRowProps) => (
   <TouchableOpacity onPress={onPress} className="flex-row items-center justify-between p-4 border-b border-gray-300/50">
     <View className="flex-row items-center">
@@ -31,12 +29,10 @@ export default function Settings() {
           <Text className="text-xl font-normal text-gray-800 mb-6 ">Settings</Text>
         </Pressable>
       </View>
-
       <View className="bg-white/50  rounded-xl overflow-hidden">
         <SettingRow icon="language" name="Language" onPress={() => alert('Navigate to Language')}>
           <FontAwesome name="chevron-right" size={16} color="gray" />
         </SettingRow>
-
         <View className="flex-row items-center justify-between p-4 border-b-0">
           <View className="flex-row items-center">
             <FontAwesome name="moon-o" size={20} color="#333" className="w-8" />

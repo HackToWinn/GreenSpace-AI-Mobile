@@ -593,21 +593,6 @@ export default function Statistics() {
         </View>
         <View id="statistic" className="mt-10 px-8">
           <Text className="font-Bold text-4xl mb-4">Statistic</Text>
-          {/* Map Card */}
-          <View className="rounded-xl overflow-hidden border border-gray-200 mb-6" style={{ height: 180 }}>
-            {/* <MapView
-              accessibilityLanguage="id"
-              style={{ flex: 1 }}
-              initialRegion={{
-                latitude: -6.2,
-                longitude: 106.816666,
-                latitudeDelta: 0.05,
-                longitudeDelta: 0.05
-              }}>
-              <Marker coordinate={{ latitude: -6.2, longitude: 106.816666 }} title="Area Rawan Bencana" description="Wilayah dengan tingkat risiko bencana tinggi" />
-            </MapView> */}
-          </View>
-
           {/* Line Chart Container */}
           <View className="mb-6 rounded-2xl shadow-sm shadow-neutral-400 overflow-hidden">
             <View className="p-4">

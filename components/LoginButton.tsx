@@ -12,11 +12,10 @@ export async function goToLogin() {
   const publicKeyHex = Buffer.from(publicKeyDer).toString('hex');
   const scheme = process.env.EXPO_PUBLIC_SCHEME_URL || 'greenspace://(auth)/profile-setup'; 
   const url = process.env.EXPO_PUBLIC_LOGIN_URL || 'https://greenspace.hacktowin.systems/login'; 
-  
+
   return Linking.openURL(`${url}?sessionKey=${publicKeyHex}&scheme=${scheme}`);
 }
 
 export default function LoginButton() {
-  
   return <CustomButton onPress={goToLogin} title={'Sign in with Internet Identity'} bgVariant={'primary'} textVariant={'secondary'} IconLeft={() => <Ionicons name="log-in" size={22} color={'white'} className="mr-2" />} className="mb-4" />;
 }

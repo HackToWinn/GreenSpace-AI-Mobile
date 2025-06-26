@@ -61,6 +61,7 @@ export const useCurrentLocation = () => {
 						address: 'Unknown Location',
 					});
 				}
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			} catch (reverseError) {
 				setLocation({
 					latitude,

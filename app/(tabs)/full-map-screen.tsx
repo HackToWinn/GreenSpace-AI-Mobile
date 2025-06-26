@@ -6,7 +6,7 @@ import { LeafletView } from "react-native-leaflet-view";
 import * as FileSystem from 'expo-file-system';
 
 export default function FullMapScreen() {
-  const { location, getMapRegion } = useCurrentLocation();
+  const { location } = useCurrentLocation();
   const [selectedMarkerId, setSelectedMarkerId] = useState<string | null>(null);
   const [webViewContent, setWebViewContent] = useState<string | null>(null);
 

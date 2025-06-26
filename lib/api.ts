@@ -2,6 +2,14 @@ const BASE_URL = __DEV__
   ? process.env.EXPO_PUBLIC_API_URL_DEV
   : process.env.EXPO_PUBLIC_API_URL_PROD;
 
+/**
+ * Fetches JSON data from a URL and returns the response as a JSON object.
+ * Throws an error if the response status is not 200.
+ *
+ * @param {string} url - The URL to fetch
+ * @param {RequestInit} [options] - Additional options to pass to the fetch function
+ * @returns {Promise<any>} - The JSON object returned by the server
+ */
 const fetchJSON = async (url: string, options?: RequestInit) => {
   const response = await fetch(url, options);
   if (!response.ok) {
@@ -10,7 +18,14 @@ const fetchJSON = async (url: string, options?: RequestInit) => {
   return response.json();
 };
 
-// Create Report
+/**
+ * Creates a new report by sending a POST request with the provided form data.
+ *
+ * @param {Object} params - The parameters for creating a report.
+ * @param {FormData} params.body - The form data containing report details to be sent in the request body.
+ * @returns {Promise<any | null>} - The JSON response from the server if successful, or null if an error occurs.
+ * @throws {Error} - Throws an error if the response status is not OK.
+ */
 export const createReport = async ({ body }: { body: FormData }) => {
   try {
     return await fetchJSON(`${BASE_URL}/report/create`, {
@@ -24,7 +39,12 @@ export const createReport = async ({ body }: { body: FormData }) => {
   }
 };
 
-// Get All Reports
+/**
+ * Fetches the list of all reports from the server.
+ *
+ * @returns {Promise<any[]>} - The list of reports as a JSON array.
+ * @throws {Error} - Throws an error if the response status is not OK.
+ */
 export const getReports = async () => {
   try {
     return await fetchJSON(`${BASE_URL}/report`);
@@ -34,7 +54,13 @@ export const getReports = async () => {
   }
 };
 
-// Get Report by ID
+/**
+ * Fetches a report by its unique identifier.
+ *
+ * @param {string} id - The unique identifier of the report to fetch.
+ * @returns {Promise<any | null>} - The JSON object of the report if successful, or null if an error occurs.
+ * @throws {Error} - Throws an error if the response status is not OK.
+ */
 export const getReportById = async (id: string) => {
   try {
     const response = await fetch(`${BASE_URL}/report/${id}`);
@@ -48,7 +74,12 @@ export const getReportById = async (id: string) => {
   }
 };
 
-// Get Reports This Week
+/**
+ * Fetches the total number of reports for the current week from the server.
+ *
+ * @returns {Promise<number[]>} - The total number of reports for the current week as a JSON array.
+ * @throws {Error} - Throws an error if the response status is not OK.
+ */
 export const getWeekReports = async () => {
   try {
     return await fetchJSON(`${BASE_URL}/report/week`);
@@ -58,7 +89,12 @@ export const getWeekReports = async () => {
   }
 };
 
-// Get Most Reported Categories
+/**
+ * Fetches the most reported categories from the server.
+ *
+ * @returns {Promise<any | null>} - A JSON object containing the most reported categories if successful, or null if an error occurs.
+ * @throws {Error} - Throws an error if the response status is not OK.
+ */
 export const getMostReportedCategories = async () => {
   try {
     return await fetchJSON(`${BASE_URL}/report/most/category`);
@@ -68,7 +104,14 @@ export const getMostReportedCategories = async () => {
   }
 };
 
-// Register User
+/**
+ * Registers a new user by sending a POST request with the provided form data.
+ *
+ * @param {{ body: FormData }} params - The parameters for registering a user.
+ * @param {FormData} params.body - The form data containing user details to be sent in the request body.
+ * @returns {Promise<any | null>} - The JSON response from the server if successful, or null if an error occurs.
+ * @throws {Error} - Throws an error if the response status is not OK.
+ */
 export const registerUser = async ({ body }: { body: FormData }) => {
   try {
     return await fetchJSON(`${BASE_URL}/user/create`, {
@@ -81,7 +124,12 @@ export const registerUser = async ({ body }: { body: FormData }) => {
   }
 };
 
-// Get Latest Reports
+/**
+ * Fetches the latest reports from the server.
+ *
+ * @returns {Promise<any[]>} - The list of latest reports as a JSON array.
+ * @throws {Error} - Throws an error if the response status is not OK.
+ */
 export const getLatestReports = async () => {
   try {
     return await fetchJSON(`${BASE_URL}/report/latest`);
@@ -91,7 +139,14 @@ export const getLatestReports = async () => {
   }
 };
 
-// Get My Reports
+/**
+ * Fetches all reports submitted by a user from the server.
+ *
+ * @param {{ body: FormData }} params - The parameters for fetching user reports.
+ * @param {FormData} params.body - The form data containing the user id to be sent in the request body.
+ * @returns {Promise<any[]>} - The list of user reports as a JSON array.
+ * @throws {Error} - Throws an error if the response status is not OK.
+ */
 export const getMyReports = async ({ body }: { body: FormData }) => {
   const userId = body.get("userId");
   if (!userId) {
@@ -110,7 +165,14 @@ export const getMyReports = async ({ body }: { body: FormData }) => {
   }
 };
 
-// Get User Info
+/**
+ * Fetches a user's profile information from the server.
+ *
+ * @param {{ body: FormData }} params - The parameters for fetching user profile info.
+ * @param {FormData} params.body - The form data containing the user id to be sent in the request body.
+ * @returns {Promise<any | null>} - The user profile info as a JSON object if successful, or null if an error occurs.
+ * @throws {Error} - Throws an error if the response status is not OK.
+ */
 export const getUserInfo = async ({ body }: { body: FormData }) => {
   try {
     return await fetchJSON(`${BASE_URL}/user/get`, {

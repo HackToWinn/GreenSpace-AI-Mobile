@@ -7,9 +7,7 @@ import CustomButton from "./CustomButton";
 import LoginButton from "./LoginButton";
 
 const WalletCardComponent = () => {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [icpBalance, setIcpBalance] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [icpBalance] = useState(0);
   const { profile } = useProfile();
   return (
     <View className="w-full bg-white p-6 rounded-xl shadow-md shadow-neutral-400 mb-6">

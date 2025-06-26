@@ -1,6 +1,5 @@
 import { useCurrentLocation } from '@/hooks/useCurrentLocation';
 import { createReport } from '@/lib/api';
-import checkAuth from '@/lib/checkAuth';
 import { eventBus } from '@/lib/eventBus';
 import loadIdentity from '@/lib/loadIdentity';
 import { Ionicons } from '@expo/vector-icons';
@@ -22,7 +21,6 @@ export default function CameraModal({ visible, onClose }: CameraModalProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [permission, requestPermission] = useCameraPermissions();
-  const [mediaPermission, requestMediaPermission] = MediaLibrary.usePermissions();
 
   const cameraRef = useRef<CameraView>(null);
   const { location } = useCurrentLocation();
@@ -52,10 +50,6 @@ export default function CameraModal({ visible, onClose }: CameraModalProps) {
   };
 
   const savePicture = async () => {
-    // if (!await checkAuth()) {
-    //   Alert.alert('Error', 'You must be logged in to save photos.');
-    //   return;
-    // }
     console.log('Saving picture:', capturedImage);
     setIsLoading(true);
 
@@ -204,9 +198,7 @@ export default function CameraModal({ visible, onClose }: CameraModalProps) {
                   />
                 </TouchableOpacity>
               </View>
-
               <View className="self-center w-48 h-48 border-2 border-white rounded-lg" />
-
               <View className="flex-row justify-between items-center px-5 py-2 bg-black/80">
                 <TouchableOpacity
                   className="w-12 h-12 justify-center items-center"

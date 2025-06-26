@@ -21,7 +21,7 @@ interface ValidationErrors {
   email?: string;
 }
 
-export default function profileSetup(): JSX.Element {
+export default function ProfileSetup(): JSX.Element {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [imageUri, setImageUri] = useState<string>("");
@@ -56,7 +56,7 @@ export default function profileSetup(): JSX.Element {
     };
 
     loadProfileData();
-  }, []);
+  }, [setProfile]);
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -163,7 +163,6 @@ export default function profileSetup(): JSX.Element {
         <View className="items-center mt-10 mb-6">
           <ProfilePicture source={imageUri} externalSetUri={setImageUri} />
         </View>
-
         <View className="space-y-4">
           <View className="mb-5">
             <Text className="text-base font-medium mb-1">
@@ -181,7 +180,6 @@ export default function profileSetup(): JSX.Element {
               <Text className="text-red-500 text-sm mt-1">{errors.name}</Text>
             )}
           </View>
-
           <View>
             <Text className="text-base font-medium mb-1">
               Email <Text className="text-red-500">*</Text>
@@ -201,7 +199,6 @@ export default function profileSetup(): JSX.Element {
             )}
           </View>
         </View>
-
         {/* Submit Button */}
         <TouchableOpacity
           onPress={handleSubmit}

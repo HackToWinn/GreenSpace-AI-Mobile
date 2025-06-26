@@ -2,7 +2,6 @@ import { ProfileMenuItemProps } from "@/lib/types";
 import { FontAwesome } from "@expo/vector-icons";
 import { Pressable, Text, View } from "react-native";
 
-
 export function ProfileMenuItem({
   onPress,
   icon,
