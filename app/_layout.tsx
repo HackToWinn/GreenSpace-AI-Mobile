@@ -1,15 +1,11 @@
 import { ProfileProvider } from "@/context/ProfileContext";
 import "@/global.css";
-import CheckProfileSetupDone from "@/lib/checkProfileSetupDone";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Buffer } from "buffer";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback, useEffect, useState } from "react";
 import { View } from "react-native";
-import "react-native-get-random-values";
-global.Buffer = Buffer;
 
 SplashScreen.preventAutoHideAsync();
 
@@ -47,6 +43,7 @@ export default function RootLayout() {
         setAppIsReady(true);
       }
     }
+
     prepare();
   }, []);
 
@@ -63,7 +60,6 @@ export default function RootLayout() {
   return (
     <ProfileProvider>
       <QueryClientProvider client={queryClient}>
-        <CheckProfileSetupDone />
         <View onLayout={onLayoutRootView} style={{ flex: 1 }}>
           <Stack>
             <Stack.Screen name="index" options={{ headerShown: false }} />

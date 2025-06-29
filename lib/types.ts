@@ -14,12 +14,12 @@ export type TabBarItemProps = {
 export declare interface ButtonProps extends TouchableOpacityProps {
   title: string;
   bgVariant?:
-    | "primary"
-    | "secondary"
-    | "outline"
-    | "success"
-    | "danger"
-    | "default";
+  | "primary"
+  | "secondary"
+  | "outline"
+  | "success"
+  | "danger"
+  | "default";
   textVariant?: "primary" | "secondary" | "success" | "danger" | "default";
   IconLeft?: React.ComponentType<any>;
   IconRight?: React.ComponentType<any>;
@@ -88,31 +88,37 @@ export interface UserData {
 }
 export interface ProfileContextProps {
   profile: UserData | null;
-  setProfile: (data: UserData | null) => void;
   isLoading: boolean;
-  setIsLoading: (loading: boolean) => void;
+  setProfile: React.Dispatch<React.SetStateAction<UserData | null>>;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  loadUserData: () => Promise<UserData | boolean>;
+  addUser: (userData: { imageUri: string; username: string; email: string }) => Promise<boolean>;
+  logoutUser: () => Promise<void>;
+  userBalance: number | null;
+  setUserBalance: React.Dispatch<React.SetStateAction<number | null>>;
+  getBalance: () => Promise<boolean>;
 }
 export type SettingRowProps = {
   icon:
-    | "search"
-    | "repeat"
-    | "anchor"
-    | "bold"
-    | "link"
-    | "at"
-    | "sort"
-    | "map"
-    | "filter"
-    | "user-o"
-    | "bell-o"
-    | "shield"
-    | "language"
-    | "image"
-    | "header"
-    | "forward"
-    | "retweet"
-    | "minus"
-    | undefined;
+  | "search"
+  | "repeat"
+  | "anchor"
+  | "bold"
+  | "link"
+  | "at"
+  | "sort"
+  | "map"
+  | "filter"
+  | "user-o"
+  | "bell-o"
+  | "shield"
+  | "language"
+  | "image"
+  | "header"
+  | "forward"
+  | "retweet"
+  | "minus"
+  | undefined;
   name: string;
   children?: ReactNode;
   onPress: () => void;
@@ -124,3 +130,20 @@ export type ProfileMenuItemProps = {
   labelClassName?: string;
   rightIconColor?: string;
 };
+
+export interface ValidationErrors {
+  username?: string;
+  email?: string;
+}
+
+export interface PopUpModalProps {
+  visible: boolean;
+  onClose: () => void;
+  title?: string;
+  children?: React.ReactNode;
+  showCloseButton?: boolean;
+  width?: number | string;
+  maxWidth?: number;
+  backgroundColor?: string;
+  overlayColor?: string;
+}

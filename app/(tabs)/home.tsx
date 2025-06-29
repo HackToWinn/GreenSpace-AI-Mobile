@@ -84,7 +84,7 @@ export default function Home() {
             return { ...card, value: mostCategory, isLoading: false };
           }
           return card;
-        }),
+        })
       );
     }
   }, [weekReportsData, reportsData, mostCategoryData]);
@@ -134,7 +134,7 @@ export default function Home() {
               buttonText={tooltipContents[tooltipStep - 1].buttonText}
               onButtonPress={() =>
                 setTooltipStep(
-                  tooltipStep < tooltipContents.length ? tooltipStep + 1 : 0,
+                  tooltipStep < tooltipContents.length ? tooltipStep + 1 : 0
                 )
               }
             />

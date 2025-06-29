@@ -1,10 +1,34 @@
 import AuthLayout from "@/components/AuthLayout";
 import CustomButton from "@/components/CustomButton";
 import LoginButton from "@/components/LoginButton";
-import { router } from "expo-router";
+import { useProfile } from "@/context/ProfileContext";
+import loadIdentity from "@/lib/loadIdentity";
+import saveDelegation from "@/lib/saveDelegation";
+import { router, useLocalSearchParams } from "expo-router";
+import { useEffect } from "react";
 import { Image, Text } from "react-native";
 
 const SignIn = () => {
+  const { loadUserData, profile } = useProfile();
+  const params = useLocalSearchParams();
+  async function handleRedirect() {
+    if (params.delegation) {
+      saveDelegation({ params });
+      const identity = await loadIdentity();
+      if (!identity.pubKey || !identity.delegation) {
+        throw new Error("identity_not_loaded");
+      }
+      const data = await loadUserData();
+      data
+        ? router.replace("/(tabs)/home")
+        : router.replace("/(auth)/profile-setup");
+    }
+  }
+
+  useEffect(() => {
+    handleRedirect();
+  }, [router, params.delegation, loadUserData]);
+
   return (
     <AuthLayout>
       <Image

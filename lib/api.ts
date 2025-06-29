@@ -1,5 +1,6 @@
 const BASE_URL = process.env.EXPO_PUBLIC_API_URL_PROD;
 
+
 /**
  * Fetches JSON data from a URL and returns the response as a JSON object.
  * Throws an error if the response status is not 200.
@@ -172,6 +173,7 @@ export const getMyReports = async ({ body }: { body: FormData }) => {
  * @returns {Promise<any | null>} - The user profile info as a JSON object if successful, or null if an error occurs.
  * @throws {Error} - Throws an error if the response status is not OK.
  */
+
 export const getUserInfo = async ({ body }: { body: FormData }) => {
   try {
     return await fetchJSON(`${BASE_URL}/user/get`, {
@@ -180,6 +182,17 @@ export const getUserInfo = async ({ body }: { body: FormData }) => {
     });
   } catch (error) {
     console.error("Failed to fetch user info:", error);
+    return null;
+  }
+};
+export const getUserBalance = async ({ body }: { body: FormData }) => {
+  try {
+    return await fetchJSON(`${BASE_URL}/user/token/balance`, {
+      method: "POST",
+      body,
+    });
+  } catch (error) {
+    console.error("Failed to fetch user balance:", error);
     return null;
   }
 };

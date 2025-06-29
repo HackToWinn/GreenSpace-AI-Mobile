@@ -20,7 +20,6 @@ const ProfilePicture = ({
   } = useImagePicker();
   useEffect(() => {
     if (imageUri) {
-      // Fetch image size in bytes, then convert to KB/MB
       fetch(imageUri)
         .then((res) => res.blob())
         .then((blob) => {
@@ -49,8 +48,8 @@ const ProfilePicture = ({
             imageUri
               ? { uri: imageUri }
               : source && source.startsWith("http")
-                ? { uri: source }
-                : require("@/assets/images/profile/profil_gg.jpg")
+              ? { uri: source }
+              : require("@/assets/images/profile/profil_gg.jpg")
           }
           className="w-24 h-24 rounded-full mb-4"
         />

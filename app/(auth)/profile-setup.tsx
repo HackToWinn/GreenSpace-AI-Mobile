@@ -1,14 +1,10 @@
-import AfterLogin from "@/components/AfterLogin";
 import Layout from "@/components/Layout";
 import ProfilePicture from "@/components/ProfilePicture";
 import { useProfile } from "@/context/ProfileContext";
-import { getUserInfo, registerUser } from "@/lib/api";
-import loadIdentity from "@/lib/loadIdentity";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ValidationErrors } from "@/lib/types";
 import { router } from "expo-router";
-import { JSX, useEffect, useState } from "react";
+import { JSX, useState } from "react";
 import {
-  Alert,
   SafeAreaView,
   Text,
   TextInput,
@@ -16,61 +12,25 @@ import {
   View,
 } from "react-native";
 
-interface ValidationErrors {
-  name?: string;
-  email?: string;
-}
-
 export default function ProfileSetup(): JSX.Element {
-  const [name, setName] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [imageUri, setImageUri] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
   const [errors, setErrors] = useState<ValidationErrors>({});
-  const { setProfile } = useProfile();
-
-  useEffect(() => {
-    const loadProfileData = async () => {
-      try {
-        const { pubKey, delegation } = await loadIdentity();
-        if (!pubKey || !delegation) {
-          console.error("Identity not loaded properly");
-          return;
-        }
-        const formData = new FormData();
-        formData.append("delegation", JSON.stringify(delegation));
-        formData.append("identity", JSON.stringify(pubKey));
-        const profileData = await getUserInfo({ body: formData });
-        console.log("Profile data loaded:", profileData);
-
-        if (profileData.length > 0) {
-          const { pictureCid, username, email } = profileData[0] || {};
-          setProfile({ pictureCid, username, email });
-          router.push("/(tabs)/home");
-          return;
-        }
-      } catch (error) {
-        console.error("Failed to load profile data:", error);
-      }
-    };
-
-    loadProfileData();
-  }, [setProfile]);
+  const { addUser } = useProfile();
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   const validateForm = (): boolean => {
     const newErrors: ValidationErrors = {};
 
-    // Name validation
-    if (!name.trim()) {
-      newErrors.name = "Name is required";
-    } else if (name.trim().length < 2) {
-      newErrors.name = "Name must be at least 2 characters";
+    if (!username.trim()) {
+      newErrors.username = "Username is required";
+    } else if (username.trim().length < 2) {
+      newErrors.username = "Username must be at least 2 characters";
     }
 
-    // Email validation
     if (!email.trim()) {
       newErrors.email = "Email is required";
     } else if (!emailRegex.test(email.trim())) {
@@ -82,68 +42,32 @@ export default function ProfileSetup(): JSX.Element {
   };
 
   const handleSubmit = async (): Promise<void> => {
-    setIsLoading(true);
-    const { pubKey, delegation } = await loadIdentity();
-    if (validateForm()) {
-      await AsyncStorage.setItem(
-        "profile-data",
-        JSON.stringify({ pictureCid: imageUri, username: name, email }),
-      );
-      const formData = new FormData();
-      let fileExtension: string;
-      let mimeType: string;
-      let picture: any;
+    if (!validateForm()) {
+      return;
+    }
+    try {
+      await addUser({
+        imageUri,
+        username: username.trim(),
+        email: email.trim(),
+      });
+      router.push("/(tabs)/home");
+    } catch (error) {
 
-      if (imageUri) {
-        fileExtension = imageUri.split(".").pop()?.toLowerCase() || "jpg";
-        mimeType =
-          fileExtension === "png"
-            ? "image/png"
-            : fileExtension === "gif"
-              ? "image/gif"
-              : fileExtension === "webp"
-                ? "image/webp"
-                : "image/jpeg";
-
-        picture = {
-          uri: imageUri,
-          type: mimeType,
-          name: `profile.${fileExtension}`,
-        } as unknown as Blob;
-      } else {
-        picture = require("@/assets/images/profile/profil_gg.jpg");
-      }
-
-      formData.append("picture", picture);
-      formData.append("username", name);
-      formData.append("email", email);
-      formData.append("delegation", JSON.stringify(delegation));
-      formData.append("identity", JSON.stringify(pubKey));
-
-      try {
-        const response = await registerUser({ body: formData });
-        console.log("Registration successful:", response);
-        setProfile({ pictureCid: imageUri, username: name, email });
-
-        Alert.alert("Success", "Profile setup completed successfully!", [
-          { text: "OK" },
-        ]);
-        router.push("/(tabs)/home");
-      } catch (error) {
-        console.error("Registration failed:", error);
-        Alert.alert("Error", "Failed to register user. Please try again.");
+      if (error instanceof Error && error.message === "identity_not_loaded") {
+        router.push("/(auth)/sign-in");
         return;
-      } finally {
-        setIsLoading(false);
       }
+      console.error("Failed to add user:", error);
+      return;
     }
   };
 
   const handleNameChange = (text: string): void => {
-    setName(text);
+    setUsername(text);
     // Clear name error when user starts typing
-    if (errors.name) {
-      setErrors((prev) => ({ ...prev, name: undefined }));
+    if (errors.username) {
+      setErrors((prev) => ({ ...prev, username: undefined }));
     }
   };
 
@@ -157,7 +81,6 @@ export default function ProfileSetup(): JSX.Element {
 
   return (
     <Layout disableHeader={true}>
-      <AfterLogin />
       <SafeAreaView className="px-4">
         <Text className="font-bold text-4xl mb-2">Profile Setup</Text>
         <View className="items-center mt-10 mb-6">
@@ -169,15 +92,17 @@ export default function ProfileSetup(): JSX.Element {
               Name<Text className="text-red-500">*</Text>
             </Text>
             <TextInput
-              value={name}
+              value={username}
               onChangeText={handleNameChange}
               placeholder="Enter your name"
               className={`border rounded-xl px-4 py-3 text-base bg-white ${
-                errors.name ? "border-red-500" : "border-gray-300"
+                errors.username ? "border-red-500" : "border-gray-300"
               }`}
             />
-            {errors.name && (
-              <Text className="text-red-500 text-sm mt-1">{errors.name}</Text>
+            {errors.username && (
+              <Text className="text-red-500 text-sm mt-1">
+                {errors.username}
+              </Text>
             )}
           </View>
           <View>

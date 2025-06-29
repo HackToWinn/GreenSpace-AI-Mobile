@@ -1,3 +1,4 @@
+import { useProfile } from "@/context/ProfileContext";
 import { useCurrentLocation } from "@/hooks/useCurrentLocation";
 import { createReport } from "@/lib/api";
 import { eventBus } from "@/lib/eventBus";
@@ -23,7 +24,7 @@ export default function CameraModal({ visible, onClose }: CameraModalProps) {
   const [flash, setFlash] = useState<"off" | "on">("off");
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
+  const { getBalance } = useProfile();
   const [permission, requestPermission] = useCameraPermissions();
 
   const cameraRef = useRef<CameraView>(null);
@@ -55,7 +56,6 @@ export default function CameraModal({ visible, onClose }: CameraModalProps) {
   };
 
   const savePicture = async () => {
-    console.log("Saving picture:", capturedImage);
     setIsLoading(true);
 
     const { pubKey, delegation } = await loadIdentity();
@@ -64,7 +64,7 @@ export default function CameraModal({ visible, onClose }: CameraModalProps) {
     if (status !== "granted") {
       Alert.alert(
         "Permission required",
-        "Media library permission is required to save photos.",
+        "Media library permission is required to save photos."
       );
       return;
     }
@@ -95,9 +95,9 @@ export default function CameraModal({ visible, onClose }: CameraModalProps) {
           Alert.alert("Error", "Failed to save photo to the server.");
           return;
         }
-        Alert.alert("Success", "Photo saved successfully!");
         eventBus.emit("report:created");
         setCapturedImage(null);
+        getBalance();
         onClose();
       } catch (error) {
         console.error("Error saving photo:", error);

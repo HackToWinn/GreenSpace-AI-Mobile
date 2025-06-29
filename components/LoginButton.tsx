@@ -1,25 +1,30 @@
-import { Ed25519KeyIdentity } from "@dfinity/identity";
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Buffer } from "buffer";
 import { Linking } from "react-native";
 import CustomButton from "./CustomButton";
+import { Ed25519KeyIdentity } from "@dfinity/identity";
 
 export async function goToLogin() {
-  const sessionIdentity = Ed25519KeyIdentity.generate();
-  await AsyncStorage.setItem(
-    "identity-key",
-    JSON.stringify(sessionIdentity.toJSON()),
-  );
-  const publicKeyDer = sessionIdentity.getPublicKey().toDer();
-  const publicKeyHex = Buffer.from(publicKeyDer).toString("hex");
-  const scheme =
-    process.env.EXPO_PUBLIC_SCHEME_URL || "greenspace://(auth)/profile-setup";
-  const url =
-    process.env.EXPO_PUBLIC_LOGIN_URL ||
-    "https://greenspace.hacktowin.systems/login";
+  try {
+    const sessionIdentity = Ed25519KeyIdentity.generate();
+    await AsyncStorage.setItem(
+      "identity-key",
+      JSON.stringify(sessionIdentity.toJSON())
+    );
+    const publicKeyDer = sessionIdentity.getPublicKey().toDer();
+    const publicKeyHex = Buffer.from(publicKeyDer).toString("hex");
+    const scheme =
+      process.env.EXPO_PUBLIC_SCHEME_URL || "greenspace://(auth)/sign-in";
+    const url =
+      process.env.EXPO_PUBLIC_LOGIN_URL ||
+      "https://greenspace.hacktowin.systems/login";
 
-  return Linking.openURL(`${url}?sessionKey=${publicKeyHex}&scheme=${scheme}`);
+    return Linking.openURL(
+      `${url}?sessionKey=${publicKeyHex}&scheme=${scheme}`
+    );
+  } catch (error) {
+    console.error("Error during login:", error);
+  }
 }
 
 export default function LoginButton() {

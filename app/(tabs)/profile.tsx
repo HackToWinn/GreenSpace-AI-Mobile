@@ -1,11 +1,14 @@
+import "react-native-get-random-values";
+import { Buffer } from "buffer";
+global.Buffer = Buffer;
 import Layout from "@/components/Layout";
+import ActionModal from "@/components/PopUpModal";
 import { ProfileMenuItem } from "@/components/ProfileMenuItem";
 import ProfilePicture from "@/components/ProfilePicture";
 import TooltipContent from "@/components/TooltipContent";
 import WalletCardComponent from "@/components/WalletCardComponent";
 import { useProfile } from "@/context/ProfileContext";
 import { MaterialIcons, SimpleLineIcons } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Text, View } from "react-native";
@@ -14,22 +17,32 @@ import Tooltip from "react-native-walkthrough-tooltip";
 export default function Profile() {
   const router = useRouter();
   const [tooltipStep, setTooltipStep] = useState(1);
-  const { profile, setProfile } = useProfile();
-  // Handle logout
-  const handleLogout = async () => {
-    await AsyncStorage.removeItem("profile-data");
-    await AsyncStorage.removeItem("delegation");
-    await AsyncStorage.removeItem("identity-key");
-
-    setProfile(null);
-    router.push("/(auth)/sign-in");
-  };
-
-  // Tooltip logic
+  const { profile, logoutUser, userBalance } = useProfile();
+  const [showModal, setShowModal] = useState<boolean>(false);
   const tooltipVisible = tooltipStep === 1;
-
   return (
     <Layout>
+      <ActionModal
+        message="Are you sure you want to logout?"
+        title="Logout Confirmation"
+        visible={showModal}
+        onClose={() => setShowModal(false)}
+        actions={[
+          {
+            text: "Cancel",
+            onPress: () => setShowModal(false),
+            style: "default",
+          },
+          {
+            text: "Logout",
+            onPress: async () => {
+              await logoutUser();
+              router.replace("/(auth)/sign-in");
+            },
+            style: "danger",
+          },
+        ]}
+      />
       <Tooltip
         isVisible={tooltipVisible}
         placement="center"
@@ -43,7 +56,7 @@ export default function Profile() {
               buttonText="Got it"
               onButtonPress={() => setTooltipStep(0)}
             />
-          ) : undefined // penting untuk TS/prop type!
+          ) : undefined
         }
         onClose={() => setTooltipStep(0)}
       >
@@ -79,13 +92,15 @@ export default function Profile() {
             icon={<SimpleLineIcons name="question" size={24} color="gray" />}
             label="Help & Support"
           />
-          <ProfileMenuItem
-            onPress={handleLogout}
-            icon={<SimpleLineIcons name="logout" size={24} color="red" />}
-            label="Logout"
-            labelClassName="text-red-700"
-            rightIconColor="red"
-          />
+          {profile && (
+            <ProfileMenuItem
+              onPress={() => setShowModal(true)}
+              icon={<SimpleLineIcons name="logout" size={24} color="red" />}
+              label="Logout"
+              labelClassName="text-red-700"
+              rightIconColor="red"
+            />
+          )}
         </View>
       </View>
     </Layout>

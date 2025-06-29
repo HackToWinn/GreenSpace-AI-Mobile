@@ -1,3 +1,4 @@
+import "react-native-get-random-values";
 import CameraModal from "@/components/CameraModal";
 import { CameraContext } from "@/context/CameraContext";
 import { colors } from "@/lib/colors";
@@ -60,7 +61,9 @@ const TabBarItem = ({
       )}
       {!isCamera && (
         <Text
-          className={`text-xs mt-1 font-medium ${focused ? "text-primary-600" : "text-neutral-500"}`}
+          className={`text-xs mt-1 font-medium ${
+            focused ? "text-primary-600" : "text-neutral-500"
+          }`}
         >
           {label}
         </Text>

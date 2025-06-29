@@ -1,14 +1,12 @@
 import { useProfile } from "@/context/ProfileContext";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
-import { useState } from "react";
 import { Text, View } from "react-native";
 import CustomButton from "./CustomButton";
 import LoginButton from "./LoginButton";
 
 const WalletCardComponent = () => {
-  const [icpBalance] = useState(0);
-  const { profile } = useProfile();
+  const { profile, userBalance } = useProfile();
   return (
     <View className="w-full bg-white p-6 rounded-xl shadow-md shadow-neutral-400 mb-6">
       {profile !== null ? (
@@ -20,7 +18,7 @@ const WalletCardComponent = () => {
           </View>
           <View>
             <Text className="text-4xl font-Bold text-gray-900 mb-6">
-              {icpBalance} Token
+              {userBalance} Token
             </Text>
             <CustomButton
               title={"Redeem Your Token"}
